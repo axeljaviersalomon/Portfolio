@@ -1,8 +1,8 @@
-# Portfolio Freelance — Landing Page
+# Portfolio Freelance — Axel Salomon
 
-Landing page one-page para mostrar portfolio de proyectos freelance y captar
-solicitudes de presupuesto para desarrollo web. Construida con **HTML, CSS y
-JavaScript puro** (sin frameworks ni build tools).
+Landing page one-page de portfolio y captación de presupuestos para desarrollo
+web freelance. Construida con **HTML, CSS y JavaScript puro** (sin frameworks
+ni build tools), mobile-first, lista para publicar en GitHub Pages.
 
 ## 📂 Estructura del proyecto
 
@@ -15,66 +15,89 @@ portfolio-landing/
     │   └── styles.css       → Todos los estilos (mobile-first)
     ├── js/
     │   └── script.js        → Toda la interactividad
-    └── img/                 → Poné acá tus imágenes reales de proyectos
+    └── img/                 → Carpeta libre para imágenes propias a futuro
 ```
 
-## 🚀 Cómo usarlo
+## 🚀 Cómo verlo localmente
 
 No necesita instalación ni servidor: es HTML/CSS/JS estático.
 
 1. Descomprimí la carpeta donde quieras.
-2. Abrí `index.html` directamente en el navegador (doble clic), o
-3. Si preferís verlo con un servidor local (recomendado para evitar
-   restricciones del navegador con rutas relativas):
-   ```bash
-   # Con Python instalado
-   cd portfolio-landing
-   python3 -m http.server 8000
-   # Luego abrí http://localhost:8000
-   ```
-   ```bash
-   # O con la extensión "Live Server" de VS Code
-   ```
+2. Abrí `index.html` directamente en el navegador (doble clic).
 
-## ✏️ Qué personalizar antes de publicar
+Si preferís levantarlo con un servidor local (opcional):
+```bash
+cd portfolio-landing
+python3 -m http.server 8000
+# Luego abrí http://localhost:8000
+```
 
-| Qué | Estado | Dónde |
-|---|---|---|
-| Número de WhatsApp del botón flotante | ⚠️ Pendiente — poné tu número real | `index.html`, buscar `wa.me/5491100000000` |
-| Email de contacto | ⚠️ Pendiente — hay un comentario `<!-- TODO -->` | `index.html`, sección `<footer>` |
-| Teléfono de contacto | ⚠️ Pendiente — hay un comentario `<!-- TODO -->` | `index.html`, sección `<footer>` |
-| Estadísticas del hero (proyectos/clientes/años) | ⚠️ Puse valores estimados según tus 11 proyectos — ajustalos si hace falta | `index.html`, buscar `data-count` |
-| Nombre / marca | ✅ Ya actualizado a "Axel Salomon" | `index.html` |
-| Proyectos del portfolio | ✅ Ya cargados con tus 11 proyectos reales, imágenes y links | `index.html`, sección `#portfolio` |
-| Testimonios | ⚠️ Siguen siendo de ejemplo — reemplazalos por reseñas reales de tus clientes (tenés reseñas de Google reales en Studio Boutique y Hotel Setos que podrías citar) | `index.html`, sección `.testimonios` |
-| Color de acento | Editable si querés otro tono | `assets/css/styles.css`, variables `--accent`, `--accent-hot` en `:root` |
-| Envío real del formulario | Sigue en modo demo (solo `console.log`) | `assets/js/script.js`, dentro del listener de `#contactForm` |
+## ✅ Estado del proyecto
 
-### 📌 Sobre el portfolio actual
+Todo el contenido ya está cargado con datos reales — no quedan placeholders
+genéricos pendientes:
 
-Los 11 proyectos ya están cargados con su imagen (logo real tomado de cada sitio), categoría, descripción y link "Ver sitio en vivo":
+- **Portfolio**: 11 proyectos reales con logo, categoría, descripción y link
+  (9 "Ver demo" con aviso previo de que son bocetos sin base de datos
+  conectada; 2 "Ver sitio en vivo" de dominio propio en producción real).
+- **Contacto**: WhatsApp, email y navegación con tus datos reales.
+- **Formulario**: envía de verdad por email (ver sección siguiente).
 
-- **Hotelería (dominio propio)**: Hotel Restaurante Setos, Hotel La Estrella de Castillejo
-- **Salud**: Centro Médico AC Boutique, Studio Boutique
-- **Coaching & Eventos**: Quantum, Conecta con tu Propósito, Viví en Propósito, Contexto Nexo
-- **Negocios**: Grupo Roma Real Estate, Tao Trading Academy
-- **Bienestar**: Chiron Planet Enterprise
+## 📬 Formulario de contacto — FormSubmit
 
-Las imágenes se cargan directo desde la URL del sitio original (`hotinlink`), así que no ocupan espacio en `assets/img/` — si preferís tenerlas como copia local (recomendado para no depender de que esos sitios seguros online), descargalas y actualizá los `src` en `index.html` para que apunten a `assets/img/nombre-proyecto.png`.
+El formulario usa **[FormSubmit.co](https://formsubmit.co)**, un servicio
+gratuito que reenvía los envíos por email sin necesitar backend propio (ideal
+para GitHub Pages, que solo sirve archivos estáticos).
 
-## 🎨 Stack y decisiones técnicas
+**⚠️ Activación única requerida:** la primera vez que alguien complete y envíe
+el formulario desde el sitio ya publicado, FormSubmit te va a mandar un email
+de confirmación a `axeljaviersalomon@gmail.com` con un link para activarlo.
+Hasta hacer clic ahí, los envíos no llegan. **Recomendación:** apenas publiques
+el sitio, mandate vos mismo un mensaje de prueba para activarlo antes de que
+lo use un cliente real.
 
-- **Mobile-first**: todo el CSS parte de la versión mobile y escala hacia
-  arriba con `min-width` media queries (768px tablet, 1024px desktop).
+**Protección anti-spam:** el formulario incluye un campo honeypot invisible
+(`_honey`). Los bots que completan formularios automáticamente suelen llenar
+también los campos ocultos; si ese campo llega con contenido, el envío se
+descarta en el propio navegador sin llegar a mandarse.
+
+Si en algún momento cambiás de email, actualizá el `action` del `<form>` en
+`index.html` (buscá `formsubmit.co/ajax/`).
+
+## ✏️ Qué podés seguir ajustando
+
+| Qué | Dónde |
+|---|---|
+| Color de acento (azul) | `assets/css/styles.css`, variables `--accent` / `--accent-hot` en `:root` |
+| Estadísticas del hero (11+/9+/3+) | `index.html`, buscar `data-count` |
+| Textos de servicios / "Sobre mí" | `index.html`, secciones `#servicios` y `#porque` |
+| Orden o contenido del portfolio | `index.html`, sección `#portfolio` (cada proyecto es un bloque `<!-- Proyecto N: ... -->`) |
+| Redes sociales del footer | `index.html`, `.footer-social` |
+
+## 🎨 Decisiones técnicas
+
+- **Mobile-first**: el CSS parte de la versión mobile y escala hacia arriba
+  con `min-width` media queries (768px tablet, 1024px desktop).
 - **Sin dependencias de build**: no requiere Node, npm ni bundlers.
-- **Única dependencia externa**: la tipografía Manrope vía Google Fonts
-  (se puede quitar si necesitás que funcione 100% offline).
-- **Canvas nativo** para la animación de partículas del hero (sin librerías).
+- **Única dependencia externa**: la tipografía Manrope vía Google Fonts.
+- **Canvas nativo** para la animación de partículas del hero.
 - **IntersectionObserver** para animaciones de scroll y contador de
-  estadísticas (rendimiento nativo, sin listeners de scroll pesados).
+  estadísticas.
+- **Luz que sigue al cursor**: activa solo en dispositivos con mouse
+  (`pointer: fine`), respeta `prefers-reduced-motion`.
 
 ## 📱 Compatibilidad
 
 Probado visualmente en las últimas versiones de Chrome, Firefox, Safari y
-Edge. Usa `prefers-reduced-motion` para respetar configuraciones de
-accesibilidad del sistema operativo del usuario.
+Edge, en mobile y desktop. Usa `prefers-reduced-motion` para respetar
+configuraciones de accesibilidad del sistema operativo del usuario.
+
+## 🌐 Deploy en GitHub Pages
+
+Repo: `github.com/axeljaviersalomon/Portfolio`
+
+1. Subir el contenido de esta carpeta a la rama `main` del repo (ver comandos
+   en la respuesta del chat).
+2. En GitHub: **Settings → Pages → Source: rama `main`, carpeta `/ (root)` → Save**.
+3. Esperar 1-2 minutos. El sitio queda en:
+   `https://axeljaviersalomon.github.io/Portfolio/`

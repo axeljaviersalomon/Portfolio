@@ -33,23 +33,31 @@ const revealObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 /* ---------- Contador animado de estadísticas ---------- */
+/* Basado en tiempo (no en pasos fijos) para que el efecto de conteo se note
+   siempre, incluso con números chicos como "3+" que antes terminaban en 2-3
+   frames y pasaban desapercibidos. */
 function animateCounters(){
+    const DURATION = 1300; // milisegundos que dura la cuenta hacia arriba
+
     document.querySelectorAll('.stat-number').forEach(stat => {
         const target = parseInt(stat.dataset.count, 10);
-        let current = 0;
-        const step = Math.max(target/50, 1);
         const obs = new IntersectionObserver((entries) => {
             if(entries[0].isIntersecting){
-                const tick = () => {
-                    current += step;
-                    if(current < target){
-                        stat.textContent = Math.floor(current) + '+';
+                const startTime = performance.now();
+                const tick = (now) => {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / DURATION, 1);
+                    // easeOutQuad: arranca rápido y desacelera al llegar al final
+                    const eased = 1 - (1 - progress) * (1 - progress);
+                    const current = Math.floor(eased * target);
+                    stat.textContent = current + '+';
+                    if(progress < 1){
                         requestAnimationFrame(tick);
                     } else {
                         stat.textContent = target + '+';
                     }
                 };
-                tick();
+                requestAnimationFrame(tick);
                 obs.unobserve(stat);
             }
         }, {threshold:0.5});
@@ -73,6 +81,24 @@ filterBtns.forEach(btn => {
     });
 });
 
+/* ---------- Aviso antes de abrir demos sin backend conectado ---------- */
+/* Los links marcados con data-demo="true" son proyectos de portfolio (Netlify)
+   sin base de datos real conectada. Los links de "Ver sitio en vivo" (dominio
+   propio, en producción real) no llevan este atributo y abren directo. */
+document.querySelectorAll('.pf-link[data-demo="true"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const proceed = confirm(
+            'Este sitio es una demo de portfolio: está a modo de boceto y no está ' +
+            'conectado a una base de datos real, por lo que algunas funcionalidades ' +
+            '(formularios, turnos, checkout, etc.) están limitadas.\n\n¿Querés continuar de todos modos?'
+        );
+        if(proceed){
+            window.open(link.href, '_blank', 'noopener,noreferrer');
+        }
+    });
+});
+
 /* ---------- Flechas de paginación (scroll suave al portfolio) ---------- */
 document.getElementById('nextArrow').addEventListener('click', () => {
     document.getElementById('portfolio').scrollIntoView({behavior:'smooth'});
@@ -82,33 +108,70 @@ document.getElementById('prevArrow').addEventListener('click', () => {
 });
 
 /* ---------- Formulario de contacto ---------- */
+/* Envía los datos vía FormSubmit.co (servicio gratuito de formularios sin backend
+   propio) directo a axeljaviersalomon@gmail.com. Usa AJAX para no salir de la
+   página, y valida el campo honeypot "_honey" como protección anti-spam:
+   los bots suelen completar todos los campos del formulario automáticamente,
+   incluido el honeypot invisible; si llega con contenido, se descarta el envío
+   sin avisar al bot (para no revelar la protección). */
 document.getElementById('contactForm').addEventListener('submit', function(e){
     e.preventDefault();
-    const fd = new FormData(this);
+    const form = this;
+    const fd = new FormData(form);
     const data = Object.fromEntries(fd.entries());
 
-    if(!data.nombre || !data.email || !data.empresa || !data['tipo-proyecto'] || !data.presupuesto || !data.descripcion){
+    // Honeypot: si un bot completó este campo invisible, fingimos éxito y no enviamos nada
+    if(data._honey){
+        alert('¡Gracias por tu solicitud! Te voy a responder con la mayor brevedad posible.');
+        form.reset();
+        return;
+    }
+
+    if(!data.nombre || !data.email || !data['tipo-proyecto'] || !data.descripcion){
         alert('Por favor completá todos los campos requeridos.');
         return;
     }
 
-    console.log('Datos del formulario:', data);
-    alert('¡Gracias por tu solicitud! Te voy a responder en menos de 24 horas.');
-    this.reset();
+    const submitBtn = form.querySelector('.form-submit');
+    const originalBtnText = submitBtn.textContent;
+    submitBtn.textContent = 'Enviando...';
+    submitBtn.disabled = true;
 
-    // Aquí podés integrar tu backend, EmailJS, Google Sheets, etc.
+    fetch(form.action, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: fd
+    })
+    .then(response => {
+        if(!response.ok) throw new Error('Error en el envío');
+        alert('¡Gracias por tu solicitud! Te voy a responder con la mayor brevedad posible.');
+        form.reset();
+    })
+    .catch(() => {
+        alert('Hubo un problema al enviar el formulario. Por favor, intentá de nuevo o escribime directo por WhatsApp.');
+    })
+    .finally(() => {
+        submitBtn.textContent = originalBtnText;
+        submitBtn.disabled = false;
+    });
 });
 
 /* =====================================================================
-   BOTÓN FLOTANTE DE WHATSAPP — burbuja de mensaje con aparición diferida
+   BOTÓN FLOTANTE DE WHATSAPP — entrada animada + burbuja de mensaje diferida
    ===================================================================== */
 (function(){
+    const waFloat = document.querySelector('.whatsapp-float');
     const bubble = document.getElementById('waBubble');
     const closeBtn = document.getElementById('waBubbleClose');
     const waButton = document.getElementById('waButton');
     const STORAGE_KEY = 'waBubbleDismissed';
 
-    // Muestra la burbuja a los pocos segundos, solo si el usuario no la cerró antes
+    // El botón redondo aparece con una animación de entrada a los 3 segundos
+    setTimeout(() => {
+        waFloat.classList.add('wa-visible');
+    }, 3000);
+
+    // La burbuja de mensaje aparece a los 8 segundos, solo si el usuario no la cerró antes
     let bubbleShown = false;
     function showBubble(){
         if(bubbleShown) return;
@@ -116,7 +179,7 @@ document.getElementById('contactForm').addEventListener('submit', function(e){
         bubble.classList.add('show');
         bubbleShown = true;
     }
-    setTimeout(showBubble, 3500);
+    setTimeout(showBubble, 15000);
 
     function hideBubble(){
         bubble.classList.remove('show');
@@ -209,4 +272,44 @@ document.getElementById('contactForm').addEventListener('submit', function(e){
     window.addEventListener('resize', resize);
     resize();
     animate();
+})();
+
+/* =====================================================================
+   LUZ QUE SIGUE AL CURSOR — solo en dispositivos con mouse (pointer: fine)
+   En touch/mobile no hay cursor real, así que no tiene sentido activarlo
+   ===================================================================== */
+(function(){
+    const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!hasFinePointer || prefersReducedMotion) return;
+
+    const glow = document.getElementById('cursorGlow');
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let currentX = targetX;
+    let currentY = targetY;
+    let isActive = false;
+
+    document.addEventListener('mousemove', (e) => {
+        targetX = e.clientX;
+        targetY = e.clientY;
+        if(!isActive){
+            glow.classList.add('active');
+            isActive = true;
+        }
+    });
+
+    document.addEventListener('mouseleave', () => {
+        glow.classList.remove('active');
+        isActive = false;
+    });
+
+    // Suaviza el movimiento (lerp) para que la luz "persiga" al cursor con inercia sutil
+    function followCursor(){
+        currentX += (targetX - currentX) * 0.12;
+        currentY += (targetY - currentY) * 0.12;
+        glow.style.transform = `translate(${currentX}px, ${currentY}px) translate(-50%, -50%)`;
+        requestAnimationFrame(followCursor);
+    }
+    followCursor();
 })();
