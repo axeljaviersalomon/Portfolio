@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Axel Salomon | Desarrollo Web Freelance</title>
+
+<!-- Google Fonts: Manrope - tipografía geométrica, seria y profesional -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+<!-- Capa de fondo animada global (grid de puntos con drift lento) -->
+<div class="global-bg"></div>
+
+<!-- =====================================================================
+     NAVEGACIÓN
+     ===================================================================== -->
+<header>
+    <div class="container nav-wrap">
+        <a href="#inicio" class="logo">
+            <span class="logo-badge">A</span>
+            axel<span class="text-accent">.</span>dev
+        </a>
+        <nav class="nav-links" id="navLinks">
+            <a href="#inicio" class="active">Inicio</a>
+            <a href="#servicios">Servicios</a>
+            <a href="#portfolio">Portfolio</a>
+            <a href="#porque">Ventajas</a>
+            <a href="#contacto" class="btn btn-primary btn-sm">Pedir presupuesto</a>
+        </nav>
+        <div class="hamburger" id="hamburger" aria-label="Abrir menú"><span></span><span></span><span></span></div>
+    </div>
+</header>
+
+<!-- =====================================================================
+     HERO — Impacto y posicionamiento
+     ===================================================================== -->
+<section class="hero" id="inicio">
+    <div class="blob blob-blue blob-a" style="width:340px;height:340px;top:-80px;right:-100px;"></div>
+    <div class="blob blob-teal blob-b" style="width:280px;height:280px;bottom:40px;left:-90px;"></div>
+
+    <div class="hero-content">
+        <div class="hero-tag"><span class="dot"></span> Disponible para nuevos proyectos</div>
+        <h1>Desarrollo web que convierte <span class="text-accent">visitas en clientes</span></h1>
+        <p class="hero-subtitle">Diseño y desarrollo sitios a medida para marcas, negocios y agencias que buscan una presencia digital que realmente genere resultados.</p>
+        <div class="hero-cta">
+            <a href="#contacto" class="btn btn-primary">Solicitar presupuesto</a>
+            <a href="#portfolio" class="btn btn-outline">Ver portfolio</a>
+        </div>
+    </div>
+
+    <div class="hero-stats">
+        <!-- TODO: ajustá estos 3 números a tus datos reales -->
+        <div class="stat"><div class="stat-number" data-count="11">0</div><div class="stat-label">Proyectos entregados</div></div>
+        <div class="stat"><div class="stat-number" data-count="9">0</div><div class="stat-label">Clientes felices</div></div>
+        <div class="stat"><div class="stat-number" data-count="3">0</div><div class="stat-label">Años de experiencia</div></div>
+    </div>
+
+    <!-- Fondo animado de partículas en ondas -->
+    <div class="particle-bg"><canvas id="waveCanvas"></canvas></div>
+</section>
+
+<!-- =====================================================================
+     SERVICIOS
+     ===================================================================== -->
+<section class="servicios section-pad" id="servicios">
+    <div class="blob blob-blue blob-a" style="width:260px;height:260px;top:10%;right:-80px;"></div>
+
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="eyebrow">Servicios</div>
+            <h2>Todo lo que tu web necesita, en un solo lugar</h2>
+            <p>Un servicio de desarrollo completo, desde el diseño hasta el mantenimiento post-lanzamiento.</p>
+        </div>
+
+        <div class="servicios-grid">
+            <div class="service-card reveal">
+                <div class="service-num">01</div>
+                <div class="service-icon">🎨</div>
+                <h3>Diseño Web a Medida</h3>
+                <p>Interfaces modernas, únicas y alineadas 100% con la identidad de tu marca. Nada de plantillas genéricas.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-num">02</div>
+                <div class="service-icon">⚡</div>
+                <h3>Desarrollo Frontend</h3>
+                <p>Sitios rápidos, animados y perfectamente responsivos, construidos con tecnologías modernas.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-num">03</div>
+                <div class="service-icon">🔧</div>
+                <h3>Backend & Bases de Datos</h3>
+                <p>Lógica robusta detrás de escena para que tu plataforma funcione rápido, estable y sin límites.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-num">04</div>
+                <div class="service-icon">🚀</div>
+                <h3>SEO & Performance</h3>
+                <p>Optimización técnica para posicionar en buscadores y cargar en menos de 2 segundos.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-num">05</div>
+                <div class="service-icon">🛒</div>
+                <h3>E-Commerce</h3>
+                <p>Tiendas online completas, con pasarela de pagos, catálogo dinámico y panel de gestión.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-num">06</div>
+                <div class="service-icon">🛡️</div>
+                <h3>Soporte & Mantenimiento</h3>
+                <p>Actualizaciones, mejoras y acompañamiento continuo después del lanzamiento.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================================
+     PORTFOLIO — Selección de trabajos
+     ===================================================================== -->
+<section class="portfolio section-pad" id="portfolio">
+    <div class="blob blob-teal blob-b" style="width:300px;height:300px;bottom:5%;right:-100px;"></div>
+
+    <div class="container">
+        <div class="portfolio-header-row">
+            <div class="section-header reveal">
+                <div class="eyebrow">Portfolio</div>
+                <h2>Proyectos reales, resultados reales</h2>
+                <p>Una selección de trabajos freelance realizados para clientes de distintas industrias.</p>
+            </div>
+            <div class="portfolio-filters reveal">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+                <button class="filter-btn" data-filter="salud">Salud & Bienestar</button>
+                <button class="filter-btn" data-filter="hoteleria">Hotelería</button>
+                <button class="filter-btn" data-filter="coaching">Coaching & Eventos</button>
+                <button class="filter-btn" data-filter="negocios">Negocios</button>
+            </div>
+        </div>
+
+        <div class="portfolio-grid" id="portfolioGrid">
+
+            <!-- Proyecto 1: Hotel Setos (hosting propio) -->
+            <div class="portfolio-card reveal" data-cat="hoteleria">
+                <img class="pf-image pf-image-img" src="https://hotelrestaurantesetos.es/wp-content/uploads/2026/03/cropped-LOGO-SIN-FONDO1.png" alt="Hotel Restaurante Setos" loading="lazy">
+                <div class="pf-overlay">
+                    <div class="pf-category">Hotelería · Dominio propio</div>
+                    <h3>Hotel Restaurante Setos</h3>
+                    <p>Sitio de reservas para hotel y restaurante en Motilla del Palancar (Cuenca, España): habitaciones, gastronomía, eventos y formulario de reserva.</p>
+                    <div class="pf-tags"><span class="pf-tag">WordPress</span><span class="pf-tag">WooCommerce</span><span class="pf-tag">Reservas online</span></div>
+                    <a href="https://hotelrestaurantesetos.es/" target="_blank" rel="noopener noreferrer" class="pf-link">Ver sitio en vivo ↗</a>
+                </div>
+            </div>
+
+            <!-- Proyecto 2: La Estrella de Castillejo (hosting propio) -->
+            <div class="portfolio-card reveal" data-cat="hoteleria">
+                <img class="pf-image pf-image-img" src="https://laestrelladecastillejo.es/wp-content/uploads/2021/11/cropped-LOGO-270x270.png" alt="Hotel La Estrella de Castillejo" loading="lazy">
+                <div class="pf-overlay">
+                    <div class="pf-category">Hotelería · Dominio propio</div>
+                    <h3>Hotel La Estrella de Castillejo</h3>
+                    <p>Hotel de paso sobre la A-3 Madrid–Valencia. Sistema de búsqueda de habitaciones, reservas, restaurante y punto de carga eléctrica.</p>
+                    <div class="pf-tags"><span class="pf-tag">WordPress</span><span class="pf-tag">WooCommerce</span><span class="pf-tag">Booking</span></div>
+                    <a href="https://laestrelladecastillejo.es/" target="_blank" rel="noopener noreferrer" class="pf-link">Ver sitio en vivo ↗</a>
+                </div>
+            </div>
+
+            <!-- Proyecto 3: Centro Médico Nordelta -->
+            <div class="portfolio-card reveal" data-cat="salud">
+                <img class="pf-image pf-image-img" src="https://centromediconordelta.netlify.app/wp-content/uploads/2025/04/AC_CentroMedico_logo_H_color-e1745451422131.png" alt="Centro Médico AC Nordelta" loading="lazy">
+                <div class="pf-overlay">
+                    <div class="pf-category">Salud</div>
+                    <h3>Centro Médico AC Boutique</h3>
+                    <p>Web institucional para centro médico familiar en Nordelta: especialidades, coberturas de obras sociales y turnos online integrados.</p>
+                    <div class="pf-tags"><span class="pf-tag">WordPress</span><span class="pf-tag">Turnos online</span><span class="pf-tag">WhatsApp</span></div>
+                    <a href="https://centromediconordelta.netlify.app/" target="_blank" rel="noopener noreferrer" class="pf-link">Ver demo ↗</a>
+                </div>
+            </div>
+
+            <!-- Proyecto 4: Studio Boutique -->
+            <div class="portfolio-card reveal" data-cat="salud">
+                <img class="pf-image pf-image-img" src="https://studioboutique.netlify.app/wp-content/uploads/2025/03/SB_logo_sin-fondo-2.png" alt="Studio Boutique" loading="lazy">
+                <div class="pf-overlay">
+                    <div class="pf-category">Salud & Estética</div>
+                    <h3>Studio Boutique</h3>
+                    <p>Centro de estética y medicina estética: spa, masajes, tratamientos faciales y corporales, con sistema de reserva de turnos y promociones.</p>
+                    <div class="pf-tags"><span class="pf-tag">WordPress</span><span class="pf-tag">Agenda online</span><span class="pf-tag">Chatbot WhatsApp</span></div>
+                    <a href="https://studioboutique.netlify.app/" target="_blank" rel="noopener noreferrer" class="pf-link">Ver demo ↗</a>
+                </div>
+            </div>
+
+            <!-- Proyecto 5: Grupo Roma Real Estate -->
+            <div class="portfolio-card reveal" data-cat="negocios">
+                <img class="pf-image pf-image-img" src="https://gruporomarealestate.netlify.app/wp-content/uploads/2025/04/LOGO-COLOR-SIN-FONDO.png" alt="Grupo Roma Real Estate" loading="lazy">
+                <div class="pf-overlay">
+                    <div class="pf-category">Real Estate</div>
+                    <h3>Grupo Roma Real Estate</h3>
+                    <p>Sitio institucional para inmobiliaria en Nordelta: servicios de compra, venta e inversión, con contacto directo por WhatsApp.</p>
+                    <div class="pf-tags"><span class="pf-tag">WordPress</span><span class="pf-tag">Institucional</span></div>
+                    <a href="https://gruporomarealestate.netlify.app/" target="_blank" rel="noopener noreferrer" class="pf-link">Ver demo ↗</a>
+                </div>
+            </div>
+
+            <!-- Proyecto 6: Chiron Planet Enterprise -->
+            <div class="portfolio-card reveal" data-cat="salud">
+                <img class="pf-image pf-image-img" src="https://chironplanet.netlify.app/wp-content/uploads/2025/08/Diseno-sin-titulo-1.png" alt="Chiron Planet Enterprise" loading="lazy">
+                <div class="pf-overlay">
+                    <div class="pf-category">Bienestar & Terapias</div>
+                    <h3>Chiron Planet Enterprise</h3>
+                    <p>Holding con 4 unidades de negocio (EquusAccess, Access Bars, Healy Retailer, Whispering Souls): sanación energética y terapia asistida con caballos.</p>
+                    <div class="pf-tags"><span class="pf-tag">WordPress</span><span class="pf-tag">WooCommerce</span><span class="pf-tag">Multi-marca</span></div>
+                    <a href="https://chironplanet.netlify.app/" target="_blank" rel="noopener noreferrer" class="pf-link">Ver demo ↗</a>
+                </div>
+            </div>
+
+            <!-- Proyecto 7: Tao Trading Academy -->
+            <div class="portfolio-card reveal" data-cat="negocios">
+                <img class="pf-image pf-image-img" src="https://taotrading.netlify.app/wp-content/uploads/2024/03/connombreblanco_Mesa-de-trabajo-1.png" alt="Tao Trading Academy" loading="lazy">
+                <div class="pf-overlay">
+                    <div class="pf-category">Educación Online</div>
+                    <h3>Tao Trading Academy</h3>
+                    <p>Academia de trading con cursos, campus de alumnos, casos de éxito y sistema de registro/login para la comunidad de traders.</p>
+                    <div class="pf-tags"><span class="pf-tag">WordPress</span><span class="pf-tag">LMS</span><span class="pf-tag">Membresías</span></div>
+                    <a href="https://taotrading.netlify.app/" target="_blank" rel="noopener noreferrer" class="pf-link">Ver demo ↗</a>
+                </div>
+            </div>
+
+            <!-- Proyecto 8: Quantum (Carola Gando) -->
+            <div class="portfolio-card reveal" data-cat="coaching">
+                <img class="pf-image pf-image-img" src="https://quantumprogram.netlify.app/wp-content/uploads/2025/10/logo-carola.png" alt="Quantum - Carola Gando" loading="lazy">
+                <div class="pf-overlay">
+                    <div class="pf-category">Coaching · Landing de venta</div>
+                    <h3>Quantum — Abundancia Infinita</h3>
+                    <p>Landing de venta de programa de transformación con VSL, testimonios en video, FAQs y checkout integrado con WooCommerce.</p>
+                    <div class="pf-tags"><span class="pf-tag">WordPress</span><span class="pf-tag">Checkout</span><span class="pf-tag">Video Sales Letter</span></div>
+                    <a href="https://quantumprogram.netlify.app/" target="_blank" rel="noopener noreferrer" class="pf-link">Ver demo ↗</a>
+                </div>
+            </div>
+
+            <!-- Proyecto 9: Conecta con tu Propósito -->
+            <div class="portfolio-card reveal" data-cat="coaching">
+                <img class="pf-image pf-image-img" src="https://conectacontuproposito.netlify.app/wp-content/uploads/2025/02/Logo-CCTP-Plateado-6.png" alt="Conecta con tu Propósito" loading="lazy">
+                <div class="pf-overlay">
+                    <div class="pf-category">Coaching · Evento presencial</div>
+                    <h3>Conecta con tu Propósito 3.0</h3>
+                    <p>Landing de venta de entradas para evento presencial de alto impacto: 3 tipos de ticket, testimonios en video y contador de asistentes.</p>
+                    <div class="pf-tags"><span class="pf-tag">WordPress</span><span class="pf-tag">Venta de tickets</span></div>
+                    <a href="https://conectacontuproposito.netlify.app/" target="_blank" rel="noopener noreferrer" class="pf-link">Ver demo ↗</a>
+                </div>
+            </div>
+
+            <!-- Proyecto 10: Viví en Propósito -->
+            <div class="portfolio-card reveal" data-cat="coaching">
+                <img class="pf-image pf-image-img" src="https://vivienproposito.netlify.app/wp-content/uploads/2024/12/Logo-VEP-Blanco-loguito11.png" alt="Viví en Propósito" loading="lazy">
+                <div class="pf-overlay">
+                    <div class="pf-category">Coaching · Evento presencial</div>
+                    <h3>Viví en Propósito</h3>
+                    <p>Landing para evento inmersivo de 3 días con Carola Gando: agenda día por día, testimonios y 3 niveles de entrada con precios en preventa.</p>
+                    <div class="pf-tags"><span class="pf-tag">WordPress</span><span class="pf-tag">Venta de tickets</span></div>
+                    <a href="https://vivienproposito.netlify.app/" target="_blank" rel="noopener noreferrer" class="pf-link">Ver demo ↗</a>
+                </div>
+            </div>
+
+            <!-- Proyecto 11: Contexto Nexo -->
+            <div class="portfolio-card reveal" data-cat="coaching">
+                <img class="pf-image pf-image-img" src="https://contextonexo.netlify.app/wp-content/uploads/2024/12/logo-nexo_Mesa-de-trabajo-1-12-12.png" alt="Contexto Nexo" loading="lazy">
+                <div class="pf-overlay">
+                    <div class="pf-category">Comunidad · Institucional</div>
+                    <h3>Contexto Nexo</h3>
+                    <p>Sitio institucional de comunidad de desarrollo personal: trayectoria de eventos realizados, testimonios en video y contacto por WhatsApp.</p>
+                    <div class="pf-tags"><span class="pf-tag">WordPress</span><span class="pf-tag">Institucional</span></div>
+                    <a href="https://contextonexo.netlify.app/" target="_blank" rel="noopener noreferrer" class="pf-link">Ver demo ↗</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="portfolio-pagination reveal">
+            <span style="color:var(--gray-mid);font-size:.8rem;">01</span>
+            <div class="page-track"><div class="page-line"></div></div>
+            <span style="color:var(--gray-mid);font-size:.8rem;">11</span>
+            <div class="page-arrows">
+                <div class="page-arrow" id="prevArrow">←</div>
+                <div class="page-arrow" id="nextArrow">→</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================================
+     POR QUÉ DESARROLLAR TU WEB CONMIGO
+     ===================================================================== -->
+<section class="porque section-pad" id="porque">
+    <div class="blob blob-blue blob-a" style="width:280px;height:280px;top:15%;left:-100px;"></div>
+
+    <div class="container">
+        <div class="porque-grid">
+            <div class="porque-visual reveal">
+                <div class="big-emoji">💻</div>
+            </div>
+            <div>
+                <div class="section-header reveal" style="margin-bottom:28px;">
+                    <div class="eyebrow">Por qué elegirme</div>
+                    <h2>Más que un desarrollador, un socio para tu proyecto</h2>
+                </div>
+                <div class="porque-list">
+                    <div class="porque-item reveal">
+                        <div class="porque-num">01</div>
+                        <div class="porque-text">
+                            <h3>Entrega puntual, siempre</h3>
+                            <p>Definimos plazos claros desde el inicio y los cumplo. Tu lanzamiento no se retrasa.</p>
+                        </div>
+                    </div>
+                    <div class="porque-item reveal">
+                        <div class="porque-num">02</div>
+                        <div class="porque-text">
+                            <h3>Diseño 100% personalizado</h3>
+                            <p>Cero plantillas genéricas. Cada proyecto se piensa desde cero según tu marca y objetivos.</p>
+                        </div>
+                    </div>
+                    <div class="porque-item reveal">
+                        <div class="porque-num">03</div>
+                        <div class="porque-text">
+                            <h3>Enfoque en conversión</h3>
+                            <p>No solo se ve bien: está construido para transformar visitas en consultas y ventas.</p>
+                        </div>
+                    </div>
+                    <div class="porque-item reveal">
+                        <div class="porque-num">04</div>
+                        <div class="porque-text">
+                            <h3>Acompañamiento post-lanzamiento</h3>
+                            <p>Sigo disponible después de entregar tu proyecto para soporte, mejoras y mantenimiento.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================================
+     CTA + FORMULARIO
+     ===================================================================== -->
+<section class="cta-final section-pad" id="contacto">
+    <div class="blob blob-blue blob-a" style="width:360px;height:360px;top:-60px;left:50%;transform:translateX(-50%);"></div>
+
+    <div class="container cta-grid">
+        <div class="cta-left reveal">
+            <div class="eyebrow">Contacto</div>
+            <h2>Hablemos de tu <span class="text-accent">próximo proyecto</span></h2>
+            <p>Completá el formulario con los detalles de tu proyecto y te voy a responder en menos de 24 horas con una propuesta a medida.</p>
+            <div class="cta-points">
+                <div class="cta-point"><span class="check">✓</span> Presupuesto sin compromiso</div>
+                <div class="cta-point"><span class="check">✓</span> Respuesta en menos de 24hs</div>
+                <div class="cta-point"><span class="check">✓</span> Primera llamada de diagnóstico gratis</div>
+            </div>
+        </div>
+
+        <div class="form-card reveal">
+            <form id="contactForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nombre">Nombre completo *</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Juan Pérez" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <input type="tel" id="telefono" name="telefono" placeholder="+54 9 11 2345 6789">
+                    </div>
+                    <div class="form-group">
+                        <label for="empresa">Empresa / Marca *</label>
+                        <input type="text" id="empresa" name="empresa" placeholder="Nombre de tu negocio" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="tipo-proyecto">Tipo de proyecto *</label>
+                        <select id="tipo-proyecto" name="tipo-proyecto" required>
+                            <option value="">Seleccioná una opción</option>
+                            <option value="landing">Landing Page</option>
+                            <option value="ecommerce">E-Commerce</option>
+                            <option value="webapp">Aplicación Web</option>
+                            <option value="dashboard">Dashboard / Panel</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="presupuesto">Presupuesto estimado *</label>
+                        <select id="presupuesto" name="presupuesto" required>
+                            <option value="">Seleccioná una opción</option>
+                            <option value="2000-5000">$2,000 - $5,000</option>
+                            <option value="5000-10000">$5,000 - $10,000</option>
+                            <option value="10000-20000">$10,000 - $20,000</option>
+                            <option value="20000+">$20,000+</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="descripcion">Contame sobre tu proyecto *</label>
+                    <textarea id="descripcion" name="descripcion" placeholder="Objetivos, funcionalidades necesarias, timeline..." required></textarea>
+                </div>
+                <button type="submit" class="form-submit">Enviar solicitud de presupuesto</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================================
+     FOOTER
+     ===================================================================== -->
+<footer>
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="#inicio" class="logo"><span class="logo-badge">A</span>axel<span class="text-accent">.</span>dev</a>
+                <p>Desarrollo web freelance enfocado en resultados. Diseño, código y estrategia en un solo lugar.</p>
+                <div class="footer-social">
+                    <a href="https://www.linkedin.com/in/axeljsalomon/" target="_blank" rel="noopener noreferrer" class="social-icon">in</a>
+                    <a href="https://github.com/axeljaviersalomon" target="_blank" rel="noopener noreferrer" class="social-icon">gh</a>
+                    <a href="https://wa.me/5491161970675" target="_blank" rel="noopener noreferrer" class="social-icon">wa</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Servicios</h4>
+                <a href="#servicios">Diseño Web</a>
+                <a href="#servicios">E-Commerce</a>
+                <a href="#servicios">SEO</a>
+                <a href="#servicios">Mantenimiento</a>
+            </div>
+            <div class="footer-col">
+                <h4>Navegación</h4>
+                <a href="#inicio">Inicio</a>
+                <a href="#portfolio">Portfolio</a>
+                <a href="#porque">Ventajas</a>
+                <a href="#contacto">Contacto</a>
+            </div>
+            <div class="footer-col">
+                <h4>Contacto</h4>
+                <a href="mailto:Axeljaviersalomon@gmail.com">Axeljaviersalomon@gmail.com</a>
+                <a href="tel:+5491161970675">+54 9 11 6197-0675</a>
+                <a href="#">Buenos Aires, AR</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Axel Javier Salomon. Todos los derechos reservados.</span>
+            <span>Diseñado y desarrollado con cuidado.</span>
+        </div>
+    </div>
+</footer>
+
+<!-- =====================================================================
+     BOTÓN FLOTANTE DE WHATSAPP
+     ===================================================================== -->
+<div class="whatsapp-float">
+    <div class="whatsapp-bubble" id="waBubble">
+        <button id="waBubbleClose" aria-label="Cerrar">✕</button>
+        ¡Hola! 👋 ¿Tenés un proyecto en mente? Escribime y lo charlamos.
+    </div>
+    <a
+        href="https://wa.me/5491161970675?text=Hola%20Axel!%20Un%20gusto%2C%20vengo%20desde%20la%20web%20y%20me%20interesa%20..."
+        class="whatsapp-btn"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chatear por WhatsApp"
+        id="waButton"
+    >
+        <svg viewBox="0 0 32 32" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16.004 3C9.377 3 4 8.373 4 15c0 2.34.663 4.523 1.813 6.383L4 29l7.805-1.775A11.93 11.93 0 0 0 16.004 27C22.63 27 28 21.627 28 15S22.63 3 16.004 3Zm0 21.75c-1.98 0-3.83-.55-5.41-1.5l-.388-.23-4.633 1.053 1.08-4.51-.253-.4A9.71 9.71 0 0 1 5.75 15c0-5.66 4.6-10.25 10.254-10.25S26.25 9.34 26.25 15 21.66 24.75 16.004 24.75Zm5.63-7.66c-.31-.156-1.83-.9-2.113-1.003-.283-.104-.49-.156-.696.156-.207.31-.802 1.003-.984 1.21-.182.207-.363.233-.673.078-.31-.156-1.31-.482-2.494-1.535-.922-.822-1.545-1.838-1.727-2.148-.182-.31-.02-.478.137-.633.14-.14.31-.363.465-.545.156-.182.207-.31.31-.518.104-.207.052-.39-.026-.545-.078-.156-.696-1.68-.955-2.302-.252-.605-.508-.523-.696-.533l-.593-.01c-.207 0-.545.078-.83.39-.284.31-1.084 1.06-1.084 2.583 0 1.523 1.11 2.995 1.265 3.202.156.207 2.185 3.335 5.293 4.677.74.32 1.317.512 1.766.655.742.236 1.418.203 1.953.123.596-.089 1.83-.748 2.088-1.47.258-.72.258-1.34.181-1.47-.078-.13-.284-.207-.593-.363Z"/>
+        </svg>
+    </a>
+</div>
+
+<!-- =====================================================================
+     JAVASCRIPT
+     ===================================================================== -->
+<script src="assets/js/script.js" defer></script>
+
+</body>
+</html>
