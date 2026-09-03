@@ -25,10 +25,11 @@ const ALLOWED_ORIGINS = [
     'https://axeljaviersalomon.github.io',
 ];
 
-// Modelo de Gemini a usar. gemini-2.0-flash-lite es el más generoso en
-// cuota gratuita (miles de solicitudes/día). Podés cambiarlo si querés
-// más calidad de respuesta a cambio de menos cuota diaria.
-const GEMINI_MODEL = 'gemini-2.0-flash-lite';
+// Modelo de Gemini a usar. 'gemini-flash-lite-latest' es un alias que
+// Google mantiene apuntando siempre a la versión estable más reciente de
+// Flash-Lite (la más generosa en cuota gratuita), así que no hace falta
+// actualizar este nombre a mano cada vez que sale un modelo nuevo.
+const GEMINI_MODEL = 'gemini-3.5-flash-lite';
 
 // Tope de tokens de salida por respuesta: mantiene las respuestas breves
 // (más rápidas, más baratas en cuota, y más aptas para un chat flotante).

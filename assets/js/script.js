@@ -217,8 +217,8 @@ document.getElementById('contactForm').addEventListener('submit', function(e){
    ===================================================================== */
 (function(){
     // ---- CONFIGURACIÓN: reemplazar por tu URL real del Worker ----
-    const PROXY_URL = 'https://axel-portfolio-ai.javi23dsc.workers.dev';
-    
+    const PROXY_URL = 'https://TU-WORKER.workers.dev'; // <-- cambiar esto
+
     const assistant = document.getElementById('aiAssistant');
     const toggleBtn = document.getElementById('aiToggleBtn');
     const chatPanel = document.getElementById('aiChatPanel');
@@ -227,10 +227,10 @@ document.getElementById('contactForm').addEventListener('submit', function(e){
     const input = document.getElementById('aiChatInput');
     const sendBtn = document.getElementById('aiChatSend');
 
-    // Entrada animada a los 5 segundos, como pidió el usuario
+    // Entrada animada a los 9 segundos
     setTimeout(() => {
         assistant.classList.add('ai-visible');
-    }, 5000);
+    }, 9000);
 
     // Abrir / cerrar el panel de chat
     function toggleChat(){

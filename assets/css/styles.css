@@ -978,6 +978,42 @@ footer{
 .ai-assistant.ai-open .ai-icon-chat{opacity:0;transform:rotate(45deg) scale(.5);}
 .ai-assistant.ai-open .ai-icon-close{opacity:1;transform:rotate(0) scale(1);}
 
+/* Contenedor del botón + etiqueta, en fila (el botón queda a la izquierda,
+   la etiqueta se extiende hacia la derecha, lejos del borde de pantalla) */
+.ai-toggle-wrap{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+/* Etiqueta "Asistente IA": diferencia este botón del de WhatsApp de un
+   vistazo, sin necesidad de abrir el chat para saber qué es */
+.ai-label-bubble{
+    background:var(--bg-card);
+    border:1px solid var(--border-soft);
+    padding:8px 16px;
+    border-radius:50px;
+    font-size:.8rem;
+    font-weight:600;
+    color:var(--white);
+    white-space:nowrap;
+    box-shadow:0 8px 20px rgba(0,0,0,.35);
+    animation:aiLabelFloat 3s ease-in-out infinite;
+}
+/* Ocultar la etiqueta mientras el chat está abierto, para no amontonar */
+.ai-assistant.ai-open .ai-label-bubble{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+}
+@keyframes aiLabelFloat{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-3px);}
+}
+@media (prefers-reduced-motion: reduce){
+    .ai-label-bubble{animation:none;}
+}
+
 /* Panel de chat */
 .ai-chat-panel{
     width:min(340px, calc(100vw - 36px));

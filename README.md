@@ -161,8 +161,9 @@ conectado, va a responder usando la información real de tu portfolio.
 ### Sobre los límites del plan gratuito
 
 Gemini ofrece (a la fecha) alrededor de 1.000-1.500 consultas gratis por
-día con el modelo `gemini-2.0-flash-lite` (el que usa este proyecto por
-defecto, el más generoso en cuota). Para un portfolio personal es más que
+día con el modelo `gemini-flash-lite-latest` (el que usa este proyecto por
+defecto, el más generoso en cuota, y que Google mantiene siempre apuntando
+a la versión estable más reciente). Para un portfolio personal es más que
 suficiente. Si algún día lo superás, el asistente le va a avisar amablemente
 al visitante que alcanzó el límite del día, en vez de romperse.
 
