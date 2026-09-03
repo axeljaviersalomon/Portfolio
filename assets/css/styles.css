@@ -47,7 +47,7 @@
     --container: 1180px;
 
     /* Paddings fluidos: chicos en mobile, crecen en desktop */
-    --section-pad: 64px;
+    --section-pad: 78px;
     --container-pad: 20px;
 }
 
@@ -159,7 +159,7 @@ section > .container{position:relative;z-index:2;}
     box-shadow:0 0 0 4px var(--accent-glow);
 }
 
-.section-header{max-width:640px;margin-bottom:40px;}
+.section-header{max-width:640px;margin-bottom:46px;}
 .section-header.center{margin-left:auto;margin-right:auto;text-align:center;}
 .section-header h2{font-size:clamp(1.7rem,6vw,2.85rem);margin-bottom:16px;}
 .section-header p{font-size:1rem;}
@@ -236,15 +236,11 @@ header::before{
     font-weight:700;
     color:var(--white);
 }
-.logo-badge{
-    width:30px;height:30px;
-    border-radius:50%;
-    background:var(--white);
-    color:var(--accent);
-    display:flex;align-items:center;justify-content:center;
-    font-weight:800;
-    font-size:.9rem;
+.logo-icon{
+    height:32px;
+    width:auto;
     flex-shrink:0;
+    display:block;
 }
 
 .hamburger{
@@ -272,14 +268,27 @@ header::before{
     bottom:0;
     background:rgba(8,8,10,0.98);
     backdrop-filter:blur(16px);
+    display:flex;
     flex-direction:column;
     align-items:stretch;
     gap:0;
     padding:12px 20px 32px;
-    display:none;
     overflow-y:auto;
+    /* Estado cerrado: invisible, ligeramente desplazado hacia arriba,
+       y sin interceptar clics (pointer-events:none) */
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(-14px);
+    pointer-events:none;
+    transition:opacity .32s ease, transform .32s cubic-bezier(.4,0,.2,1), visibility 0s linear .32s;
 }
-.nav-links.active{display:flex;}
+.nav-links.active{
+    opacity:1;
+    visibility:visible;
+    transform:translateY(0);
+    pointer-events:auto;
+    transition:opacity .32s ease, transform .32s cubic-bezier(.4,0,.2,1), visibility 0s linear 0s;
+}
 .nav-links a:not(.btn){
     font-weight:600;
     font-size:1.05rem;
@@ -296,12 +305,12 @@ header::before{
    6. HERO
    ===================================================================== */
 .hero{
-    min-height:100svh;
+    min-height:118svh;
     display:flex;
     flex-direction:column;
     justify-content:center;
     text-align:center;
-    padding:110px 0 40px;
+    padding:110px 0 60px;
     overflow:hidden;
 }
 .hero-content{position:relative;z-index:5;max-width:820px;margin:0 auto;padding:0 var(--container-pad);}
@@ -370,7 +379,7 @@ header::before{
     position:absolute;
     left:0;right:0;bottom:0;
     width:100%;
-    height:220px;
+    height:280px;
     pointer-events:none;
     z-index:0;
     /* Desvanece el patrón de puntos hacia los bordes (abajo y costados) para
@@ -393,7 +402,7 @@ header::before{
 .servicios-grid{
     display:grid;
     grid-template-columns:1fr;
-    gap:18px;
+    gap:22px;
 }
 .service-card{
     background:var(--bg-card);
@@ -496,7 +505,7 @@ header::before{
 .portfolio-grid{
     display:grid;
     grid-template-columns:1fr;
-    gap:20px;
+    gap:24px;
 }
 .portfolio-card{
     position:relative;
@@ -651,7 +660,7 @@ header::before{
 .porque-item{
     display:flex;
     gap:16px;
-    padding:22px 0;
+    padding:26px 0;
     border-bottom:1px solid var(--border-soft);
 }
 .porque-item:last-child{border-bottom:none;}
@@ -677,7 +686,7 @@ header::before{
 }
 .cta-left h2{font-size:clamp(1.7rem,6vw,2.8rem);margin-bottom:18px;}
 .cta-left p{font-size:1rem;margin-bottom:28px;}
-.cta-points{display:flex;flex-direction:column;gap:14px;}
+.cta-points{display:flex;flex-direction:column;gap:18px;}
 .cta-point{display:flex;align-items:center;gap:12px;font-size:.9rem;color:var(--white);}
 .cta-point .check{
     width:24px;height:24px;
@@ -822,6 +831,7 @@ footer{
     .global-bg, .blob, .hero-tag .dot{animation:none !important;}
     .reveal{transition:none;opacity:1;transform:none;}
     .cursor-glow{display:none;}
+    .nav-links{transition:opacity .15s ease, visibility 0s linear;transform:none;}
 }
 
 /* =====================================================================
@@ -933,6 +943,13 @@ footer{
         padding:0;
         width:auto;
         overflow:visible;
+        /* En desktop el menú es inline y siempre visible: anulamos los
+           estados de animación de apertura/cierre usados en mobile */
+        opacity:1;
+        visibility:visible;
+        transform:none;
+        pointer-events:auto;
+        transition:none;
     }
     .nav-links a:not(.btn){
         padding:0;
