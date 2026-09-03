@@ -538,16 +538,11 @@ header::before{
 .pf-logo-white{
     filter:invert(1) brightness(1.4) drop-shadow(0 8px 20px rgba(0,0,0,.4));
 }
-/* Card del propio portfolio: no tiene un logo externo, usamos un ícono
-   propio (símbolo de código) con el color de acento del sitio */
-.pf-image-code{
-    color:var(--accent-hot);
-    padding-bottom:38%;
-}
-.pf-image-code svg{
-    width:34%;
-    height:34%;
-    filter:drop-shadow(0 0 24px rgba(47,111,237,.5));
+/* Logo propio del sitio en la card "Este portfolio": es una marca angosta
+   y vertical, necesita menos aire lateral que los logos externos */
+.pf-logo-own{
+    padding:6% 26% 40%;
+    filter:drop-shadow(0 0 20px rgba(47,111,237,.45));
 }
 .portfolio-card:hover .pf-image,
 .portfolio-card:active .pf-image{transform:scale(1.04);}
