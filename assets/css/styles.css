@@ -988,7 +988,7 @@ footer{
     :root{--section-pad:130px;}
 
     .logo{margin-left:16px;}
-    .logo-icon{height:50px;}
+    .logo-icon{height:55px;}
 
     .hero-cta{margin-bottom:90px;}
     .servicios-grid{grid-template-columns:repeat(3,1fr);}
