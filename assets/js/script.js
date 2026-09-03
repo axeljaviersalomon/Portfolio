@@ -1,3 +1,32 @@
+/* =====================================================================
+   PRELOADER — se oculta apenas termina de cargar la página real,
+   con un tope máximo de 800ms por si algo tarda de más. No fuerza
+   ninguna espera artificial: en un sitio liviano como este, en la
+   práctica va a durar apenas una fracción de segundo o directamente
+   no notarse. Solo se muestra una vez por sesión de navegación.
+   ===================================================================== */
+(function(){
+    const preloader = document.getElementById('preloader');
+    const SESSION_KEY = 'preloaderShown';
+    const MAX_DURATION = 800; // tope duro en milisegundos
+
+    if(sessionStorage.getItem(SESSION_KEY) === '1'){
+        preloader.style.display = 'none';
+        return;
+    }
+
+    let hidden = false;
+    function hidePreloader(){
+        if(hidden) return;
+        hidden = true;
+        preloader.classList.add('hide');
+        sessionStorage.setItem(SESSION_KEY, '1');
+    }
+
+    window.addEventListener('load', hidePreloader);
+    setTimeout(hidePreloader, MAX_DURATION);
+})();
+
 /* ---------- Menú móvil ---------- */
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
