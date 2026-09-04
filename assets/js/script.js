@@ -465,9 +465,11 @@ document.getElementById('contactForm').addEventListener('submit', function(e){
 
 /* =====================================================================
    TARJETA 3D LUMINISCENTE — cuadro del ícono de React en "Por qué elegirme"
-   Mismo recurso que las tarjetas de portfolio-animado.js (tilt + brillo
-   especular que sigue al mouse), pero sobre hover en vez de pantalla
-   completa, igual que el tilt de las cards de portfolio de arriba.
+   Mismo recurso que las tarjetas de portfolio-animado.js: la tarjeta
+   "mira" hacia el mouse en TODA la pantalla (no solo al pasar por
+   encima), lo que le da ese movimiento constante y sutil. Un
+   IntersectionObserver frena el loop de rAF mientras la sección está
+   fuera de vista, así no queda calculando de fondo sin necesidad.
    ===================================================================== */
 (function(){
     const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -477,76 +479,49 @@ document.getElementById('contactForm').addEventListener('submit', function(e){
     const visual = document.querySelector('.porque-visual');
     if(!visual) return;
 
-    const MAX_TILT = 10;
-    let tx = 0, ty = 0, gx = 50, gy = 50, cx = 0, cy = 0, cgx = 50, cgy = 50, raf = null;
+    const MAX_TILT = 14;
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let isVisible = false;
+    let raf = null;
+    let rx = 0, ry = 0, gx = 50, gy = 50;
 
-    visual.addEventListener('mousemove', (e) => {
-        const r = visual.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width - 0.5;
-        const py = (e.clientY - r.top) / r.height - 0.5;
-        tx = -py * MAX_TILT;
-        ty = px * MAX_TILT;
-        gx = 50 + px * 80;
-        gy = 50 + py * 80;
-        if(!raf) raf = requestAnimationFrame(loop);
+    document.addEventListener('mousemove', (e) => {
+        targetX = e.clientX;
+        targetY = e.clientY;
     });
-    visual.addEventListener('mouseleave', () => {
-        tx = 0; ty = 0; gx = 50; gy = 50;
-        if(!raf) raf = requestAnimationFrame(loop);
+
+    const observer = new IntersectionObserver((entries) => {
+        isVisible = entries[0].isIntersecting;
+        if(isVisible && !raf) raf = requestAnimationFrame(loop);
     });
+    observer.observe(visual);
+
+    function clamp(value, min, max){
+        return Math.max(min, Math.min(max, value));
+    }
 
     function loop(){
-        cx += (tx - cx) * 0.15;
-        cy += (ty - cy) * 0.15;
-        cgx += (gx - cgx) * 0.15;
-        cgy += (gy - cgy) * 0.15;
-        visual.style.setProperty('--rx', cx.toFixed(2) + 'deg');
-        visual.style.setProperty('--ry', cy.toFixed(2) + 'deg');
-        visual.style.setProperty('--glow-x', cgx.toFixed(1) + '%');
-        visual.style.setProperty('--glow-y', cgy.toFixed(1) + '%');
-        const settled = Math.abs(tx - cx) < 0.05 && Math.abs(ty - cy) < 0.05 &&
-            Math.abs(gx - cgx) < 0.1 && Math.abs(gy - cgy) < 0.1;
-        raf = settled ? null : requestAnimationFrame(loop);
-    }
-})();
-
-/* =====================================================================
-   BOTONES MAGNÉTICOS DEL HERO — solo mouse fino, respeta reduced-motion
-   Los botones principales del hero "siguen" levemente al cursor al pasar
-   por encima. Nunca se aplica al botón de envío del formulario (mala UX).
-   ===================================================================== */
-(function(){
-    const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if(!hasFinePointer || prefersReducedMotion) return;
-
-    const STRENGTH = 0.3;
-    document.querySelectorAll('.hero-cta .btn').forEach(btn => {
-        const inner = document.createElement('span');
-        inner.className = 'magnetic-inner';
-        while(btn.firstChild) inner.appendChild(btn.firstChild);
-        btn.appendChild(inner);
-        btn.classList.add('has-magnetic');
-
-        let tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
-        btn.addEventListener('mousemove', (e) => {
-            const r = btn.getBoundingClientRect();
-            tx = ((e.clientX - r.left) - r.width / 2) * STRENGTH;
-            ty = ((e.clientY - r.top) - r.height / 2) * STRENGTH;
-            if(!raf) raf = requestAnimationFrame(loop);
-        });
-        btn.addEventListener('mouseleave', () => {
-            tx = 0; ty = 0;
-            if(!raf) raf = requestAnimationFrame(loop);
-        });
-
-        function loop(){
-            cx += (tx - cx) * 0.2;
-            cy += (ty - cy) * 0.2;
-            inner.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
-            raf = (Math.abs(tx - cx) > 0.1 || Math.abs(ty - cy) > 0.1) ? requestAnimationFrame(loop) : null;
+        if(!isVisible){
+            rx += (0 - rx) * 0.12;
+            ry += (0 - ry) * 0.12;
+        } else {
+            const r = visual.getBoundingClientRect();
+            const cx = r.left + r.width / 2;
+            const cy = r.top + r.height / 2;
+            const px = clamp((targetX - cx) / (r.width * 1.4), -1, 1);
+            const py = clamp((targetY - cy) / (r.height * 1.4), -1, 1);
+            rx += (-py * MAX_TILT - rx) * 0.1;
+            ry += (px * MAX_TILT - ry) * 0.1;
+            gx += (50 + px * 40 - gx) * 0.1;
+            gy += (50 + py * 40 - gy) * 0.1;
         }
-    });
+        visual.style.setProperty('--rx', rx.toFixed(2) + 'deg');
+        visual.style.setProperty('--ry', ry.toFixed(2) + 'deg');
+        visual.style.setProperty('--glow-x', gx.toFixed(1) + '%');
+        visual.style.setProperty('--glow-y', gy.toFixed(1) + '%');
+        raf = isVisible ? requestAnimationFrame(loop) : null;
+    }
 })();
 
 /* =====================================================================
