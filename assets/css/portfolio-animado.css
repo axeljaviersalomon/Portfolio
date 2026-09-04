@@ -19,12 +19,24 @@
    1. TRACK Y PANELES BASE
    ===================================================================== */
 /* El snap "de verdad" (avanzar de a un proyecto completo) lo maneja
-   portfolio-animado.js con su propio scroll animado y corto — más
-   confiable entre navegadores que depender solo del snap nativo con
-   mouse wheel. Esta regla queda como apoyo para touch (donde no se
-   intercepta el gesto) y como fallback si JS no llega a cargar. */
+   portfolio-animado.js: en desktop con su propio scroll animado y corto
+   sobre el wheel, en touch corrigiendo a mano al panel más cercano
+   cuando el scroll se detiene (ver "settleToNearestPanel" en el JS).
+   El snap nativo por CSS se probó ("mandatory" y también "proximity")
+   y en la práctica BLOQUEA o revierte cualquier scroll que no llegue a
+   completar un panel entero, incluso con scrollTo smooth — eso es lo
+   que hacía sentir el scroll "trabado" en mobile. Se deja "none" ahí y
+   se lo delega 100% al JS; en desktop queda como fallback inerte para
+   cuando JS no llega a cargar (el wheel-jack intercepta el gesto real
+   antes de que el navegador procese el scroll nativo, así que ahí
+   "mandatory" nunca entra en conflicto con nada). */
 html[data-pa-scroll]{
-    scroll-snap-type:y mandatory;
+    scroll-snap-type:none;
+}
+@media (pointer:fine){
+    html[data-pa-scroll]{
+        scroll-snap-type:y mandatory;
+    }
 }
 .pa-track{
     position:relative;
@@ -39,7 +51,6 @@ html[data-pa-scroll]{
     isolation:isolate;
     overflow:hidden;
     scroll-snap-align:start;
-    scroll-snap-stop:always;
 }
 .pa-panel:nth-child(odd){background:var(--bg-black-2);}
 
@@ -121,11 +132,24 @@ html[data-pa-scroll]{
     /* Color de la luminiscencia: cada proyecto lo pisa con un inline
        style (--card-glow) acorde a los colores de SU logo (ver HTML).
        --accent-glow es el fallback si alguna tarjeta se agrega sin
-       definirlo. */
+       definirlo. --card-glow-soft baja la opacidad UNA sola vez acá
+       (color-mix) en vez de tener que definir un rgba() distinto por
+       cada una de las 14 tarjetas: el brillo real en pantalla queda
+       bastante más sutil que el color sólido de --card-glow. */
     --card-glow: var(--accent-glow);
+    --card-glow-soft: color-mix(in srgb, var(--card-glow) 45%, transparent);
+    /* Tamaño del halo en variables (no hardcodeado en el box-shadow): así
+       el breakpoint mobile de más abajo solo pisa estos 4 números en vez
+       de reescribir el box-shadow entero. En mobile la tarjeta queda
+       mucho más cerca del texto de abajo, así que el halo tiene que ser
+       bastante más chico para no "pisarlo". */
+    --glow-blur-a:26px;
+    --glow-spread-a:-14px;
+    --glow-blur-b:60px;
+    --glow-spread-b:-30px;
     position:relative;
     width:100%;
-    max-width:360px;
+    max-width:230px; /* mobile: bastante más chica (ver breakpoints 680px/768px) */
     aspect-ratio:1/1;
     border-radius:var(--radius-lg);
     background:linear-gradient(160deg,#1a1a20 0%,#0c0c0f 100%);
@@ -136,8 +160,8 @@ html[data-pa-scroll]{
     padding:16%;
     box-shadow:
         0 40px 80px -30px rgba(0,0,0,.55),
-        0 0 55px -12px var(--card-glow),
-        0 0 120px -35px var(--card-glow);
+        0 0 var(--glow-blur-a) var(--glow-spread-a) var(--card-glow-soft),
+        0 0 var(--glow-blur-b) var(--glow-spread-b) var(--card-glow-soft);
     transform-style:preserve-3d;
     transform:perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));
     will-change:transform;
@@ -150,14 +174,14 @@ html[data-pa-scroll]{
     0%,100%{
         box-shadow:
             0 40px 80px -30px rgba(0,0,0,.55),
-            0 0 55px -12px var(--card-glow),
-            0 0 120px -35px var(--card-glow);
+            0 0 var(--glow-blur-a) var(--glow-spread-a) var(--card-glow-soft),
+            0 0 var(--glow-blur-b) var(--glow-spread-b) var(--card-glow-soft);
     }
     50%{
         box-shadow:
             0 40px 80px -30px rgba(0,0,0,.55),
-            0 0 70px -8px var(--card-glow),
-            0 0 150px -30px var(--card-glow);
+            0 0 calc(var(--glow-blur-a) + 8px) calc(var(--glow-spread-a) + 3px) var(--card-glow-soft),
+            0 0 calc(var(--glow-blur-b) + 16px) calc(var(--glow-spread-b) + 4px) var(--card-glow-soft);
     }
 }
 /* Capa trasera, desplazada en Z: al rotar la tarjeta asoma por el borde
@@ -445,6 +469,22 @@ html[data-pa-scroll]{
 /* =====================================================================
    8. BREAKPOINTS
    ===================================================================== */
+/* Única excepción al mobile-first del archivo (igual que el
+   @media(pointer:fine) de la sección 1): achica específicamente la
+   franja angosta de teléfono sin tocar el breakpoint de 680px+, que ya
+   está bien. Motivo del ajuste: la tarjeta quedaba grande y muy pegada
+   al texto de abajo, y el halo de luz llegaba a "pisarlo" visualmente. */
+@media (max-width:679px){
+    .pa-panel-inner{gap:52px;}
+    .pa-media-frame{
+        max-width:260px;
+        padding:12%; /* logo más grande dentro de la tarjeta */
+        --glow-blur-a:14px;
+        --glow-spread-a:-9px;
+        --glow-blur-b:30px;
+        --glow-spread-b:-18px;
+    }
+}
 @media (min-width:680px){
     .pa-panel-inner{
         grid-template-columns:1fr 1fr;
@@ -454,6 +494,7 @@ html[data-pa-scroll]{
        para variar el ritmo visual proyecto a proyecto */
     .pa-panel--reverse .pa-media{order:2;}
     .pa-panel--reverse .pa-content{order:1;}
+    .pa-media-frame{max-width:320px;}
 }
 @media (min-width:768px){
     .pa-filters{display:flex;}

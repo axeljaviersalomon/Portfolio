@@ -238,6 +238,7 @@ document.querySelectorAll('.pf-link[data-demo="true"]').forEach(link => {
         history.replaceState(null, '', activePanel.id ? `#${activePanel.id}` : location.pathname);
     }
 
+    let unlockTimer = null;
     function goTo(index, force){
         index = Math.max(0, Math.min(panels.length - 1, index));
         if((index === current && !force) || (locked && !force)) return;
@@ -252,6 +253,14 @@ document.querySelectorAll('.pf-link[data-demo="true"]').forEach(link => {
         locked = true;
         const targetY = panels[index].getBoundingClientRect().top + window.scrollY;
         animateScrollTo(targetY, () => { locked = false; });
+
+        // Red de seguridad: si por lo que sea (pestaña en segundo plano,
+        // el navegador pausando requestAnimationFrame, etc.) la animación
+        // nunca llega a completarse, "locked" no puede quedar trabado en
+        // true para siempre — eso freezaría toda la navegación (wheel,
+        // dots, flechas, touch) hasta refrescar la página.
+        clearTimeout(unlockTimer);
+        unlockTimer = setTimeout(() => { locked = false; }, SCROLL_DURATION + 400);
     }
 
     // En touch (sin scroll-jack) mantenemos los dots/contador sincronizados
@@ -333,6 +342,32 @@ document.querySelectorAll('.pf-link[data-demo="true"]').forEach(link => {
     // Flechitas del contador: misma navegación de a un proyecto por vez
     if(prevBtn) prevBtn.addEventListener('click', () => goTo(current - 1));
     if(nextBtn) nextBtn.addEventListener('click', () => goTo(current + 1));
+
+    // El scroll-snap nativo por CSS (scroll-snap-type, ver
+    // portfolio-animado.css) no es confiable en varios navegadores
+    // mobile — sobre todo iOS Safari, por la barra de direcciones
+    // dinámica cambiando la altura del viewport en pleno scroll. Como
+    // red de contención en touch: cuando el scroll se detiene, se
+    // corrige a mano al panel visible más cercano. Nunca se hace
+    // preventDefault del gesto en sí (eso sí rompería el scroll/taps),
+    // solo se ajusta la posición final una vez que el usuario ya soltó.
+    if(isCoarsePointer){
+        let settleTimer = null;
+        function settleToNearestPanel(){
+            if(locked) return;
+            let closestIdx = current;
+            let closestDist = Infinity;
+            panels.forEach((panel, i) => {
+                const dist = Math.abs(panel.getBoundingClientRect().top);
+                if(dist < closestDist){ closestDist = dist; closestIdx = i; }
+            });
+            if(closestDist > 4) goTo(closestIdx, true);
+        }
+        window.addEventListener('scroll', () => {
+            clearTimeout(settleTimer);
+            settleTimer = setTimeout(settleToNearestPanel, 140);
+        }, {passive:true});
+    }
 
     setupSyncObserver();
 })();
