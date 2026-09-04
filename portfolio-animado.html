@@ -17,7 +17,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="assets/css/styles.css?v=19">
-<link rel="stylesheet" href="assets/css/portfolio-animado.css?v=17">
+<link rel="stylesheet" href="assets/css/portfolio-animado.css?v=20">
 </head>
 <body>
 
@@ -401,10 +401,18 @@
 
 </main>
 
+<!-- Botón redondo de filtros — solo visible en mobile (ver breakpoints en
+     portfolio-animado.css): despliega el MISMO #paFilters de acá abajo
+     como dropdown en vez de la barra fija de desktop, que no entra sin
+     romper la estética prolija del recorrido en una pantalla angosta. -->
+<button class="pa-filter-fab" id="paFilterFab" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="paFilters" aria-label="Filtrar proyectos por categoría">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+</button>
+
 <!-- Filtros por categoría — mismas categorías que #portfolio en index.html.
-     Ocultos en mobile a propósito (ver breakpoints en portfolio-animado.css):
-     con el header fijo + el contador + los dots, sumar otra barra fija en
-     una pantalla angosta rompía la estética prolija del recorrido. -->
+     En desktop es la barra fija de siempre; en mobile es el dropdown que
+     despliega el botón redondo de acá arriba (ver portfolio-animado.css
+     y portfolio-animado.js). -->
 <div class="pa-filters" id="paFilters" role="group" aria-label="Filtrar proyectos por categoría">
     <button class="filter-btn active" type="button" data-filter="all">Todos</button>
     <button class="filter-btn" type="button" data-filter="salud">Salud & Bienestar</button>
@@ -413,6 +421,14 @@
     <button class="filter-btn" type="button" data-filter="negocios">Negocios</button>
     <button class="filter-btn" type="button" data-filter="personal">Proyecto propio</button>
 </div>
+
+<!-- Volver al inicio del recorrido — aparece al dejar el panel intro.
+     En desktop queda justo arriba del paginador (misma esquina); en
+     mobile el paginador está centrado abajo, así que este va a la
+     esquina inferior derecha para no competir con él. -->
+<button class="pa-to-top" id="paToTop" type="button" aria-label="Volver al inicio del recorrido">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
 
 <!-- Navegación lateral (dots) + contador — generados por JS en base a los paneles -->
 <div class="pa-dots" id="paDots" aria-hidden="true"></div>
@@ -430,7 +446,7 @@
     </button>
 </div>
 
-<script src="assets/js/portfolio-animado.js?v=11" defer></script>
+<script src="assets/js/portfolio-animado.js?v=13" defer></script>
 
 </body>
 </html>

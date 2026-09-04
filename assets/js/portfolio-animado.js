@@ -232,6 +232,7 @@ document.querySelectorAll('.pa-media-frame').forEach(frame => {
     const counterTotal = document.getElementById('paCounterTotal');
     const prevBtn = document.getElementById('paPrevBtn');
     const nextBtn = document.getElementById('paNextBtn');
+    const toTopBtn = document.getElementById('paToTop');
     const filterBar = document.getElementById('paFilters');
     const filterBtns = filterBar ? Array.from(filterBar.querySelectorAll('.filter-btn')) : [];
 
@@ -317,6 +318,10 @@ document.querySelectorAll('.pa-media-frame').forEach(frame => {
         }
         if(prevBtn) prevBtn.disabled = index === 0;
         if(nextBtn) nextBtn.disabled = index === panels.length - 1;
+        // El intro siempre es panels[0] (el filtro de categorías nunca lo
+        // oculta, ver applyFilter), así que "index === 0" identifica el
+        // intro sin importar qué filtro esté activo.
+        if(toTopBtn) toTopBtn.classList.toggle('show', index > 0);
 
         history.replaceState(null, '', activePanel.id ? `#${activePanel.id}` : location.pathname);
     }
@@ -388,11 +393,48 @@ document.querySelectorAll('.pa-media-frame').forEach(frame => {
         goTo(nextIndex, true);
 
         filterBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.filter === category));
+        closeFilterDropdown();
     }
 
     if(filterBtns.length){
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => applyFilter(btn.dataset.filter));
+        });
+    }
+
+    /* ---------- Botón redondo de filtros (mobile) ---------- */
+    // En mobile no hay lugar para la barra de filtros de desktop, así que
+    // un botón redondo la despliega como dropdown. Reutiliza el MISMO
+    // #paFilters/#filterBtns de arriba (nada de markup ni lógica de
+    // filtrado duplicada) — solo le suma abrir/cerrar la presentación de
+    // dropdown que define portfolio-animado.css. En desktop este botón
+    // ni siquiera se muestra (ver CSS), así que estos listeners quedan
+    // inertes ahí sin costo.
+    const filterFab = document.getElementById('paFilterFab');
+    function closeFilterDropdown(){
+        if(!filterBar) return;
+        filterBar.classList.remove('pa-filters-open');
+        if(filterFab){
+            filterFab.classList.remove('is-open');
+            filterFab.setAttribute('aria-expanded', 'false');
+        }
+    }
+    if(filterFab && filterBar){
+        filterFab.addEventListener('click', () => {
+            const willOpen = !filterBar.classList.contains('pa-filters-open');
+            filterBar.classList.toggle('pa-filters-open', willOpen);
+            filterFab.classList.toggle('is-open', willOpen);
+            filterFab.setAttribute('aria-expanded', String(willOpen));
+        });
+        // Tocar afuera del dropdown (o de su propio botón) lo cierra —
+        // mismo patrón esperable de cualquier menú desplegable.
+        document.addEventListener('click', (e) => {
+            if(!filterBar.classList.contains('pa-filters-open')) return;
+            if(filterBar.contains(e.target) || filterFab.contains(e.target)) return;
+            closeFilterDropdown();
+        });
+        window.addEventListener('keydown', (e) => {
+            if(e.key === 'Escape') closeFilterDropdown();
         });
     }
 
@@ -425,6 +467,11 @@ document.querySelectorAll('.pa-media-frame').forEach(frame => {
     // Flechitas del contador: misma navegación de a un proyecto por vez
     if(prevBtn) prevBtn.addEventListener('click', () => goTo(current - 1));
     if(nextBtn) nextBtn.addEventListener('click', () => goTo(current + 1));
+    // Mismo goTo()/animateScrollTo que el resto de la navegación (nunca
+    // window.scrollTo directo): así el salto al inicio tiene la misma
+    // animación corta y prolija que pasar de un proyecto a otro, en vez
+    // de un scroll nativo que además pelearía con scroll-behavior:smooth.
+    if(toTopBtn) toTopBtn.addEventListener('click', () => goTo(0));
 
     // En touch usábamos el scroll nativo libre + una corrección "a mano"
     // al soltar (settleToNearestPanel). En la práctica eso competía con

@@ -370,13 +370,14 @@ html[data-pa-scroll]{
    5. FILTROS POR CATEGORÍA
    Mismas categorías y misma clase ".filter-btn" que #portfolio en
    index.html (ver styles.css): look consistente, sin inventar un
-   componente nuevo. Esta capa solo agrega el contenedor flotante.
-   Oculto en mobile (ver breakpoints): con el header fijo + el contador +
-   los dots ya ocupando pantalla, otra barra fija angosta rompía la
-   estética prolija del recorrido — se prioriza mantenerla top de gama.
+   componente nuevo. En desktop es una barra fija centrada arriba; en
+   mobile (ver breakpoint más abajo) el mismo elemento se convierte en un
+   dropdown que despliega ".pa-filter-fab" — con el header fijo + el
+   contador + los dots ya ocupando pantalla, otra barra fija angosta ahí
+   rompía la estética prolija del recorrido.
    ===================================================================== */
 .pa-filters{
-    display:none;
+    display:flex;
     position:fixed;
     top:94px;
     left:50%;
@@ -398,6 +399,43 @@ html[data-pa-scroll]{
     backdrop-filter:blur(12px);
     -webkit-backdrop-filter:blur(12px);
 }
+/* Botón redondo que despliega el dropdown de filtros — mismo lenguaje
+   visual que las flechitas del contador (".pa-counter-arrow": círculo,
+   fondo oscuro con blur, borde sutil, se pinta de acento al interactuar)
+   para que se sienta parte de la misma familia de controles flotantes. */
+.pa-filter-fab{
+    display:none; /* aparece solo en mobile, ver breakpoint */
+    position:fixed;
+    /* Debajo del header (68px de alto), no encima ni pisándolo: el header
+       manda arriba de todo y este botón vive en el espacio que queda
+       debajo, pegado a la esquina superior derecha de ese resto de
+       pantalla — por eso alcanza con el z-index normal de los controles
+       flotantes (1150), sin necesidad de superar al header (1300). */
+    top:82px;
+    right:16px;
+    z-index:1150;
+    width:40px;height:40px;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:rgba(10,10,12,0.6);
+    border:1px solid var(--border-soft);
+    color:var(--gray-soft);
+    cursor:pointer;
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    transition:background .25s ease, border-color .25s ease, color .25s ease, transform .25s ease;
+}
+.pa-filter-fab svg{width:16px;height:16px;}
+.pa-filter-fab:hover,
+.pa-filter-fab.is-open{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+}
+/* Un leve "tick" de escala al abrir/cerrar: mismo tipo de feedback táctil
+   que ya usan los botones del sitio, no una animación nueva inventada. */
+.pa-filter-fab:active{transform:scale(.92);}
 
 /* =====================================================================
    6. NAVEGACIÓN LATERAL (dots) + CONTADOR
@@ -472,6 +510,58 @@ html[data-pa-scroll]{
 .pa-counter-arrow:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
 .pa-counter-arrow:disabled{opacity:.3;cursor:default;background:transparent;border-color:var(--border-soft);color:var(--gray-soft);}
 
+/* Volver al inicio del recorrido — mismo lenguaje visual que el
+   contador/paginador de acá arriba (círculo, fondo oscuro con blur,
+   borde sutil). Se muestra/oculta por JS (clase ".show") según el panel
+   activo, no por scroll-position: con la navegación por paneles el
+   scrollY salta de a un tramo entero, así que "current === 0" (el
+   intro) es la señal exacta, no un umbral de píxeles aproximado. */
+.pa-to-top{
+    position:fixed;
+    left:auto;
+    right:16px;
+    bottom:18px;
+    z-index:1150;
+    width:42px;height:42px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(10,10,12,0.6);
+    border:1px solid var(--border-soft);
+    color:var(--gray-soft);
+    cursor:pointer;
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transform:translateY(10px);
+    transition:opacity .3s ease, transform .3s ease, visibility .3s,
+                background .25s ease, border-color .25s ease, color .25s ease;
+}
+.pa-to-top svg{width:17px;height:17px;}
+.pa-to-top.show{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transform:none;
+}
+.pa-to-top:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
+@media (prefers-reduced-motion: reduce){
+    .pa-to-top{transition:opacity .2s ease, visibility .2s;}
+    .pa-to-top.show{transform:none;}
+}
+/* Desktop (mismo punto donde el contador vuelve a su esquina, ver
+   breakpoint 768px más abajo): queda pegado a la izquierda, justo
+   arriba del paginador (left:28px;bottom:28px + su alto ~42px + aire) —
+   "por encima del paginador" tal cual se pidió, no flotando suelto. En
+   mobile el paginador está centrado abajo (ver .pa-counter), así que acá
+   se deja en la esquina inferior derecha para no competir con él. */
+@media (min-width:768px){
+    .pa-to-top{left:28px;right:auto;bottom:84px;}
+}
+
 /* =====================================================================
    7. INDICADOR DE SCROLL (panel intro)
    ===================================================================== */
@@ -509,6 +599,7 @@ html[data-pa-scroll]{
     }
     .pa-scroll-cue svg{animation:none;}
     .pa-intro .eyebrow::before{animation:none;}
+    .pa-filters{transition:opacity .15s ease;}
 }
 
 /* =====================================================================
@@ -543,6 +634,37 @@ html[data-pa-scroll]{
     .pa-panel--reverse .pa-media{order:2;}
     .pa-panel--reverse .pa-content{order:1;}
     .pa-media-frame{max-width:320px;}
+}
+/* Mismo límite que el breakpoint de abajo (min-width:768px) donde la
+   barra de filtros de desktop aparece: por debajo de eso, el botón
+   redondo la reemplaza por un dropdown. Nada de "display:none" acá — el
+   dropdown necesita animar entrada/salida, así que se oculta con
+   opacity+visibility (si no, no habría nada que transicionar). */
+@media (max-width:767px){
+    .pa-filter-fab{display:flex;}
+    .pa-filters{
+        top:130px; /* justo debajo del botón redondo (top:82px + 40px + aire) */
+        left:auto;
+        right:16px;
+        transform-origin:top right;
+        flex-direction:column;
+        align-items:stretch;
+        flex-wrap:nowrap;
+        width:198px;
+        padding:8px;
+        opacity:0;
+        visibility:hidden;
+        transform:scale(.92) translateY(-8px);
+        transition:opacity .22s cubic-bezier(.16,1,.3,1),
+                    transform .22s cubic-bezier(.16,1,.3,1),
+                    visibility .22s;
+    }
+    .pa-filters.pa-filters-open{
+        opacity:1;
+        visibility:visible;
+        transform:none;
+    }
+    .pa-filters .filter-btn{width:100%;text-align:left;}
 }
 @media (min-width:768px){
     .pa-filters{display:flex;}
