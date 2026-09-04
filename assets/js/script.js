@@ -520,3 +520,177 @@ document.getElementById('contactForm').addEventListener('submit', function(e){
     }
     followCursor();
 })();
+
+/* =====================================================================
+   GRID TRIANGULAR CON MÁSCARA DE LUZ — fondo de "Por qué elegirme"
+   Malla geométrica casi invisible que se revela con un brillo alrededor
+   del cursor (mismos colores del canvas del hero: teal + azul de acento).
+   Solo es interactiva con mouse fino; en touch/reduced-motion se deja la
+   malla estática, sin animación (mismo criterio que la luz del cursor).
+   ===================================================================== */
+(function(){
+    const canvas = document.getElementById('porqueGridCanvas');
+    if(!canvas) return;
+    const section = canvas.closest('.porque');
+    const ctx = canvas.getContext('2d');
+    const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Resolución 1:1 (sin escalar por devicePixelRatio): en pantallas retina
+    // escalar el canvas duplica/cuadruplica los píxeles a redibujar en cada
+    // frame y era la causa real del "delay" seguiste al cursor — se sacrifica
+    // nitidez a cambio de que la animación se mantenga a 60fps siempre.
+    const staticCanvas = document.createElement('canvas');
+    const staticCtx = staticCanvas.getContext('2d');
+
+    let width, height;
+
+    function getCellSize(){
+        // Celdas más grandes (menos triángulos) en pantallas chicas: mejor performance mobile-first
+        if(window.innerWidth < 480) return 46;
+        if(window.innerWidth < 768) return 54;
+        return 68;
+    }
+    let cell = getCellSize();
+
+    function strokeTriangle(g, p1, p2, p3){
+        g.beginPath();
+        g.moveTo(p1.x, p1.y);
+        g.lineTo(p2.x, p2.y);
+        g.lineTo(p3.x, p3.y);
+        g.closePath();
+    }
+
+    // La malla base (sin brillo) es siempre la misma hasta el próximo resize,
+    // así que se dibuja UNA sola vez en un canvas offscreen y cada frame solo
+    // se copia (drawImage) en vez de volver a trazar cientos de triángulos.
+    function buildStaticGrid(){
+        staticCanvas.width = width;
+        staticCanvas.height = height;
+        staticCtx.clearRect(0, 0, width, height);
+        staticCtx.strokeStyle = 'rgba(255,255,255,0.035)';
+        staticCtx.lineWidth = 1;
+        const cols = Math.ceil(width / cell) + 1;
+        const rows = Math.ceil(height / cell) + 1;
+        for(let y = 0; y < rows; y++){
+            for(let x = 0; x < cols; x++){
+                const x0 = x * cell, y0 = y * cell, x1 = x0 + cell, y1 = y0 + cell;
+                const tl = {x:x0, y:y0}, tr = {x:x1, y:y0}, bl = {x:x0, y:y1}, br = {x:x1, y:y1};
+                strokeTriangle(staticCtx, tl, tr, bl); staticCtx.stroke();
+                strokeTriangle(staticCtx, tr, br, bl); staticCtx.stroke();
+            }
+        }
+    }
+
+    function resize(){
+        width = section.offsetWidth;
+        height = section.offsetHeight;
+        canvas.width = width;
+        canvas.height = height;
+        cell = getCellSize();
+        buildStaticGrid();
+    }
+
+    function drawStatic(){
+        ctx.clearRect(0, 0, width, height);
+        ctx.drawImage(staticCanvas, 0, 0);
+    }
+
+    if(!hasFinePointer || prefersReducedMotion){
+        resize();
+        drawStatic();
+        window.addEventListener('resize', () => { resize(); drawStatic(); });
+        return;
+    }
+
+    function colorFor(hue, alpha){
+        return hue < 0.5
+            ? `rgba(31, 201, 195, ${alpha})`   /* teal */
+            : `rgba(47, 111, 237, ${alpha})`;  /* azul acento */
+    }
+
+    const RADIUS = 240;
+    const cellRadius = Math.ceil(RADIUS / cell) + 1;
+    let mouseX = -9999, mouseY = -9999;
+    let targetX = mouseX, targetY = mouseY;
+    let rafId = null;
+    let idleFrames = 0;
+
+    function drawGlowTriangle(p1, p2, p3, mx, my){
+        const cx = (p1.x + p2.x + p3.x) / 3;
+        const cy = (p1.y + p2.y + p3.y) / 3;
+        const dist = Math.hypot(cx - mx, cy - my);
+        const glowT = Math.max(0, 1 - dist / RADIUS);
+        if(glowT <= 0.02) return;
+
+        const hue = cx / width;
+        strokeTriangle(ctx, p1, p2, p3);
+        ctx.fillStyle = colorFor(hue, glowT * 0.55);
+        if(glowT > 0.6){
+            // Glow real (shadowBlur) solo para el puñado de triángulos justo
+            // debajo del cursor: es la operación más cara de canvas 2D, y
+            // aplicarla a toda la malla en cada frame era la causa del delay.
+            ctx.shadowColor = colorFor(hue, Math.min(glowT, 1));
+            ctx.shadowBlur = 9 * glowT;
+        }
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = colorFor(hue, Math.min(0.5, glowT * 0.8) + 0.06);
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    }
+
+    function draw(){
+        mouseX += (targetX - mouseX) * 0.35;
+        mouseY += (targetY - mouseY) * 0.35;
+
+        drawStatic();
+
+        // Solo se reconstruyen y evalúan los triángulos de las celdas dentro
+        // del radio de brillo alrededor del mouse (no toda la malla): mucho
+        // menos trabajo por frame que iterar cientos de triángulos.
+        const colCenter = Math.floor(mouseX / cell);
+        const rowCenter = Math.floor(mouseY / cell);
+        for(let ry = rowCenter - cellRadius; ry <= rowCenter + cellRadius; ry++){
+            if(ry < 0) continue;
+            const y0 = ry * cell, y1 = y0 + cell;
+            for(let rx = colCenter - cellRadius; rx <= colCenter + cellRadius; rx++){
+                if(rx < 0) continue;
+                const x0 = rx * cell, x1 = x0 + cell;
+                const tl = {x:x0, y:y0}, tr = {x:x1, y:y0}, bl = {x:x0, y:y1}, br = {x:x1, y:y1};
+                drawGlowTriangle(tl, tr, bl, mouseX, mouseY);
+                drawGlowTriangle(tr, br, bl, mouseX, mouseY);
+            }
+        }
+
+        // Sin mouse activo y con el brillo ya asentado: se corta el loop en
+        // vez de seguir redibujando 60 veces por segundo en segundo plano.
+        const settled = Math.hypot(targetX - mouseX, targetY - mouseY) < 0.5;
+        if(targetX < 0 && settled){
+            idleFrames++;
+            if(idleFrames > 10){ rafId = null; drawStatic(); return; }
+        } else {
+            idleFrames = 0;
+        }
+        rafId = requestAnimationFrame(draw);
+    }
+
+    function ensureLoop(){
+        if(rafId === null) rafId = requestAnimationFrame(draw);
+    }
+
+    resize();
+    drawStatic();
+    window.addEventListener('resize', () => { resize(); (rafId === null ? drawStatic : () => {})(); });
+
+    section.addEventListener('mousemove', (e) => {
+        const rect = section.getBoundingClientRect();
+        targetX = e.clientX - rect.left;
+        targetY = e.clientY - rect.top;
+        ensureLoop();
+    });
+    section.addEventListener('mouseleave', () => {
+        targetX = -9999;
+        targetY = -9999;
+        ensureLoop();
+    });
+})();

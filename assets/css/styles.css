@@ -648,7 +648,15 @@ header::before{
     color:#33b875;
     filter:drop-shadow(0 8px 24px rgba(51,184,117,.35));
 }
-.pf-logo-svg svg{width:100%;height:100%;}
+/* Logo de Agencia Luz: sin logo propio disponible, ícono de laptop en el
+   azul de acento del sitio para mantener el mismo hilo estético */
+.pf-logo-luz{
+    padding:14% 24% 40%;
+    color:var(--accent-hot);
+    filter:drop-shadow(0 8px 24px var(--accent-glow));
+}
+.pf-logo-svg svg,
+.pf-logo-luz svg{width:100%;height:100%;}
 .portfolio-card:hover .pf-image,
 .portfolio-card:active .pf-image{transform:scale(1.04);}
 
@@ -751,6 +759,12 @@ header::before{
    9. POR QUÉ ELEGIRME
    ===================================================================== */
 .porque{background:var(--bg-black);}
+.porque-grid-canvas{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+}
 .porque-grid{
     display:grid;
     grid-template-columns:1fr;
