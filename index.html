@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="assets/css/styles.css?v=13">
+<link rel="stylesheet" href="assets/css/styles.css?v=19">
 </head>
 <body>
 
@@ -45,6 +45,7 @@
             <a href="#portfolio">Portfolio</a>
             <a href="#porque">Sobre mí</a>
             <a href="#contacto" class="btn btn-primary btn-sm">Pedir presupuesto</a>
+            <a href="portfolio-animado.html" class="nav-link-shine"><span>Portfolio Animado</span></a>
         </nav>
         <div class="hamburger" id="hamburger" aria-label="Abrir menú"><span></span><span></span><span></span></div>
     </div>
@@ -54,8 +55,8 @@
      HERO — Impacto y posicionamiento
      ===================================================================== -->
 <section class="hero" id="inicio">
-    <div class="blob blob-blue blob-a" style="width:340px;height:340px;top:-80px;right:-100px;"></div>
-    <div class="blob blob-teal blob-b" style="width:280px;height:280px;bottom:40px;left:-90px;"></div>
+    <div class="blob blob-blue blob-dance-a" style="width:340px;height:340px;top:-80px;right:-100px;"></div>
+    <div class="blob blob-teal blob-dance-b" style="width:280px;height:280px;bottom:40px;left:-90px;"></div>
 
     <div class="hero-content">
         <div class="hero-tag"><span class="dot"></span> Disponible para nuevos proyectos</div>
@@ -151,13 +152,19 @@
                 <h2>Proyectos reales, resultados reales</h2>
                 <p>Una selección de trabajos freelance realizados para clientes de distintas industrias.</p>
             </div>
-            <div class="portfolio-filters reveal">
-                <button class="filter-btn active" data-filter="all">Todos</button>
-                <button class="filter-btn" data-filter="salud">Salud & Bienestar</button>
-                <button class="filter-btn" data-filter="hoteleria">Hotelería</button>
-                <button class="filter-btn" data-filter="coaching">Coaching & Eventos</button>
-                <button class="filter-btn" data-filter="negocios">Negocios</button>
-                <button class="filter-btn" data-filter="personal">Proyecto propio</button>
+            <div class="portfolio-filters-col">
+                <a href="portfolio-animado.html" class="btn-glow btn-glow-sm reveal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/></svg>
+                    Ver portfolio animado
+                </a>
+                <div class="portfolio-filters reveal">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="salud">Salud & Bienestar</button>
+                    <button class="filter-btn" data-filter="hoteleria">Hotelería</button>
+                    <button class="filter-btn" data-filter="coaching">Coaching & Eventos</button>
+                    <button class="filter-btn" data-filter="negocios">Negocios</button>
+                    <button class="filter-btn" data-filter="personal">Proyecto propio</button>
+                </div>
             </div>
         </div>
 
@@ -357,7 +364,7 @@
      POR QUÉ DESARROLLAR TU WEB CONMIGO
      ===================================================================== -->
 <section class="porque section-pad" id="porque">
-    <div class="blob blob-blue blob-a" style="width:280px;height:280px;top:15%;left:-100px;"></div>
+    <div class="blob blob-blue blob-dance-a" style="width:280px;height:280px;top:15%;left:-100px;"></div>
     <canvas class="porque-grid-canvas" id="porqueGridCanvas" aria-hidden="true"></canvas>
 
     <div class="container">
@@ -416,7 +423,7 @@
      CTA + FORMULARIO
      ===================================================================== -->
 <section class="cta-final section-pad" id="contacto">
-    <div class="blob blob-blue blob-a" style="width:360px;height:360px;top:-60px;left:50%;transform:translateX(-50%);"></div>
+    <div class="blob blob-teal blob-dance-a" style="width:360px;height:360px;top:-60px;left:calc(50% - 180px);"></div>
 
     <div class="container cta-grid">
         <div class="cta-left reveal">
@@ -520,6 +527,7 @@
                 <h4>Navegación</h4>
                 <a href="#inicio">Inicio</a>
                 <a href="#portfolio">Portfolio</a>
+                <a href="portfolio-animado.html">Portfolio Animado</a>
                 <a href="#porque">Sobre mí</a>
                 <a href="#contacto">Contacto</a>
             </div>

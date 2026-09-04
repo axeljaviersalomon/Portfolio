@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es" data-pa-scroll>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Portfolio Animado | Axel Salomon</title>
+<meta name="description" content="Recorrido interactivo por los proyectos de desarrollo web de Axel Salomon: un proyecto a la vez, con tecnologías, alcance y resultado de cada uno.">
+
+<!-- Favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicon-180.png">
+<link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon-512.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/styles.css?v=19">
+<link rel="stylesheet" href="assets/css/portfolio-animado.css?v=9">
+</head>
+<body>
+
+<div class="global-bg"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="grain-overlay" aria-hidden="true"></div>
+
+<!-- =====================================================================
+     NAVEGACIÓN — igual que index.html, pero los anclajes de sección
+     apuntan de vuelta a index.html (esas secciones no existen acá)
+     ===================================================================== -->
+<header>
+    <div class="container nav-wrap">
+        <a href="index.html#inicio" class="logo">
+            <img src="assets/img/logo-icon.png" alt="Axel Salomon" class="logo-icon">
+        </a>
+        <nav class="nav-links" id="navLinks">
+            <a href="index.html#inicio">Inicio</a>
+            <a href="index.html#servicios">Servicios</a>
+            <a href="index.html#portfolio">Portfolio</a>
+            <a href="index.html#porque">Sobre mí</a>
+            <a href="index.html#contacto" class="btn btn-primary btn-sm">Pedir presupuesto</a>
+            <a href="portfolio-animado.html" class="active nav-link-shine"><span>Portfolio Animado</span></a>
+        </nav>
+        <div class="hamburger" id="hamburger" aria-label="Abrir menú"><span></span><span></span><span></span></div>
+    </div>
+</header>
+
+<!-- =====================================================================
+     TRACK DE PANELES — un proyecto por pantalla
+     ===================================================================== -->
+<main class="pa-track" id="paTrack">
+
+    <!-- Panel intro — fondo de malla que sigue al mouse (igual que "Sobre mí"
+         en index.html), reservado para esta pantalla únicamente -->
+    <section class="pa-panel pa-intro" id="pa-intro" data-label="Inicio del recorrido">
+        <div class="blob blob-blue blob-dance-a" style="width:440px;height:440px;top:-10%;left:-10%;"></div>
+        <canvas class="pa-grid-canvas" data-pa-grid aria-hidden="true"></canvas>
+        <div class="pa-intro-inner">
+            <div class="eyebrow"><span></span> Portfolio animado</div>
+            <h1>Un recorrido por<span class="text-accent">mis proyectos</span></h1>
+        </div>
+        <div class="pa-scroll-cue">
+            Scroll
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+    </section>
+
+    <!-- Proyecto 1: La Estrella de Castillejo -->
+    <section class="pa-panel" id="proyecto-1" data-project="1" data-cat="hoteleria" data-label="Hotel La Estrella de Castillejo">
+        <canvas class="pa-grid-canvas" data-pa-grid aria-hidden="true"></canvas>
+        <div class="container pa-panel-inner">
+            <div class="pa-media">
+                <div class="pa-media-frame">
+                    <img src="https://laestrelladecastillejo.es/wp-content/uploads/2021/11/cropped-LOGO-270x270.png" alt="Hotel La Estrella de Castillejo" loading="lazy">
+                </div>
+            </div>
+            <div class="pa-content">
+                <div class="pa-category">Hotelería · Dominio propio</div>
+                <h2>Hotel La Estrella de Castillejo</h2>
+                <p>Hotel de paso sobre la A-3 Madrid–Valencia, con sistema de búsqueda y reserva de habitaciones, sección de restaurante y punto de carga eléctrica para vehículos. Desarrollado sobre WordPress con catálogo de habitaciones gestionado vía WooCommerce, optimizado para consultas rápidas desde el celular de viajeros en ruta.</p>
+                <div class="pa-tags">
+                    <span class="pf-tag">WordPress</span><span class="pf-tag">WooCommerce</span><span class="pf-tag">Booking</span><span class="pf-tag">SEO</span><span class="pf-tag">Responsive</span>
+                </div>
+                <div class="pa-actions">
+                    <a href="https://laestrelladecastillejo.es/" target="_blank" rel="noopener noreferrer" class="pf-link btn btn-primary btn-sm">Ver sitio en vivo ↗</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proyecto 2: Hotel Setos -->
+    <section class="pa-panel pa-panel--reverse" id="proyecto-2" data-project="2" data-cat="hoteleria" data-label="Hotel Restaurante Setos">
+        <div class="container pa-panel-inner">
+            <div class="pa-media">
+                <div class="pa-media-frame">
+                    <img src="https://hotelrestaurantesetos.es/wp-content/uploads/2026/03/cropped-LOGO-SIN-FONDO1.png" alt="Hotel Restaurante Setos" loading="lazy">
+                </div>
+            </div>
+            <div class="pa-content">
+                <div class="pa-category">Hotelería · Dominio propio</div>
+                <h2>Hotel Restaurante Setos</h2>
+                <p>Sitio de reservas para hotel y restaurante en Motilla del Palancar (Cuenca, España): presentación de habitaciones, propuesta gastronómica, espacio para eventos y formulario de reserva directo. Construido en WordPress + WooCommerce con foco en carga rápida y posicionamiento local en buscadores.</p>
+                <div class="pa-tags">
+                    <span class="pf-tag">WordPress</span><span class="pf-tag">WooCommerce</span><span class="pf-tag">Reservas online</span><span class="pf-tag">SEO</span><span class="pf-tag">Responsive</span>
+                </div>
+                <div class="pa-actions">
+                    <a href="https://hotelrestaurantesetos.es/" target="_blank" rel="noopener noreferrer" class="pf-link btn btn-primary btn-sm">Ver sitio en vivo ↗</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proyecto 3: Chiron Planet Enterprise -->
+    <section class="pa-panel" id="proyecto-3" data-project="3" data-cat="salud" data-label="Chiron Planet Enterprise">
+        <canvas class="pa-grid-canvas" data-pa-grid aria-hidden="true"></canvas>
+        <div class="container pa-panel-inner">
+            <div class="pa-media">
+                <div class="pa-media-frame pf-logo-white">
+                    <img src="https://chironplanet.com/wp-content/uploads/2025/08/Diseno-sin-titulo-1.png" alt="Chiron Planet Enterprise" loading="lazy">
+                </div>
+            </div>
+            <div class="pa-content">
+                <div class="pa-category">Bienestar & Terapias · Dominio propio</div>
+                <h2>Chiron Planet Enterprise</h2>
+                <p>Holding con 4 unidades de negocio bajo un mismo sitio (EquusAccess, Access Bars, Healy Retailer y Whispering Souls): sanación energética y terapia asistida con caballos. Arquitectura multi-marca sobre WordPress y WooCommerce, cada unidad con su propia identidad dentro de una estructura de navegación común.</p>
+                <div class="pa-tags">
+                    <span class="pf-tag">WordPress</span><span class="pf-tag">WooCommerce</span><span class="pf-tag">Multi-marca</span><span class="pf-tag">SEO</span><span class="pf-tag">Responsive</span>
+                </div>
+                <div class="pa-actions">
+                    <a href="https://chironplanet.com/" target="_blank" rel="noopener noreferrer" class="pf-link btn btn-primary btn-sm">Ver sitio en vivo ↗</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proyecto 4: OrlandoStudio -->
+    <section class="pa-panel pa-panel--reverse" id="proyecto-4" data-project="4" data-cat="negocios" data-label="OrlandoStudio">
+        <div class="container pa-panel-inner">
+            <div class="pa-media">
+                <div class="pa-media-frame pa-media-svg">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M55.9,85.5 A34,34 0 1 1 83.5,46.1" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round"/>
+                        <rect x="58" y="25" width="15" height="65" rx="7.5" fill="currentColor"/>
+                        <circle cx="80" cy="18" r="9" fill="currentColor"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="pa-content">
+                <div class="pa-category">Branding · Estudio de diseño</div>
+                <h2>OrlandoStudio</h2>
+                <p>Landing para un estudio de branding y diseño de marca: portfolio de identidades visuales presentado con scroll animado, sección de servicios, testimonios y agenda de llamadas de venta. Construido 100% a mano en HTML5 y CSS3, con animaciones GSAP para dar una sensación editorial y cuidada.</p>
+                <div class="pa-tags">
+                    <span class="pf-tag">HTML5</span><span class="pf-tag">GSAP</span><span class="pf-tag">Branding</span><span class="pf-tag">SEO</span><span class="pf-tag">Responsive</span>
+                </div>
+                <div class="pa-actions">
+                    <a href="https://axeljaviersalomon.github.io/OrlandoStudio/" target="_blank" rel="noopener noreferrer" class="pf-link btn btn-primary btn-sm" data-demo="true">Ver demo ↗</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proyecto 5: Tao Trading Academy -->
+    <section class="pa-panel" id="proyecto-5" data-project="5" data-cat="negocios" data-label="Tao Trading Academy">
+        <canvas class="pa-grid-canvas" data-pa-grid aria-hidden="true"></canvas>
+        <div class="container pa-panel-inner">
+            <div class="pa-media">
+                <div class="pa-media-frame">
+                    <img src="https://taotrading.netlify.app/wp-content/uploads/2024/03/connombreblanco_Mesa-de-trabajo-1.png" alt="Tao Trading Academy" loading="lazy">
+                </div>
+            </div>
+            <div class="pa-content">
+                <div class="pa-category">Educación Online</div>
+                <h2>Tao Trading Academy</h2>
+                <p>Academia de trading con cursos, campus de alumnos, casos de éxito y sistema de registro/login para la comunidad. Estructura tipo LMS sobre WordPress, con gestión de membresías para separar contenido público de contenido exclusivo para alumnos inscriptos.</p>
+                <div class="pa-tags">
+                    <span class="pf-tag">WordPress</span><span class="pf-tag">LMS</span><span class="pf-tag">Membresías</span><span class="pf-tag">SEO</span><span class="pf-tag">Responsive</span>
+                </div>
+                <div class="pa-actions">
+                    <a href="https://taotrading.netlify.app/" target="_blank" rel="noopener noreferrer" class="pf-link btn btn-primary btn-sm" data-demo="true">Ver demo ↗</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proyecto 6: Conecta con tu Propósito -->
+    <section class="pa-panel pa-panel--reverse" id="proyecto-6" data-project="6" data-cat="coaching" data-label="Conecta con tu Propósito 3.0">
+        <div class="container pa-panel-inner">
+            <div class="pa-media">
+                <div class="pa-media-frame">
+                    <img src="https://conectacontuproposito.netlify.app/wp-content/uploads/2025/02/Logo-CCTP-Plateado-6.png" alt="Conecta con tu Propósito" loading="lazy">
+                </div>
+            </div>
+            <div class="pa-content">
+                <div class="pa-category">Coaching · Evento presencial</div>
+                <h2>Conecta con tu Propósito 3.0</h2>
+                <p>Landing de venta de entradas para un evento presencial de alto impacto: tres tipos de ticket con precios diferenciados, testimonios en video de ediciones anteriores y contador de asistentes en tiempo real para reforzar urgencia. Sobre WordPress, con foco total en conversión.</p>
+                <div class="pa-tags">
+                    <span class="pf-tag">WordPress</span><span class="pf-tag">Venta de tickets</span><span class="pf-tag">SEO</span><span class="pf-tag">Responsive</span>
+                </div>
+                <div class="pa-actions">
+                    <a href="https://conectacontuproposito.netlify.app/" target="_blank" rel="noopener noreferrer" class="pf-link btn btn-primary btn-sm" data-demo="true">Ver demo ↗</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proyecto 7: Quantum (Carola Gando) -->
+    <section class="pa-panel" id="proyecto-7" data-project="7" data-cat="coaching" data-label="Quantum — Abundancia Infinita">
+        <canvas class="pa-grid-canvas" data-pa-grid aria-hidden="true"></canvas>
+        <div class="container pa-panel-inner">
+            <div class="pa-media">
+                <div class="pa-media-frame pf-logo-white">
+                    <img src="https://quantumprogram.netlify.app/wp-content/uploads/2025/10/logo-carola.png" alt="Quantum - Carola Gando" loading="lazy">
+                </div>
+            </div>
+            <div class="pa-content">
+                <div class="pa-category">Coaching · Landing de venta</div>
+                <h2>Quantum — Abundancia Infinita</h2>
+                <p>Landing de venta de un programa de transformación personal, estructurada alrededor de un Video Sales Letter (VSL), testimonios en video, sección de preguntas frecuentes y checkout integrado con WooCommerce para completar la compra sin salir del sitio.</p>
+                <div class="pa-tags">
+                    <span class="pf-tag">WordPress</span><span class="pf-tag">Checkout</span><span class="pf-tag">Video Sales Letter</span><span class="pf-tag">SEO</span><span class="pf-tag">Responsive</span>
+                </div>
+                <div class="pa-actions">
+                    <a href="https://quantumprogram.netlify.app/" target="_blank" rel="noopener noreferrer" class="pf-link btn btn-primary btn-sm" data-demo="true">Ver demo ↗</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proyecto 8: Viví en Propósito -->
+    <section class="pa-panel pa-panel--reverse" id="proyecto-8" data-project="8" data-cat="coaching" data-label="Viví en Propósito">
+        <div class="container pa-panel-inner">
+            <div class="pa-media">
+                <div class="pa-media-frame">
+                    <img src="https://vivienproposito.netlify.app/wp-content/uploads/2024/12/Logo-VEP-Blanco-loguito11.png" alt="Viví en Propósito" loading="lazy">
+                </div>
+            </div>
+            <div class="pa-content">
+                <div class="pa-category">Coaching · Evento presencial</div>
+                <h2>Viví en Propósito</h2>
+                <p>Landing para un evento inmersivo de 3 días junto a Carola Gando: agenda día por día, testimonios de ediciones pasadas y tres niveles de entrada con precios en preventa para incentivar la reserva anticipada. Desarrollado en WordPress, con jerarquía visual pensada para guiar al lector hasta el botón de compra.</p>
+                <div class="pa-tags">
+                    <span class="pf-tag">WordPress</span><span class="pf-tag">Venta de tickets</span><span class="pf-tag">SEO</span><span class="pf-tag">Responsive</span>
+                </div>
+                <div class="pa-actions">
+                    <a href="https://vivienproposito.netlify.app/" target="_blank" rel="noopener noreferrer" class="pf-link btn btn-primary btn-sm" data-demo="true">Ver demo ↗</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proyecto 9: Contexto Nexo -->
+    <section class="pa-panel" id="proyecto-9" data-project="9" data-cat="coaching" data-label="Contexto Nexo">
+        <canvas class="pa-grid-canvas" data-pa-grid aria-hidden="true"></canvas>
+        <div class="container pa-panel-inner">
+            <div class="pa-media">
+                <div class="pa-media-frame">
+                    <img src="https://contextonexo.netlify.app/wp-content/uploads/2024/12/logo-nexo_Mesa-de-trabajo-1-12-12.png" alt="Contexto Nexo" loading="lazy">
+                </div>
+            </div>
+            <div class="pa-content">
+                <div class="pa-category">Comunidad · Institucional</div>
+                <h2>Contexto Nexo</h2>
+                <p>Sitio institucional para una comunidad de desarrollo personal: recorrido por la trayectoria de eventos realizados, testimonios en video de miembros y contacto directo por WhatsApp como canal principal de consulta. Foco en transmitir trayectoria y confianza más que en vender un producto puntual.</p>
+                <div class="pa-tags">
+                    <span class="pf-tag">WordPress</span><span class="pf-tag">Institucional</span><span class="pf-tag">SEO</span><span class="pf-tag">Responsive</span>
+                </div>
+                <div class="pa-actions">
+                    <a href="https://contextonexo.netlify.app/" target="_blank" rel="noopener noreferrer" class="pf-link btn btn-primary btn-sm" data-demo="true">Ver demo ↗</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proyecto 10: Centro Médico Nordelta -->
+    <section class="pa-panel pa-panel--reverse" id="proyecto-10" data-project="10" data-cat="salud" data-label="Centro Médico AC Boutique">
+        <div class="container pa-panel-inner">
+            <div class="pa-media">
+                <div class="pa-media-frame">
+                    <img src="https://centromediconordelta.netlify.app/wp-content/uploads/2025/04/AC_CentroMedico_logo_H_color-e1745451422131.png" alt="Centro Médico AC Nordelta" loading="lazy">
+                </div>
+            </div>
+            <div class="pa-content">
+                <div class="pa-category">Salud</div>
+                <h2>Centro Médico AC Boutique</h2>
+                <p>Web institucional para un centro médico familiar en Nordelta: listado de especialidades, coberturas de obras sociales aceptadas y sistema de turnos online integrado, con contacto rápido por WhatsApp para consultas urgentes. Pensado para que el paciente resuelva todo en pocos clics.</p>
+                <div class="pa-tags">
+                    <span class="pf-tag">WordPress</span><span class="pf-tag">Turnos online</span><span class="pf-tag">WhatsApp</span><span class="pf-tag">SEO</span><span class="pf-tag">Responsive</span>
+                </div>
+                <div class="pa-actions">
+                    <a href="https://centromediconordelta.netlify.app/" target="_blank" rel="noopener noreferrer" class="pf-link btn btn-primary btn-sm" data-demo="true">Ver demo ↗</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proyecto 11: Studio Boutique -->
+    <section class="pa-panel" id="proyecto-11" data-project="11" data-cat="salud" data-label="Studio Boutique">
+        <canvas class="pa-grid-canvas" data-pa-grid aria-hidden="true"></canvas>
+        <div class="container pa-panel-inner">
+            <div class="pa-media">
+                <div class="pa-media-frame">
+                    <img src="https://studioboutique.netlify.app/wp-content/uploads/2025/03/SB_logo_sin-fondo-2.png" alt="Studio Boutique" loading="lazy">
+                </div>
+            </div>
+            <div class="pa-content">
+                <div class="pa-category">Salud & Estética</div>
+                <h2>Studio Boutique</h2>
+                <p>Centro de estética y medicina estética: spa, masajes, tratamientos faciales y corporales, con sistema de reserva de turnos y promociones destacadas. Incorpora un chatbot de WhatsApp para responder consultas frecuentes sin intervención manual y liberar tiempo del staff.</p>
+                <div class="pa-tags">
+                    <span class="pf-tag">WordPress</span><span class="pf-tag">Agenda online</span><span class="pf-tag">Chatbot WhatsApp</span><span class="pf-tag">SEO</span><span class="pf-tag">Responsive</span>
+                </div>
+                <div class="pa-actions">
+                    <a href="https://studioboutique.netlify.app/" target="_blank" rel="noopener noreferrer" class="pf-link btn btn-primary btn-sm" data-demo="true">Ver demo ↗</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proyecto 12: Grupo Roma Real Estate -->
+    <section class="pa-panel pa-panel--reverse" id="proyecto-12" data-project="12" data-cat="negocios" data-label="Grupo Roma Real Estate">
+        <div class="container pa-panel-inner">
+            <div class="pa-media">
+                <div class="pa-media-frame">
+                    <img src="https://gruporomarealestate.netlify.app/wp-content/uploads/2025/04/LOGO-COLOR-SIN-FONDO.png" alt="Grupo Roma Real Estate" loading="lazy">
+                </div>
+            </div>
+            <div class="pa-content">
+                <div class="pa-category">Real Estate</div>
+                <h2>Grupo Roma Real Estate</h2>
+                <p>Sitio institucional para una inmobiliaria en Nordelta: presentación de servicios de compra, venta e inversión, con contacto directo por WhatsApp para agilizar la primera respuesta a interesados. Diseño sobrio orientado a transmitir seriedad y confianza en operaciones de alto valor.</p>
+                <div class="pa-tags">
+                    <span class="pf-tag">WordPress</span><span class="pf-tag">Institucional</span><span class="pf-tag">SEO</span><span class="pf-tag">Responsive</span>
+                </div>
+                <div class="pa-actions">
+                    <a href="https://gruporomarealestate.netlify.app/" target="_blank" rel="noopener noreferrer" class="pf-link btn btn-primary btn-sm" data-demo="true">Ver demo ↗</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proyecto 13: Agencia Luz -->
+    <section class="pa-panel" id="proyecto-13" data-project="13" data-cat="negocios" data-label="Agencia Luz">
+        <canvas class="pa-grid-canvas" data-pa-grid aria-hidden="true"></canvas>
+        <div class="container pa-panel-inner">
+            <div class="pa-media">
+                <div class="pa-media-frame pa-media-code">
+                    <span aria-hidden="true">&lt;/&gt;</span>
+                </div>
+            </div>
+            <div class="pa-content">
+                <div class="pa-category">Marketing & Desarrollo · Dominio propio</div>
+                <h2>Agencia Luz</h2>
+                <p>Sitio institucional para una agencia de marketing integrado y desarrollo digital: servicios de estrategia, contenido, performance y tecnología, presentados junto a la metodología de trabajo del equipo y un formulario de consulta gratuita. Construido a mano en HTML5, sin frameworks.</p>
+                <div class="pa-tags">
+                    <span class="pf-tag">HTML5</span><span class="pf-tag">Landing institucional</span><span class="pf-tag">Formulario</span><span class="pf-tag">SEO</span><span class="pf-tag">Responsive</span>
+                </div>
+                <div class="pa-actions">
+                    <a href="https://axeljaviersalomon.github.io/AgenciaLuz/" target="_blank" rel="noopener noreferrer" class="pf-link btn btn-primary btn-sm" data-demo="true">Ver demo ↗</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proyecto 14: Este mismo portfolio -->
+    <section class="pa-panel pa-panel--reverse" id="proyecto-14" data-project="14" data-cat="personal" data-label="Este portfolio">
+        <div class="container pa-panel-inner">
+            <div class="pa-media">
+                <div class="pa-media-frame pa-media-own">
+                    <img src="assets/img/logo-icon.png" alt="Logo del portfolio" loading="lazy">
+                </div>
+            </div>
+            <div class="pa-content">
+                <div class="pa-category">Proyecto propio · Dominio propio</div>
+                <h2>Este portfolio</h2>
+                <p>El sitio que estás recorriendo ahora mismo: una landing construida 100% a mano, sin frameworks ni build tools, con foco en performance, mobile-first y animaciones nativas del navegador (Canvas API, IntersectionObserver, CSS moderno). Esta misma página de "Portfolio Animado" es parte de ese mismo enfoque.</p>
+                <div class="pa-tags">
+                    <span class="pf-tag">HTML5</span><span class="pf-tag">CSS3</span><span class="pf-tag">JavaScript</span><span class="pf-tag">Canvas API</span><span class="pf-tag">SEO</span><span class="pf-tag">Responsive</span>
+                </div>
+                <div class="pa-actions">
+                    <a href="https://axeljaviersalomon.github.io/Portfolio/" target="_blank" rel="noopener noreferrer" class="pf-link btn btn-primary btn-sm">Ver sitio en vivo ↗</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Panel outro / CTA final -->
+    <section class="pa-panel pa-outro" id="pa-outro" data-label="Fin del recorrido">
+        <div class="blob blob-blue blob-dance-a" style="width:340px;height:340px;top:-60px;left:calc(50% - 170px);"></div>
+        <div class="pa-outro-inner">
+            <div class="eyebrow" style="justify-content:center;"><span></span> ¿Y ahora?</div>
+            <h2>Hablemos de <span class="text-accent">tu próximo proyecto</span></h2>
+            <p>Si algo de lo que viste se parece a lo que necesitás, escribime y armamos una propuesta a medida.</p>
+            <div class="pa-outro-actions">
+                <a href="index.html#contacto" class="btn btn-primary">Pedir presupuesto</a>
+                <a href="index.html#inicio" class="btn btn-outline">Volver al inicio</a>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- Filtros por categoría — mismas categorías que #portfolio en index.html.
+     Ocultos en mobile a propósito (ver breakpoints en portfolio-animado.css):
+     con el header fijo + el contador + los dots, sumar otra barra fija en
+     una pantalla angosta rompía la estética prolija del recorrido. -->
+<div class="pa-filters" id="paFilters" role="group" aria-label="Filtrar proyectos por categoría">
+    <button class="filter-btn active" type="button" data-filter="all">Todos</button>
+    <button class="filter-btn" type="button" data-filter="salud">Salud & Bienestar</button>
+    <button class="filter-btn" type="button" data-filter="hoteleria">Hotelería</button>
+    <button class="filter-btn" type="button" data-filter="coaching">Coaching & Eventos</button>
+    <button class="filter-btn" type="button" data-filter="negocios">Negocios</button>
+    <button class="filter-btn" type="button" data-filter="personal">Proyecto propio</button>
+</div>
+
+<!-- Navegación lateral (dots) + contador — generados por JS en base a los paneles -->
+<div class="pa-dots" id="paDots" aria-hidden="true"></div>
+<div class="pa-counter">
+    <button class="pa-counter-arrow" id="paPrevBtn" type="button" aria-label="Proyecto anterior">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <span class="pa-counter-nums">
+        <span id="paCounterCurrent">—</span>
+        <span style="opacity:.4;">/</span>
+        <span id="paCounterTotal">14</span>
+    </span>
+    <button class="pa-counter-arrow" id="paNextBtn" type="button" aria-label="Proyecto siguiente">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+    </button>
+</div>
+
+<script src="assets/js/portfolio-animado.js?v=6" defer></script>
+
+</body>
+</html>

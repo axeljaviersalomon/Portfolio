@@ -53,6 +53,15 @@
     /* Paddings fluidos: chicos en mobile, crecen en desktop */
     --section-pad: 78px;
     --container-pad: 20px;
+
+    /* Amplitud del recorrido de los blobs "bailando" (ver sección 3):
+       un solo lugar para ajustar qué tanto se mueven en todos lados
+       donde se usan. clamp() evita que en pantallas muy anchas el
+       recorrido en vw se dispare y termine sacando el blob 100% del
+       área visible; el piso en px evita que en mobile el movimiento
+       se sienta demasiado chico. */
+    --blob-dance-x: clamp(120px, 22vw, 300px);
+    --blob-dance-y: clamp(80px, 16vh, 190px);
 }
 
 /* =====================================================================
@@ -136,6 +145,38 @@ p{color:var(--gray-soft);line-height:1.75;}
 }
 .blob-a{animation:floatSlow 16s ease-in-out infinite;}
 .blob-b{animation:floatSlowReverse 20s ease-in-out infinite;}
+
+/* Variante "bailando": recorre un área mucho más amplia del fondo que
+   floatSlow/floatSlowReverse (que solo se mueven unos px en el lugar).
+   Se anima "transform" en vez de "top/left" a propósito: el navegador
+   puede correrla en el compositor (GPU), sin recalcular layout en cada
+   frame — importante porque estos blobs ya son costosos de pintar por
+   el blur. Reutilizable en cualquier sección que quiera este efecto.
+   El recorrido oscila para los DOS lados (no solo se aleja en una
+   dirección y vuelve): los blobs suelen posicionarse ya pegados a un
+   borde (offsets negativos, ver los "style" inline de cada uso), así
+   que un desplazamiento que solo sigue alejándose terminaba sacando el
+   blob 100% del área visible en algún punto del loop. Oscilando para
+   ambos lados, siempre queda al menos una porción visible. La amplitud
+   sale de --blob-dance-x/y (ver sección 1, con clamp() para que no se
+   dispare en pantallas anchas): un solo lugar para ajustar qué tanto
+   "sale" del diseño en todos lados donde se usa este efecto. */
+@keyframes blobDanceA{
+    0%{transform:translate(0,0);}
+    25%{transform:translate(calc(var(--blob-dance-x) * -0.7), calc(var(--blob-dance-y) * 0.85));}
+    50%{transform:translate(var(--blob-dance-x), calc(var(--blob-dance-y) * -0.8));}
+    75%{transform:translate(calc(var(--blob-dance-x) * -0.55), var(--blob-dance-y));}
+    100%{transform:translate(0,0);}
+}
+@keyframes blobDanceB{
+    0%{transform:translate(0,0);}
+    25%{transform:translate(calc(var(--blob-dance-x) * 0.7), calc(var(--blob-dance-y) * -0.85));}
+    50%{transform:translate(calc(var(--blob-dance-x) * -1), calc(var(--blob-dance-y) * 0.8));}
+    75%{transform:translate(calc(var(--blob-dance-x) * 0.55), calc(var(--blob-dance-y) * -1));}
+    100%{transform:translate(0,0);}
+}
+.blob-dance-a{animation:blobDanceA 34s ease-in-out infinite;}
+.blob-dance-b{animation:blobDanceB 40s ease-in-out infinite;}
 
 /* Asegura que el contenido de cada sección quede sobre los blobs */
 /* IMPORTANTE — bug de taps fantasma en mobile (filtros de portfolio, etc.):
@@ -365,6 +406,62 @@ header::before{
 .nav-links a:hover{color:var(--white);}
 .nav-links a.active{color:var(--accent-hot);}
 .nav-links .btn{margin-top:20px;}
+.nav-links .btn + .nav-link-shine{margin-top:20px;}
+
+/* Link "Portfolio Animado": brillo sutil tipo "shine" en el texto, más
+   un subrayado animado debajo (mismo recurso que
+   ".porque .section-header h2::after", @keyframes porqueLineSweep, acá
+   en versión fina "de navbar"). Ambos efectos se aplican al <span>
+   interno (no al <a>) para que el subrayado quede del ancho del TEXTO:
+   en el menú mobile el <a> se estira a todo el ancho del panel (ver
+   ".nav-links{align-items:stretch}"), y un <span> siempre se achica a
+   su contenido sin importar el ancho del link que lo contiene. */
+.nav-links a.nav-link-shine span{position:relative;display:inline-block;}
+@supports ((background-clip:text) or (-webkit-background-clip:text)){
+    .nav-links a.nav-link-shine span{
+        background-image:linear-gradient(100deg,
+            var(--gray-soft) 0%, var(--gray-soft) 40%,
+            #fff 48%, var(--accent-hot) 52%, #fff 56%,
+            var(--gray-soft) 64%, var(--gray-soft) 100%);
+        background-size:220% 100%;
+        background-position:200% 0;
+        -webkit-background-clip:text;
+        background-clip:text;
+        color:transparent;
+        animation:navShine 6s ease-in-out infinite;
+    }
+    .nav-links a.nav-link-shine.active span{
+        background-image:linear-gradient(100deg,
+            var(--accent-hot) 0%, var(--accent-hot) 40%,
+            #fff 48%, var(--accent-hot) 52%, #fff 56%,
+            var(--accent-hot) 64%, var(--accent-hot) 100%);
+    }
+}
+@keyframes navShine{
+    0%,15%{background-position:200% 0;}
+    55%,100%{background-position:-120% 0;}
+}
+
+.nav-links a.nav-link-shine span::after{
+    content:'';
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:-6px;
+    height:2px;
+    border-radius:2px;
+    background-image:linear-gradient(90deg,
+        var(--accent) 0%, var(--accent) 32%,
+        var(--wave-teal) 46%, #eafffb 50%, var(--wave-teal) 54%,
+        var(--accent) 68%, var(--accent) 100%);
+    background-size:300% 100%;
+    background-position:200% 0;
+    animation:porqueLineSweep 4.2s cubic-bezier(.83,0,.17,1) infinite;
+}
+@media (prefers-reduced-motion: reduce){
+    .nav-link-shine span{animation:none;}
+    .nav-link-shine span::after{animation:none;}
+}
 
 /* =====================================================================
    6. HERO
@@ -567,6 +664,14 @@ header::before{
     gap:20px;
     margin-bottom:36px;
 }
+/* Agrupa el CTA al portfolio animado justo arriba de los filtros de
+   categoría, alineados ambos al mismo lado (ver breakpoint 768px+). */
+.portfolio-filters-col{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:14px;
+}
 .portfolio-filters{
     display:flex;
     gap:8px;
@@ -761,10 +866,76 @@ header::before{
 }
 .page-arrow:hover{background:var(--accent);border-color:var(--accent);}
 
+/* CTA hacia el Portfolio Animado: mismo lenguaje de "anillo pulsante"
+   que ya usa el botón de WhatsApp (ver @keyframes wappPulse), para que
+   el brillo se sienta sutil y coherente con el resto del sitio en vez
+   de un efecto nuevo que compita por atención. */
+.btn-glow{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    padding:13px 26px;
+    border-radius:50px;
+    font-weight:700;
+    font-size:.88rem;
+    color:var(--white);
+    background:rgba(47,111,237,0.12);
+    border:1px solid rgba(47,111,237,0.4);
+    animation:btnGlowPulse 3s ease-in-out infinite;
+    transition:background .3s ease, border-color .3s ease, transform .3s ease;
+}
+.btn-glow svg{width:16px;height:16px;flex-shrink:0;}
+.btn-glow:hover{
+    background:var(--accent);
+    border-color:var(--accent);
+    transform:translateY(-2px);
+}
+/* Variante compacta: junto a los filtros de categoría, del mismo porte
+   que los ".filter-btn" en vez del tamaño de CTA grande. */
+.btn-glow-sm{padding:9px 20px;font-size:.8rem;gap:7px;}
+.btn-glow-sm svg{width:14px;height:14px;}
+@keyframes btnGlowPulse{
+    0%,100%{box-shadow:0 8px 22px -10px rgba(47,111,237,.5), 0 0 0 0 rgba(47,111,237,.35);}
+    50%{box-shadow:0 8px 22px -10px rgba(47,111,237,.5), 0 0 0 9px rgba(47,111,237,0);}
+}
+@media (prefers-reduced-motion: reduce){
+    .btn-glow{animation:none;}
+}
+
 /* =====================================================================
    9. POR QUÉ ELEGIRME
    ===================================================================== */
-.porque{background:var(--bg-black);}
+/* overflow-y (no shorthand "overflow"): el eje X sigue gobernado por la
+   regla genérica de "section" más arriba (overflow-x:hidden/clip, clave
+   para el fix de taps fantasma en mobile) — acá solo se agrega contención
+   vertical para que el recorrido amplio del blob-dance no se filtre
+   visualmente hacia la sección de abajo. */
+.porque{background:var(--bg-black);overflow-y:hidden;}
+
+/* Trazo de acento de esta sección: mucho más largo que el resto (ver
+   regla genérica ".section-header h2::after" más arriba) y con una luz
+   recorriéndolo de izquierda a derecha en loop. La curva de easing es a
+   propósito muy pronunciada (lenta en los extremos, rápida en el tramo
+   central) para que se sienta como un barrido premium, no un parpadeo. */
+.porque .section-header h2::after{
+    width:clamp(140px, 22vw, 320px);
+    height:4px;
+    margin-top:20px;
+    background-image:linear-gradient(90deg,
+        var(--accent) 0%, var(--accent) 32%,
+        var(--wave-teal) 46%, #eafffb 50%, var(--wave-teal) 54%,
+        var(--accent) 68%, var(--accent) 100%);
+    background-size:300% 100%;
+    background-position:200% 0;
+    animation:porqueLineSweep 4.2s cubic-bezier(.83,0,.17,1) infinite;
+}
+@keyframes porqueLineSweep{
+    0%{background-position:200% 0;}
+    100%{background-position:-100% 0;}
+}
+@media (prefers-reduced-motion: reduce){
+    .porque .section-header h2::after{animation:none;background-position:50% 0;}
+}
 .porque-grid-canvas{
     position:absolute;
     inset:0;
@@ -813,6 +984,7 @@ header::before{
    ===================================================================== */
 .cta-final{
     background:linear-gradient(180deg,var(--bg-black) 0%, #060a16 100%);
+    overflow-y:hidden; /* contiene el recorrido amplio del blob-dance (ver sección 3) */
 }
 .cta-grid{
     display:grid;
@@ -904,8 +1076,14 @@ footer{
     gap:32px;
     margin-bottom:36px;
 }
-.footer-brand p{font-size:.88rem;margin:16px 0 20px;max-width:320px;}
-.footer-social{display:flex;gap:10px;}
+/* En mobile el logo del footer se agranda (3x) y se centra para que
+   cierre la página con más presencia; en tablet+ vuelve a su tamaño
+   normal alineado a la izquierda (ver breakpoint 768px). */
+.footer-brand{text-align:center;}
+.footer-brand .logo{justify-content:center;margin-left:0;}
+.footer-brand .logo-icon{height:114px;}
+.footer-brand p{font-size:.88rem;margin:16px auto 20px;max-width:320px;}
+.footer-social{display:flex;gap:10px;justify-content:center;}
 .social-icon{
     width:38px;height:38px;
     border-radius:50%;
@@ -1360,6 +1538,7 @@ footer{
         font-size:.95rem;
     }
     .nav-links .btn{margin-top:0;}
+    .nav-links .btn + .nav-link-shine{margin-top:0;}
     .hamburger{display:none;}
     .nav-wrap{height:78px;}
     .logo{margin-left:10px;}
@@ -1377,12 +1556,18 @@ footer{
     .portfolio-grid{grid-template-columns:repeat(2,1fr);}
     .portfolio-header-row{flex-direction:row;justify-content:space-between;align-items:flex-end;}
     .portfolio-header-row .section-header{margin-bottom:0;}
+    .portfolio-filters-col{align-items:flex-end;}
 
     .porque-grid{grid-template-columns:0.9fr 1.1fr;gap:56px;align-items:center;}
     .cta-grid{grid-template-columns:1fr;gap:50px;}
     .form-row{grid-template-columns:1fr 1fr;}
     .footer-grid{grid-template-columns:1fr 1fr;}
     .footer-bottom{flex-direction:row;justify-content:space-between;}
+    .footer-brand{text-align:left;}
+    .footer-brand .logo{justify-content:flex-start;margin-left:6px;}
+    .footer-brand .logo-icon{height:38px;}
+    .footer-brand p{margin:16px 0 20px;}
+    .footer-social{justify-content:flex-start;}
 }
 
 /* ---------- Desktop: 1024px+ ---------- */
