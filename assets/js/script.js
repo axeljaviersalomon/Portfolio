@@ -21,6 +21,14 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+/* ---------- Header: suma sombra/borde al bajar el scroll ---------- */
+(function(){
+    const header = document.querySelector('header');
+    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 40);
+    onScroll();
+    window.addEventListener('scroll', onScroll, {passive:true});
+})();
+
 /* ---------- Animación reveal al hacer scroll ---------- */
 const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -422,6 +430,83 @@ document.getElementById('contactForm').addEventListener('submit', function(e){
     window.addEventListener('resize', resize);
     resize();
     animate();
+})();
+
+/* =====================================================================
+   TILT 3D EN LAS CARDS DE PORTFOLIO — solo mouse fino, respeta reduced-motion
+   Inclina levemente la card hacia el cursor (max ~6°) para dar sensación
+   de profundidad; --rx/--ry son leídas por la clase .has-tilt en el CSS.
+   ===================================================================== */
+(function(){
+    const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!hasFinePointer || prefersReducedMotion) return;
+
+    const MAX_TILT = 6;
+    document.querySelectorAll('.portfolio-card').forEach(card => {
+        card.classList.add('has-tilt');
+        let tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
+
+        card.addEventListener('mousemove', (e) => {
+            const r = card.getBoundingClientRect();
+            const px = (e.clientX - r.left) / r.width - 0.5;
+            const py = (e.clientY - r.top) / r.height - 0.5;
+            tx = -py * MAX_TILT;
+            ty = px * MAX_TILT;
+            if(!raf) raf = requestAnimationFrame(loop);
+        });
+        card.addEventListener('mouseleave', () => {
+            tx = 0; ty = 0;
+            if(!raf) raf = requestAnimationFrame(loop);
+        });
+
+        function loop(){
+            cx += (tx - cx) * 0.15;
+            cy += (ty - cy) * 0.15;
+            card.style.setProperty('--rx', cx.toFixed(2) + 'deg');
+            card.style.setProperty('--ry', cy.toFixed(2) + 'deg');
+            raf = (Math.abs(tx - cx) > 0.05 || Math.abs(ty - cy) > 0.05) ? requestAnimationFrame(loop) : null;
+        }
+    });
+})();
+
+/* =====================================================================
+   BOTONES MAGNÉTICOS DEL HERO — solo mouse fino, respeta reduced-motion
+   Los botones principales del hero "siguen" levemente al cursor al pasar
+   por encima. Nunca se aplica al botón de envío del formulario (mala UX).
+   ===================================================================== */
+(function(){
+    const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!hasFinePointer || prefersReducedMotion) return;
+
+    const STRENGTH = 0.3;
+    document.querySelectorAll('.hero-cta .btn').forEach(btn => {
+        const inner = document.createElement('span');
+        inner.className = 'magnetic-inner';
+        while(btn.firstChild) inner.appendChild(btn.firstChild);
+        btn.appendChild(inner);
+        btn.classList.add('has-magnetic');
+
+        let tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
+        btn.addEventListener('mousemove', (e) => {
+            const r = btn.getBoundingClientRect();
+            tx = ((e.clientX - r.left) - r.width / 2) * STRENGTH;
+            ty = ((e.clientY - r.top) - r.height / 2) * STRENGTH;
+            if(!raf) raf = requestAnimationFrame(loop);
+        });
+        btn.addEventListener('mouseleave', () => {
+            tx = 0; ty = 0;
+            if(!raf) raf = requestAnimationFrame(loop);
+        });
+
+        function loop(){
+            cx += (tx - cx) * 0.2;
+            cy += (ty - cy) * 0.2;
+            inner.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
+            raf = (Math.abs(tx - cx) > 0.1 || Math.abs(ty - cy) > 0.1) ? requestAnimationFrame(loop) : null;
+        }
+    });
 })();
 
 /* =====================================================================
