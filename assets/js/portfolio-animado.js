@@ -76,6 +76,67 @@ document.querySelectorAll('.pf-link[data-demo="true"]').forEach(link => {
 });
 
 /* =====================================================================
+   TARJETAS 3D — el logo de cada proyecto "mira" hacia el mouse
+   Mismo recurso que el tilt 3D de las cards del portfolio clásico
+   (perspective + rotateX/rotateY vía custom properties, ver script.js),
+   pero acá sigue la posición del mouse en TODA la pantalla en vez de
+   solo al pasar por encima: encaja mejor con el formato "un proyecto a
+   pantalla completa". Solo se calcula para la tarjeta del panel activo
+   (las demás están fuera de pantalla, no vale la pena tocarlas).
+   ===================================================================== */
+(function(){
+    const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!hasFinePointer || prefersReducedMotion) return;
+
+    const MAX_TILT = 14; // grados: más pronunciado que el tilt del portfolio clásico (6°) a propósito
+    const state = Array.from(document.querySelectorAll('.pa-media-frame')).map(frame => ({
+        frame, rx: 0, ry: 0, gx: 50, gy: 50
+    }));
+    if(!state.length) return;
+
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+
+    document.addEventListener('mousemove', (e) => {
+        targetX = e.clientX;
+        targetY = e.clientY;
+    });
+
+    function clamp(value, min, max){
+        return Math.max(min, Math.min(max, value));
+    }
+
+    function loop(){
+        state.forEach(s => {
+            const panel = s.frame.closest('.pa-panel');
+            if(!panel || !panel.classList.contains('is-active')){
+                // Panel fuera de pantalla: relaja la tarjeta a su posición
+                // neutral en vez de dejarla "congelada" en el último ángulo.
+                s.rx += (0 - s.rx) * 0.12;
+                s.ry += (0 - s.ry) * 0.12;
+            } else {
+                const r = s.frame.getBoundingClientRect();
+                const cx = r.left + r.width / 2;
+                const cy = r.top + r.height / 2;
+                const px = clamp((targetX - cx) / (r.width * 1.4), -1, 1);
+                const py = clamp((targetY - cy) / (r.height * 1.4), -1, 1);
+                s.rx += (-py * MAX_TILT - s.rx) * 0.1;
+                s.ry += (px * MAX_TILT - s.ry) * 0.1;
+                s.gx += (50 + px * 40 - s.gx) * 0.1;
+                s.gy += (50 + py * 40 - s.gy) * 0.1;
+            }
+            s.frame.style.setProperty('--rx', s.rx.toFixed(2) + 'deg');
+            s.frame.style.setProperty('--ry', s.ry.toFixed(2) + 'deg');
+            s.frame.style.setProperty('--glow-x', s.gx.toFixed(1) + '%');
+            s.frame.style.setProperty('--glow-y', s.gy.toFixed(1) + '%');
+        });
+        requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+})();
+
+/* =====================================================================
    NAVEGACIÓN POR PANELES
    Scroll-snap "manejado" por JS: cada gesto de rueda/trackpad avanza o
    retrocede UN proyecto entero, con una animación propia (rAF + easing),

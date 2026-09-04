@@ -106,7 +106,24 @@ html[data-pa-scroll]{
     align-items:center;
     justify-content:center;
 }
+/* Tarjeta 3D: perspective + rotateX/rotateY vía custom properties (las
+   mueve portfolio-animado.js, "mirando" hacia donde está el mouse en
+   toda la pantalla — mismo recurso que el tilt 3D de las cards del
+   portfolio clásico en script.js, pero sin depender de estar encima).
+   --rx/--ry/--glow-x/--glow-y quedan en 0/50% por defecto: sin JS (o en
+   touch/reduced-motion, donde el script ni se ejecuta) la tarjeta se ve
+   perfectamente plana y estática, sin depender del script para verse bien. */
 .pa-media-frame{
+    --rx:0deg;
+    --ry:0deg;
+    --glow-x:50%;
+    --glow-y:50%;
+    /* Color de la luminiscencia: cada proyecto lo pisa con un inline
+       style (--card-glow) acorde a los colores de SU logo (ver HTML).
+       --accent-glow es el fallback si alguna tarjeta se agrega sin
+       definirlo. */
+    --card-glow: var(--accent-glow);
+    position:relative;
     width:100%;
     max-width:360px;
     aspect-ratio:1/1;
@@ -117,7 +134,61 @@ html[data-pa-scroll]{
     align-items:center;
     justify-content:center;
     padding:16%;
-    box-shadow:0 40px 80px -30px rgba(0,0,0,.55);
+    box-shadow:
+        0 40px 80px -30px rgba(0,0,0,.55),
+        0 0 55px -12px var(--card-glow),
+        0 0 120px -35px var(--card-glow);
+    transform-style:preserve-3d;
+    transform:perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));
+    will-change:transform;
+    animation:cardGlowPulse 5s ease-in-out infinite;
+}
+/* Respiración lenta y sutil del halo: mismo lenguaje "vivo, no estático"
+   que ya usan el botón de WhatsApp y el CTA al portfolio animado (ver
+   @keyframes wappPulse / btnGlowPulse en styles.css). */
+@keyframes cardGlowPulse{
+    0%,100%{
+        box-shadow:
+            0 40px 80px -30px rgba(0,0,0,.55),
+            0 0 55px -12px var(--card-glow),
+            0 0 120px -35px var(--card-glow);
+    }
+    50%{
+        box-shadow:
+            0 40px 80px -30px rgba(0,0,0,.55),
+            0 0 70px -8px var(--card-glow),
+            0 0 150px -30px var(--card-glow);
+    }
+}
+/* Capa trasera, desplazada en Z: al rotar la tarjeta asoma por el borde
+   que gira "hacia afuera" y da la sensación de grosor/canto real, en vez
+   de un plano chato que solo se inclina. */
+.pa-media-frame::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    background:linear-gradient(160deg, rgba(47,111,237,.4), rgba(31,201,195,.3));
+    transform:translateZ(-22px);
+}
+/* Brillo especular que sigue al mouse, como una superficie glossy con
+   luz real pegándole — refuerza la sensación de profundidad además de
+   la sola rotación. */
+.pa-media-frame::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    background:radial-gradient(circle at var(--glow-x) var(--glow-y), rgba(255,255,255,.18), transparent 55%);
+    mix-blend-mode:screen;
+    pointer-events:none;
+}
+/* El contenido (logo/ícono) "flota" adelante del plano de la tarjeta */
+.pa-media-frame > img,
+.pa-media-frame > span,
+.pa-media-frame > svg{
+    position:relative;
+    transform:translateZ(34px);
 }
 .pa-media-frame img{
     width:100%;
@@ -139,6 +210,9 @@ html[data-pa-scroll]{
 }
 .pa-media-frame.pa-media-svg svg{width:52%;height:52%;}
 .pa-media-frame.pa-media-own img{filter:drop-shadow(0 0 20px rgba(47,111,237,.45));}
+@media (prefers-reduced-motion: reduce){
+    .pa-media-frame{transform:none;animation:none;}
+}
 
 /* --- Lado de contenido --- */
 .pa-content{position:relative;}
