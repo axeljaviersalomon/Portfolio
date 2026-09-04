@@ -138,7 +138,19 @@ p{color:var(--gray-soft);line-height:1.75;}
 .blob-b{animation:floatSlowReverse 20s ease-in-out infinite;}
 
 /* Asegura que el contenido de cada sección quede sobre los blobs */
-section{position:relative;isolation:isolate;overflow-x:hidden;}
+/* IMPORTANTE — bug de taps fantasma en mobile (filtros de portfolio, etc.):
+   los blobs decorativos se posicionan a propósito con offsets negativos
+   (ej. right:-100px) para que "sangren" fuera del viewport, y agrandan el
+   scrollWidth de la sección más allá de su clientWidth. Con overflow-x:hidden
+   la sección sigue siendo técnicamente un contenedor scrolleable (solo se
+   bloquea el scroll por gesto/barra, no que sea "scrollable"): en iOS/Android,
+   si el dedo se mueve unos px en horizontal al tocar un botón, el navegador
+   puede interpretarlo como un intento de pan horizontal y cancela el click.
+   overflow-x:clip elimina el scrollport por completo (inmune a esto) y se
+   declara DESPUÉS como mejora progresiva: los navegadores que no soportan
+   "clip" ignoran la línea y se quedan con "hidden" de fallback. touch-action
+   refuerza lo mismo a nivel de gestos táctiles. */
+section{position:relative;isolation:isolate;overflow-x:hidden;overflow-x:clip;touch-action:pan-y;}
 section > .container{position:relative;z-index:2;}
 
 /* Grano cinematográfico muy sutil sobre toda la web: aporta textura y
@@ -629,6 +641,14 @@ header::before{
     padding:6% 26% 40%;
     filter:drop-shadow(0 0 20px rgba(47,111,237,.45));
 }
+/* Logo de OrlandoStudio: en vez de <img>, SVG inline (coincide con como esta
+   construido el sitio original) coloreado con su verde de marca */
+.pf-logo-svg{
+    padding:14% 24% 40%;
+    color:#33b875;
+    filter:drop-shadow(0 8px 24px rgba(51,184,117,.35));
+}
+.pf-logo-svg svg{width:100%;height:100%;}
 .portfolio-card:hover .pf-image,
 .portfolio-card:active .pf-image{transform:scale(1.04);}
 
@@ -954,42 +974,6 @@ footer{
 }
 @media (prefers-reduced-motion: reduce){
     .whatsapp-float{transition:opacity .3s ease;transform:none;}
-}
-
-/* Burbuja de mensaje que aparece antes del botón */
-.whatsapp-bubble{
-    max-width:220px;
-    background:var(--bg-card);
-    border:1px solid var(--border-soft);
-    border-radius:14px 14px 4px 14px;
-    padding:12px 14px;
-    font-size:.82rem;
-    color:var(--white);
-    box-shadow:0 10px 30px rgba(0,0,0,.4);
-    opacity:0;
-    transform:translateY(10px) scale(.95);
-    pointer-events:none;
-    transition:.35s cubic-bezier(.4,0,.2,1);
-}
-.whatsapp-bubble.show{
-    opacity:1;
-    transform:translateY(0) scale(1);
-}
-.whatsapp-bubble button{
-    position:absolute;
-    top:-8px;
-    right:-8px;
-    width:20px;height:20px;
-    border-radius:50%;
-    background:var(--bg-black-2);
-    border:1px solid var(--border-soft);
-    color:var(--gray-soft);
-    font-size:.65rem;
-    line-height:1;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
 }
 
 .whatsapp-btn{

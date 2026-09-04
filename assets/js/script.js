@@ -165,43 +165,15 @@ document.getElementById('contactForm').addEventListener('submit', function(e){
 });
 
 /* =====================================================================
-   BOTÓN FLOTANTE DE WHATSAPP — entrada animada + burbuja de mensaje diferida
+   BOTÓN FLOTANTE DE WHATSAPP — entrada animada
    ===================================================================== */
 (function(){
     const waFloat = document.querySelector('.whatsapp-float');
-    const bubble = document.getElementById('waBubble');
-    const closeBtn = document.getElementById('waBubbleClose');
-    const waButton = document.getElementById('waButton');
-    const STORAGE_KEY = 'waBubbleDismissed';
 
     // El botón redondo aparece con una animación de entrada a los 3 segundos
     setTimeout(() => {
         waFloat.classList.add('wa-visible');
     }, 3000);
-
-    // La burbuja de mensaje aparece a los 8 segundos, solo si el usuario no la cerró antes
-    let bubbleShown = false;
-    function showBubble(){
-        if(bubbleShown) return;
-        if(sessionStorage.getItem(STORAGE_KEY) === '1') return;
-        bubble.classList.add('show');
-        bubbleShown = true;
-    }
-    setTimeout(showBubble, 15000);
-
-    function hideBubble(){
-        bubble.classList.remove('show');
-        sessionStorage.setItem(STORAGE_KEY, '1');
-    }
-
-    closeBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        hideBubble();
-    });
-
-    // Al hacer clic en el botón de WhatsApp, ocultamos la burbuja también
-    waButton.addEventListener('click', hideBubble);
 })();
 
 /* =====================================================================
