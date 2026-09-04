@@ -137,6 +137,72 @@ document.querySelectorAll('.pf-link[data-demo="true"]').forEach(link => {
 })();
 
 /* =====================================================================
+   TARJETAS 3D EN MOBILE — sin mouse no hay hacia dónde "mirar", así que
+   en touch la tarjeta activa hace su propio vaivén 3D (seno suave) más
+   un "golpe" de entrada al llegar a un proyecto nuevo (más marcado y en
+   la dirección del swipe, luego se amortigua solo). Reutiliza las
+   mismas custom properties (--rx/--ry/--glow-x/--glow-y) que el tilt de
+   desktop de arriba, así que no hace falta tocar el CSS de la tarjeta
+   para nada de esto. Un solo rAF para las 14 tarjetas (solo escribe
+   estilos en la activa) para que el costo en un celular sea mínimo.
+   ===================================================================== */
+(function(){
+    const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!isCoarsePointer || prefersReducedMotion) return;
+    if(!document.querySelector('.pa-media-frame')) return;
+
+    const SWAY = 6;   // grados del vaivén de reposo
+    const KICK = 14;  // grados extra del golpe de entrada, se amortigua rápido
+    let activeFrame = null;
+    let kick = 0;
+    let t = 0;
+
+    document.addEventListener('pa:panel-active', (e) => {
+        activeFrame = e.detail && e.detail.frame;
+        kick = KICK * (e.detail && e.detail.dir === 'up' ? -1 : 1);
+    });
+
+    function loop(){
+        t += 0.02;
+        kick *= 0.92;
+        if(activeFrame){
+            const rx = Math.sin(t) * SWAY * 0.5;
+            const ry = Math.sin(t * 0.7) * SWAY + kick;
+            activeFrame.style.setProperty('--rx', rx.toFixed(2) + 'deg');
+            activeFrame.style.setProperty('--ry', ry.toFixed(2) + 'deg');
+            activeFrame.style.setProperty('--glow-x', (50 + ry * 1.3).toFixed(1) + '%');
+            activeFrame.style.setProperty('--glow-y', (50 + rx * 1.3).toFixed(1) + '%');
+        }
+        requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+})();
+
+/* =====================================================================
+   TARJETA CLICKEABLE — abre el proyecto entero, no solo el botón
+   Con el scroll-jack activo, bajar el dedo/mouse justo hasta "Ver
+   demo ↗" puede sentirse incómodo (el gesto compite con el cambio de
+   panel). La tarjeta ya tiene todo el espacio y el brillo como para
+   funcionar como affordance de link: clickearla dispara el mismo <a>
+   real de "Ver sitio en vivo"/"Ver demo" del panel, así se respeta el
+   confirm() de las demos sin backend (ver el listener de "data-demo"
+   más arriba) en vez de duplicar esa lógica acá.
+   ===================================================================== */
+document.querySelectorAll('.pa-media-frame').forEach(frame => {
+    const link = frame.closest('.pa-panel-inner')?.querySelector('.pa-actions .pf-link');
+    if(!link) return;
+    frame.classList.add('pa-media-frame--clickable');
+    frame.setAttribute('role', 'link');
+    frame.setAttribute('tabindex', '0');
+    frame.setAttribute('aria-label', link.textContent.trim());
+    frame.addEventListener('click', () => link.click());
+    frame.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); link.click(); }
+    });
+});
+
+/* =====================================================================
    NAVEGACIÓN POR PANELES
    Scroll-snap "manejado" por JS: cada gesto de rueda/trackpad avanza o
    retrocede UN proyecto entero, con una animación propia (rAF + easing),
@@ -225,12 +291,21 @@ document.querySelectorAll('.pf-link[data-demo="true"]').forEach(link => {
     }
 
     function setActive(index){
+        const dir = index >= current ? 'down' : 'up';
         current = index;
         activePanel = panels[index];
 
         allPanels.forEach(panel => panel.classList.remove('is-active'));
         activePanel.classList.add('is-active');
         dots.forEach((dot, i) => dot.classList.toggle('is-active', i === index));
+
+        // Aviso desacoplado para quien le interese qué tarjeta quedó activa y
+        // desde qué dirección se llegó (lo usa el tilt 3D de mobile, más abajo
+        // en este archivo, para dar un "golpe" de entrada en vez de solo el
+        // vaivén de reposo). Un CustomEvent en vez de acoplar directo evita que
+        // la navegación tenga que saber que ese efecto existe.
+        const frame = activePanel.querySelector('.pa-media-frame');
+        if(frame) document.dispatchEvent(new CustomEvent('pa:panel-active', {detail:{frame, dir}}));
 
         const visibleProjectPanels = panels.filter(p => p.dataset.project !== undefined);
         if(counterTotal) counterTotal.textContent = String(visibleProjectPanels.length).padStart(2, '0');
