@@ -193,7 +193,15 @@ document.querySelectorAll('.pf-link[data-demo="true"]').forEach(link => {
         const startTime = performance.now();
         function step(now){
             const t = Math.min((now - startTime) / SCROLL_DURATION, 1);
-            window.scrollTo(0, startY + diff * easeInOutCubic(t));
+            // behavior:'auto' es clave acá: "html" tiene scroll-behavior:smooth
+            // global (ver styles.css), así que sin esto cada uno de estos ~60
+            // scrollTo() por segundo dispara SU PROPIA animación suave nativa
+            // por encima del easing manual de acá — dos animaciones peleando
+            // por el mismo scroll, y el resultado es que se queda "corto" y se
+            // siente trabado (medido: pedir scrollTo(0,900) terminaba clavado
+            // cerca de 96px). Con "auto" cada frame salta directo a su valor y
+            // el único easing que se ve es el nuestro.
+            window.scrollTo({top: startY + diff * easeInOutCubic(t), left:0, behavior:'auto'});
             if(t < 1){ scrollFrameId = requestAnimationFrame(step); }
             else { scrollFrameId = null; onDone(); }
         }
@@ -343,30 +351,54 @@ document.querySelectorAll('.pf-link[data-demo="true"]').forEach(link => {
     if(prevBtn) prevBtn.addEventListener('click', () => goTo(current - 1));
     if(nextBtn) nextBtn.addEventListener('click', () => goTo(current + 1));
 
-    // El scroll-snap nativo por CSS (scroll-snap-type, ver
-    // portfolio-animado.css) no es confiable en varios navegadores
-    // mobile — sobre todo iOS Safari, por la barra de direcciones
-    // dinámica cambiando la altura del viewport en pleno scroll. Como
-    // red de contención en touch: cuando el scroll se detiene, se
-    // corrige a mano al panel visible más cercano. Nunca se hace
-    // preventDefault del gesto en sí (eso sí rompería el scroll/taps),
-    // solo se ajusta la posición final una vez que el usuario ya soltó.
+    // En touch usábamos el scroll nativo libre + una corrección "a mano"
+    // al soltar (settleToNearestPanel). En la práctica eso competía con
+    // el scroll con inercia del propio navegador: mientras el dedo ya
+    // soltó pero el momentum seguía moviendo la página, el scrollTo()
+    // correctivo se sumaba a esa inercia y el resultado se sentía
+    // trabado/tironeado en vez de un salto limpio de un proyecto al
+    // siguiente. La solución es la misma que en desktop: nada de scroll
+    // nativo, el gesto (acá un swipe vertical en vez de la rueda) se
+    // intercepta con preventDefault y goTo() hace SIEMPRE la animación
+    // corta propia — así el recorrido se siente idéntico en mobile y en
+    // desktop, como pasar diapositivas.
     if(isCoarsePointer){
-        let settleTimer = null;
-        function settleToNearestPanel(){
-            if(locked) return;
-            let closestIdx = current;
-            let closestDist = Infinity;
-            panels.forEach((panel, i) => {
-                const dist = Math.abs(panel.getBoundingClientRect().top);
-                if(dist < closestDist){ closestDist = dist; closestIdx = i; }
-            });
-            if(closestDist > 4) goTo(closestIdx, true);
-        }
-        window.addEventListener('scroll', () => {
-            clearTimeout(settleTimer);
-            settleTimer = setTimeout(settleToNearestPanel, 140);
+        const SWIPE_THRESHOLD = 40; // px mínimos para "gastar" el gesto en un cambio de panel
+        const ignoreSwipeFrom = 'a, button, .pa-dots, .pa-counter, .pa-filters, header, .nav-links, .hamburger';
+        let touchActive = false;
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchLastY = 0;
+
+        track.addEventListener('touchstart', (e) => {
+            if(e.touches.length !== 1 || e.target.closest(ignoreSwipeFrom)){
+                touchActive = false;
+                return;
+            }
+            touchActive = true;
+            touchStartX = e.touches[0].clientX;
+            touchStartY = touchLastY = e.touches[0].clientY;
         }, {passive:true});
+
+        track.addEventListener('touchmove', (e) => {
+            if(!touchActive || e.touches.length !== 1) return;
+            touchLastY = e.touches[0].clientY;
+            const dx = e.touches[0].clientX - touchStartX;
+            const dy = touchLastY - touchStartY;
+            if(Math.abs(dx) > Math.abs(dy)) return; // gesto horizontal: no es navegación de paneles
+
+            e.preventDefault();
+            if(locked) return;
+            if(Math.abs(dy) > SWIPE_THRESHOLD){
+                goTo(current + (dy < 0 ? 1 : -1));
+                // Reinicia el gesto desde acá: un swipe largo y continuo
+                // (sin levantar el dedo) puede seguir avanzando varios
+                // proyectos, igual que pasa con la rueda en desktop.
+                touchStartY = touchLastY;
+            }
+        }, {passive:false});
+
+        track.addEventListener('touchend', () => { touchActive = false; }, {passive:true});
     }
 
     setupSyncObserver();

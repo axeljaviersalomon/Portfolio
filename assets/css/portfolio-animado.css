@@ -42,6 +42,17 @@ html[data-pa-scroll]{
     position:relative;
     z-index:1;
 }
+/* En touch, portfolio-animado.js toma el control total del gesto vertical
+   (swipe = pasar de proyecto, ver "touchmove" en el JS) para que se sienta
+   igual que el wheel-jack de desktop. "pan-x" le dice al navegador que NO
+   intente su propio scroll/bounce vertical por sí solo (eso era lo que
+   competía con la corrección por JS y se sentía trabado) y deja el gesto
+   horizontal libre por si hiciera falta en algún panel. */
+@media (pointer:coarse){
+    .pa-track{
+        touch-action:pan-x;
+    }
+}
 .pa-panel{
     position:relative;
     min-height:100svh;
