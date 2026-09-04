@@ -29,6 +29,18 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     window.addEventListener('scroll', onScroll, {passive:true});
 })();
 
+/* ---------- Botón "volver arriba" ---------- */
+(function(){
+    const btn = document.getElementById('backToTop');
+    if(!btn) return;
+    const onScroll = () => btn.classList.toggle('show', window.scrollY > 500);
+    onScroll();
+    window.addEventListener('scroll', onScroll, {passive:true});
+    btn.addEventListener('click', () => {
+        window.scrollTo({top:0, behavior:'smooth'});
+    });
+})();
+
 /* ---------- Animación reveal al hacer scroll ---------- */
 const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -196,6 +208,15 @@ document.getElementById('contactForm').addEventListener('submit', function(e){
    asistente todavía no está conectado, en vez de fallar en silencio.
    ===================================================================== */
 (function(){
+    // Asistente reservado por pedido del cliente (no se usa por ahora).
+    // El código queda intacto: para reactivarlo, poner esto en true.
+    const AI_ASSISTANT_ENABLED = false;
+    if(!AI_ASSISTANT_ENABLED){
+        const el = document.getElementById('aiAssistant');
+        if(el) el.style.display = 'none';
+        return;
+    }
+
     // ---- CONFIGURACIÓN: reemplazar por tu URL real del Worker ----
     const PROXY_URL = 'https://TU-WORKER.workers.dev'; // <-- cambiar esto
 

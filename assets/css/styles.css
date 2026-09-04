@@ -648,15 +648,21 @@ header::before{
     color:#33b875;
     filter:drop-shadow(0 8px 24px rgba(51,184,117,.35));
 }
-/* Logo de Agencia Luz: sin logo propio disponible, ícono de laptop en el
-   azul de acento del sitio para mantener el mismo hilo estético */
+/* Logo de Agencia Luz: sin logo definitivo todavía, se usa el signo
+   "</>" (símbolo genérico de programación) en el acento azul del sitio
+   como placeholder, hasta que el cliente tenga un logo propio */
 .pf-logo-luz{
     padding:14% 24% 40%;
     color:var(--accent-hot);
     filter:drop-shadow(0 8px 24px var(--accent-glow));
 }
-.pf-logo-svg svg,
-.pf-logo-luz svg{width:100%;height:100%;}
+.pf-logo-code{
+    font-family:var(--font-mono);
+    font-size:3.6rem;
+    font-weight:700;
+    letter-spacing:-1px;
+}
+.pf-logo-svg svg{width:100%;height:100%;}
 .portfolio-card:hover .pf-image,
 .portfolio-card:active .pf-image{transform:scale(1.04);}
 
@@ -956,6 +962,25 @@ footer{
 }
 .reveal.show{opacity:1;transform:translateY(0);}
 
+/* En touch (mobile/tablet) el desplazamiento vertical del reveal puede dejar
+   un botón moviéndose justo cuando el usuario lo toca: el dedo queda quieto
+   pero el elemento se desplaza por debajo entre el touchstart y el touchend,
+   así que el navegador no dispara el click. Esto es la causa de los botones
+   que "a veces andan y a veces no" en mobile — no es aleatorio, depende de
+   si se toca mientras el elemento todavía está animando su entrada. En touch
+   se deja solo el fade de opacidad, sin mover nada, así el botón nunca
+   cambia de posición mientras se lo está tocando. */
+@media (hover:none), (pointer:coarse){
+    .reveal{transform:none;transition:opacity .5s ease;}
+    .reveal.show{transform:none;}
+    /* Mismo criterio para el botón flotante de WhatsApp: también tiene una
+       animación de entrada con transform (scale+translateY) al cargar la
+       página, y un tap justo en ese instante puede fallar igual que con
+       .reveal. En touch aparece con opacidad nada más. */
+    .whatsapp-float{transform:none;transition:opacity .4s ease;}
+    .whatsapp-float.wa-visible{transform:none;}
+}
+
 @media (prefers-reduced-motion: reduce){
     .global-bg, .blob, .hero-tag .dot{animation:none !important;}
     .reveal{transition:none;opacity:1;transform:none;}
@@ -1016,6 +1041,53 @@ footer{
 
 @media (min-width:768px){
     .whatsapp-float{right:28px;bottom:28px;}
+}
+
+/* =====================================================================
+   BOTÓN VOLVER ARRIBA — esquina inferior izquierda, sutil, sobre el
+   asistente IA. Aparece recién al bajar un poco la página.
+   ===================================================================== */
+.back-to-top{
+    position:fixed;
+    left:18px;
+    bottom:88px;
+    z-index:1150;
+    width:42px;height:42px;
+    border-radius:50%;
+    border:1px solid var(--border-soft);
+    background:rgba(255,255,255,.05);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    color:var(--white);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transform:translateY(10px);
+    transition:opacity .35s ease, transform .35s ease, visibility .35s, background .25s ease, border-color .25s ease;
+}
+.back-to-top svg{width:18px;height:18px;}
+.back-to-top.show{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transform:translateY(0);
+}
+.back-to-top:hover{
+    background:var(--accent);
+    border-color:var(--accent);
+    transform:translateY(-2px);
+}
+@media (prefers-reduced-motion: reduce){
+    .back-to-top{transition:opacity .25s ease, visibility .25s;}
+    .back-to-top.show{transform:none;}
+    .back-to-top:hover{transform:none;}
+}
+@media (min-width:768px){
+    .back-to-top{left:28px;bottom:98px;}
 }
 
 /* =====================================================================
