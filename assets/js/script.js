@@ -464,6 +464,53 @@ document.getElementById('contactForm').addEventListener('submit', function(e){
 })();
 
 /* =====================================================================
+   TARJETA 3D LUMINISCENTE — cuadro del ícono de React en "Por qué elegirme"
+   Mismo recurso que las tarjetas de portfolio-animado.js (tilt + brillo
+   especular que sigue al mouse), pero sobre hover en vez de pantalla
+   completa, igual que el tilt de las cards de portfolio de arriba.
+   ===================================================================== */
+(function(){
+    const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!hasFinePointer || prefersReducedMotion) return;
+
+    const visual = document.querySelector('.porque-visual');
+    if(!visual) return;
+
+    const MAX_TILT = 10;
+    let tx = 0, ty = 0, gx = 50, gy = 50, cx = 0, cy = 0, cgx = 50, cgy = 50, raf = null;
+
+    visual.addEventListener('mousemove', (e) => {
+        const r = visual.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        tx = -py * MAX_TILT;
+        ty = px * MAX_TILT;
+        gx = 50 + px * 80;
+        gy = 50 + py * 80;
+        if(!raf) raf = requestAnimationFrame(loop);
+    });
+    visual.addEventListener('mouseleave', () => {
+        tx = 0; ty = 0; gx = 50; gy = 50;
+        if(!raf) raf = requestAnimationFrame(loop);
+    });
+
+    function loop(){
+        cx += (tx - cx) * 0.15;
+        cy += (ty - cy) * 0.15;
+        cgx += (gx - cgx) * 0.15;
+        cgy += (gy - cgy) * 0.15;
+        visual.style.setProperty('--rx', cx.toFixed(2) + 'deg');
+        visual.style.setProperty('--ry', cy.toFixed(2) + 'deg');
+        visual.style.setProperty('--glow-x', cgx.toFixed(1) + '%');
+        visual.style.setProperty('--glow-y', cgy.toFixed(1) + '%');
+        const settled = Math.abs(tx - cx) < 0.05 && Math.abs(ty - cy) < 0.05 &&
+            Math.abs(gx - cgx) < 0.1 && Math.abs(gy - cgy) < 0.1;
+        raf = settled ? null : requestAnimationFrame(loop);
+    }
+})();
+
+/* =====================================================================
    BOTONES MAGNÉTICOS DEL HERO — solo mouse fino, respeta reduced-motion
    Los botones principales del hero "siguen" levemente al cursor al pasar
    por encima. Nunca se aplica al botón de envío del formulario (mala UX).

@@ -947,8 +947,22 @@ header::before{
     grid-template-columns:1fr;
     gap:36px;
 }
+/* Tarjeta 3D luminiscente: mismo recurso que las tarjetas de proyecto
+   de portfolio-animado.css (perspective + rotateX/rotateY vía custom
+   properties que mueve script.js, halo pulsante + brillo especular que
+   sigue al mouse). --rx/--ry/--glow-x/--glow-y quedan neutros por
+   defecto: sin JS (o en touch/reduced-motion) se ve plana y estática. */
 .porque-visual{
     position:relative;
+    --rx:0deg;
+    --ry:0deg;
+    --glow-x:50%;
+    --glow-y:50%;
+    --card-glow-soft:rgba(97,218,251,.4);
+    --glow-blur-a:26px;
+    --glow-spread-a:-14px;
+    --glow-blur-b:60px;
+    --glow-spread-b:-30px;
     border-radius:var(--radius-lg);
     overflow:hidden;
     background:linear-gradient(145deg, #17171b, #0c0c0e);
@@ -957,9 +971,60 @@ header::before{
     display:flex;
     align-items:center;
     justify-content:center;
+    transform-style:preserve-3d;
+    transform:perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));
+    will-change:transform;
+    box-shadow:
+        0 40px 80px -30px rgba(0,0,0,.55),
+        0 0 var(--glow-blur-a) var(--glow-spread-a) var(--card-glow-soft),
+        0 0 var(--glow-blur-b) var(--glow-spread-b) var(--card-glow-soft);
+    animation:porqueGlowPulse 5s ease-in-out infinite;
 }
-.porque-visual-icon{width:150px;height:150px;filter:drop-shadow(0 10px 30px rgba(97,218,251,.35));}
+@keyframes porqueGlowPulse{
+    0%,100%{
+        box-shadow:
+            0 40px 80px -30px rgba(0,0,0,.55),
+            0 0 var(--glow-blur-a) var(--glow-spread-a) var(--card-glow-soft),
+            0 0 var(--glow-blur-b) var(--glow-spread-b) var(--card-glow-soft);
+    }
+    50%{
+        box-shadow:
+            0 40px 80px -30px rgba(0,0,0,.55),
+            0 0 calc(var(--glow-blur-a) + 8px) calc(var(--glow-spread-a) + 3px) var(--card-glow-soft),
+            0 0 calc(var(--glow-blur-b) + 16px) calc(var(--glow-spread-b) + 4px) var(--card-glow-soft);
+    }
+}
+/* Capa trasera desplazada en Z: asoma por el borde al rotar, da sensación
+   de grosor real en vez de un plano chato. */
+.porque-visual::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    background:linear-gradient(160deg, rgba(97,218,251,.35), rgba(47,111,237,.25));
+    transform:translateZ(-22px);
+}
+/* Brillo especular que sigue al mouse (overlay glossy, no toca el ícono) */
+.porque-visual::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    background:radial-gradient(circle at var(--glow-x) var(--glow-y), rgba(255,255,255,.18), transparent 55%);
+    mix-blend-mode:screen;
+    pointer-events:none;
+}
+.porque-visual-icon{
+    position:relative;
+    width:150px;
+    height:150px;
+    filter:drop-shadow(0 10px 30px rgba(97,218,251,.35));
+    transform:translateZ(34px);
+}
 .react-logo{color:#61dafb;}
+@media (prefers-reduced-motion: reduce){
+    .porque-visual{transform:none;animation:none;}
+}
 
 .porque-list{display:flex;flex-direction:column;gap:4px;}
 .porque-item{
