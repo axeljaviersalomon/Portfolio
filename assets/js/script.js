@@ -86,20 +86,52 @@ function animateCounters(){
 }
 animateCounters();
 
-/* ---------- Filtros de portfolio ---------- */
+/* ---------- Filtros de portfolio + "Mostrar más" ---------- */
+/* En vez de mostrar las 14 cards de una, se revelan de a tandas (PORTFOLIO_STEP)
+   para que la sección se sienta liviana y ordenada. Cambiar de filtro reinicia
+   la tanda visible al tamaño inicial. */
 const filterBtns = document.querySelectorAll('.filter-btn');
-const portfolioCards = document.querySelectorAll('.portfolio-card');
+const portfolioCards = Array.from(document.querySelectorAll('.portfolio-card'));
+const portfolioMoreInner = document.getElementById('portfolioMoreInner');
+const portfolioMoreBtn = document.getElementById('portfolioMoreBtn');
+const portfolioMoreCount = document.getElementById('portfolioMoreCount');
+const PORTFOLIO_STEP_DESKTOP = 6;
+const PORTFOLIO_STEP_MOBILE = 3;
+const mobileQuery = window.matchMedia('(max-width: 767px)');
+const getPortfolioStep = () => mobileQuery.matches ? PORTFOLIO_STEP_MOBILE : PORTFOLIO_STEP_DESKTOP;
+let activeFilter = 'all';
+let visibleCount = getPortfolioStep();
+
+function renderPortfolio(){
+    const matches = portfolioCards.filter(card => activeFilter === 'all' || card.dataset.cat === activeFilter);
+    portfolioCards.forEach(card => { card.style.display = 'none'; });
+    matches.slice(0, visibleCount).forEach(card => { card.style.display = ''; });
+
+    const remaining = matches.length - visibleCount;
+    if(remaining > 0){
+        portfolioMoreInner.hidden = false;
+        portfolioMoreCount.textContent = `Proyecto ${Math.min(visibleCount, matches.length)} de ${matches.length}`;
+    } else {
+        portfolioMoreInner.hidden = true;
+    }
+}
+
 filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         filterBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        const filter = btn.dataset.filter;
-        portfolioCards.forEach(card => {
-            const match = filter === 'all' || card.dataset.cat === filter;
-            card.style.display = match ? '' : 'none';
-        });
+        activeFilter = btn.dataset.filter;
+        visibleCount = getPortfolioStep();
+        renderPortfolio();
     });
 });
+
+portfolioMoreBtn.addEventListener('click', () => {
+    visibleCount += getPortfolioStep();
+    renderPortfolio();
+});
+
+renderPortfolio();
 
 /* ---------- Aviso antes de abrir demos sin backend conectado ---------- */
 /* Los links marcados con data-demo="true" son proyectos de portfolio (Netlify)
@@ -117,14 +149,6 @@ document.querySelectorAll('.pf-link[data-demo="true"]').forEach(link => {
             window.open(link.href, '_blank', 'noopener,noreferrer');
         }
     });
-});
-
-/* ---------- Flechas de paginación (scroll suave al portfolio) ---------- */
-document.getElementById('nextArrow').addEventListener('click', () => {
-    document.getElementById('portfolio').scrollIntoView({behavior:'smooth'});
-});
-document.getElementById('prevArrow').addEventListener('click', () => {
-    document.getElementById('portfolio').scrollIntoView({behavior:'smooth'});
 });
 
 /* ---------- Formulario de contacto ---------- */

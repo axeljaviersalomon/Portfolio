@@ -810,49 +810,32 @@ header::before{
     border-color:var(--accent);
 }
 
-.portfolio-pagination{
+/* Bloque "Mostrar más": reemplaza la paginación con flechas (no funcional,
+   siempre marcaba "01/14" fijo) por un control real que refleja cuántas
+   cards quedan ocultas según el filtro activo. Se oculta solo (JS) cuando
+   ya no hay más cards para mostrar. */
+.portfolio-more{
     display:flex;
+    flex-direction:column;
     align-items:center;
-    justify-content:space-between;
+    gap:22px;
     margin-top:36px;
-    padding-top:24px;
+    padding-top:28px;
     border-top:1px solid var(--border-soft);
+}
+.portfolio-more-inner{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
     gap:14px;
 }
-.page-track{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    font-size:.8rem;
+.portfolio-more-count{
+    font-size:.82rem;
     color:var(--gray-mid);
-    flex:1;
+    font-family:var(--font-mono);
 }
-.page-line{
-    flex:1;
-    height:1px;
-    background:var(--border-soft);
-    position:relative;
-}
-.page-line::before{
-    content:'';
-    position:absolute;
-    left:0;top:0;
-    height:1px;
-    width:33%;
-    background:var(--accent-hot);
-}
-.page-arrows{display:flex;gap:10px;}
-.page-arrow{
-    width:40px;height:40px;
-    border-radius:50%;
-    border:1px solid var(--border-soft);
-    display:flex;align-items:center;justify-content:center;
-    cursor:pointer;
-    transition:.3s ease;
-    font-size:1rem;
-    flex-shrink:0;
-}
-.page-arrow:hover{background:var(--accent);border-color:var(--accent);}
+.portfolio-more-inner svg{width:15px;height:15px;transition:transform .3s ease;}
+.portfolio-more-inner .btn:hover svg{transform:translateY(2px);}
 
 /* CTA hacia el Portfolio Animado: mismo lenguaje de "anillo pulsante"
    que ya usa el botón de WhatsApp (ver @keyframes wappPulse), para que
