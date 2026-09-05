@@ -80,9 +80,20 @@ function animateCounters(){
                 requestAnimationFrame(tick);
                 obs.unobserve(stat);
             }
-        }, {threshold:0.5});
+        }, {threshold:0.15});
         obs.observe(stat);
     });
+
+    // Red de seguridad: si por lo que sea (scroll muy rápido saltando de
+    // sección con el nav, viewport raro) el observer nunca disparó, se fuerza
+    // el valor final a los pocos segundos para que nunca quede visible un "0".
+    setTimeout(() => {
+        document.querySelectorAll('.stat-number').forEach(stat => {
+            if(!stat.textContent.includes('+')){
+                stat.textContent = stat.dataset.count + '+';
+            }
+        });
+    }, 4000);
 }
 animateCounters();
 
@@ -696,6 +707,9 @@ document.getElementById('contactForm').addEventListener('submit', function(e){
     }
 
     function drawStatic(){
+        // drawImage sobre un canvas fuente de 0x0 (sección aún sin layout,
+        // p.ej. justo al cargar) tira InvalidStateError — se evita el frame.
+        if(staticCanvas.width === 0 || staticCanvas.height === 0) return;
         ctx.clearRect(0, 0, width, height);
         ctx.drawImage(staticCanvas, 0, 0);
     }
