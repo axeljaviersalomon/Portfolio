@@ -164,6 +164,9 @@
     position:relative;
 }
 .sm-cta h2{font-size:clamp(1.8rem,5.6vw,2.6rem);margin-bottom:14px;}
+@media (max-width:767px){
+    .sm-cta{padding-top:140px;padding-bottom:140px;}
+}
 
 @media (min-width:768px){
     .sm-intro{padding-top:calc(68px + 70px);}
