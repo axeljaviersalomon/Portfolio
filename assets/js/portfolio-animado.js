@@ -6,39 +6,6 @@
    scroll, luz de cursor) más la lógica propia de paneles.
    ===================================================================== */
 
-/* ---------- Fix: header ausente al abrir el link desde un navegador embebido (ej. WhatsApp) ---------- */
-/* Confirmado con grabaciones de pantalla: al entrar directo desde un link
-   externo abierto DENTRO de apps como WhatsApp (su mini-navegador propio,
-   no Safari), el header "position:fixed" no aparece nunca — persiste
-   scrolleando ida y vuelta por varios proyectos — y solo se soluciona con
-   un reload real o navegando desde index.html. Un scroll o repintado
-   simulados (probados en intentos anteriores) no lo resuelven.
-   Hipótesis: esos navegadores embebidos animan su propia apertura (se
-   deslizan hacia arriba) y si la página termina de cargar mientras esa
-   animación sigue en curso, el área visible que usa el motor para ubicar
-   los elementos "fixed" queda mal tomada. window.visualViewport SÍ dispara
-   un evento "resize" real cuando esa geometría se termina de asentar
-   (a diferencia de un scroll programático), así que se lo usa como
-   disparador genuino para forzar un reflow completo del documento. */
-if(window.matchMedia('(pointer: coarse)').matches){
-    let relayoutDone = false;
-    const forceRelayout = () => {
-        if(relayoutDone) return;
-        relayoutDone = true;
-        document.documentElement.style.minHeight = '100.01%';
-        requestAnimationFrame(() => {
-            document.documentElement.style.minHeight = '';
-        });
-    };
-    if(window.visualViewport){
-        window.visualViewport.addEventListener('resize', forceRelayout);
-    }
-    // Red de contención por si en este navegador en particular el evento
-    // de arriba no llega a disparar: 500ms alcanza de sobra para que
-    // termine cualquier animación de apertura típica de estos navegadores.
-    setTimeout(forceRelayout, 500);
-}
-
 /* ---------- Menú móvil (igual que en index.html) ---------- */
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');

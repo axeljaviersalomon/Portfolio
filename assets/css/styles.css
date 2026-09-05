@@ -294,14 +294,6 @@ header{
     z-index:1300;
     border-bottom:1px solid var(--border-soft);
     transition:border-color .3s ease, box-shadow .3s ease;
-    /* OJO: nunca poner "transform" acá (ni translateZ(0) ni ningún otro
-       valor) — un transform en este elemento lo convierte en el
-       "contenedor de referencia" de sus hijos position:fixed (spec CSS),
-       y ".nav-links" (el menú mobile) vive fixed adentro del header. Se
-       probó como intento de mitigar un bug de iOS y rompió el menú mobile
-       (quedaba con ~44px de alto en vez de ocupar toda la pantalla). El
-       fix real de ese bug de iOS terminó siendo otro (ver el z-index del
-       pseudo-elemento de abajo y los backdrop-filter con prefijo). */
 }
 /* Al bajar el scroll, el header suma sombra y refuerza el borde: distingue
    visualmente "flotando sobre el contenido" de su estado inicial en el hero */
@@ -314,23 +306,16 @@ header.scrolled{
    referencia" de sus hijos con position:fixed (spec CSS). Como el menú mobile
    (.nav-links) es fixed y vive dentro del header, si el header tuviera el
    backdrop-filter, el menú se posicionaría relativo a la altura del header
-   (~68px) en vez de a toda la pantalla, quedando cortado/aplastado.
-   Ojo: el pseudo-elemento NO usa z-index negativo a propósito — un hijo con
-   z-index:-1 dentro de un ancestro position:fixed es un patrón con bugs de
-   pintado documentados en iOS Safari (el header entero puede no renderizar
-   hasta el primer scroll/repaint). En vez de eso, ".nav-wrap" sube a
-   z-index:1 para quedar arriba del pseudo sin que este necesite bajar de 0. */
+   (~68px) en vez de a toda la pantalla, quedando cortado/aplastado. */
 header::before{
     content:'';
     position:absolute;
     inset:0;
+    z-index:-1;
     background:rgba(10,10,12,0.85);
     backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
 }
 .nav-wrap{
-    position:relative;
-    z-index:1;
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -377,7 +362,6 @@ header::before{
     bottom:0;
     background:rgba(8,8,10,0.98);
     backdrop-filter:blur(16px);
-    -webkit-backdrop-filter:blur(16px);
     display:flex;
     flex-direction:column;
     align-items:stretch;
