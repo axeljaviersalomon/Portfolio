@@ -395,6 +395,11 @@ header::before{
 .nav-links a.active{color:var(--accent-hot);}
 .nav-links .btn{margin-top:20px;}
 .nav-links .btn + .nav-link-shine{margin-top:20px;}
+.nav-links .btn-primary{
+    background:linear-gradient(135deg,#173d99 0%,var(--accent) 100%);
+    box-shadow:0 10px 28px -8px rgba(23,61,153,.45);
+}
+.nav-links .btn-primary:hover{box-shadow:0 16px 34px -6px rgba(23,61,153,.6);}
 
 /* Link "Portfolio Animado": brillo sutil tipo "shine" en el texto, más
    un subrayado animado debajo (mismo recurso que
