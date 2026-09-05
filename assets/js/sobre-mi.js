@@ -70,6 +70,84 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
     followCursor();
 })();
 
+/* =====================================================================
+   TARJETA 3D DEL LOGO (sección "Filosofía") — mismo comportamiento que
+   ".porque-visual" en script.js (home): en desktop con mouse, tiltea
+   hacia el cursor y mueve el brillo especular; en touch, hace un vaivén
+   idle. Se duplica acá (en vez de compartir script.js) porque esta
+   página no carga ese archivo — ver nota al inicio de este archivo.
+   ===================================================================== */
+(function(){
+    const visual = document.querySelector('.porque-visual');
+    if(!visual) return;
+
+    const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(prefersReducedMotion) return;
+
+    let raf = null;
+    let isVisible = false;
+    const observer = new IntersectionObserver((entries) => {
+        isVisible = entries[0].isIntersecting;
+        if(isVisible && !raf) raf = requestAnimationFrame(loop);
+    });
+    observer.observe(visual);
+
+    function clamp(value, min, max){
+        return Math.max(min, Math.min(max, value));
+    }
+
+    let loop;
+
+    if(hasFinePointer){
+        const MAX_TILT = 14;
+        let targetX = window.innerWidth / 2;
+        let targetY = window.innerHeight / 2;
+        let rx = 0, ry = 0, gx = 50, gy = 50;
+
+        document.addEventListener('mousemove', (e) => {
+            targetX = e.clientX;
+            targetY = e.clientY;
+        });
+
+        loop = function(){
+            if(!isVisible){
+                rx += (0 - rx) * 0.12;
+                ry += (0 - ry) * 0.12;
+            } else {
+                const r = visual.getBoundingClientRect();
+                const cx = r.left + r.width / 2;
+                const cy = r.top + r.height / 2;
+                const px = clamp((targetX - cx) / (r.width * 1.4), -1, 1);
+                const py = clamp((targetY - cy) / (r.height * 1.4), -1, 1);
+                rx += (-py * MAX_TILT - rx) * 0.1;
+                ry += (px * MAX_TILT - ry) * 0.1;
+                gx += (50 + px * 40 - gx) * 0.1;
+                gy += (50 + py * 40 - gy) * 0.1;
+            }
+            visual.style.setProperty('--rx', rx.toFixed(2) + 'deg');
+            visual.style.setProperty('--ry', ry.toFixed(2) + 'deg');
+            visual.style.setProperty('--glow-x', gx.toFixed(1) + '%');
+            visual.style.setProperty('--glow-y', gy.toFixed(1) + '%');
+            raf = isVisible ? requestAnimationFrame(loop) : null;
+        };
+    } else {
+        const SWAY = 6;
+        let t = 0;
+
+        loop = function(){
+            t += 0.02;
+            const rx = Math.sin(t) * SWAY * 0.5;
+            const ry = Math.sin(t * 0.7) * SWAY;
+            visual.style.setProperty('--rx', rx.toFixed(2) + 'deg');
+            visual.style.setProperty('--ry', ry.toFixed(2) + 'deg');
+            visual.style.setProperty('--glow-x', (50 + ry * 1.3).toFixed(1) + '%');
+            visual.style.setProperty('--glow-y', (50 + rx * 1.3).toFixed(1) + '%');
+            raf = isVisible ? requestAnimationFrame(loop) : null;
+        };
+    }
+})();
+
 /* ---------- Botón flotante de WhatsApp — entrada animada ---------- */
 (function(){
     const waFloat = document.querySelector('.whatsapp-float');
