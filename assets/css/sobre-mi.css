@@ -137,6 +137,8 @@
     gap:18px;
     margin:28px 0 30px;
 }
+.sm-logo-strip-center{justify-content:center;}
+.sm-alcance-btn{display:block;margin:0 auto;width:fit-content;}
 .sm-logo-strip a{
     width:84px;
     height:84px;
