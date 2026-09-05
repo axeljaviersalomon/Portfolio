@@ -69,6 +69,20 @@
 .sm-text-block{max-width:65ch;}
 .sm-text-block p{margin-bottom:16px;}
 .sm-text-block p:last-child{margin-bottom:0;}
+/* Tarjeta 3D con el logo, misma pieza que ".porque-visual" de styles.css
+   (perspective + tilt vía JS). En mobile queda debajo del texto, en
+   desktop pasa a la derecha con el texto ocupando más ancho. */
+.sm-filosofia-grid{display:grid;grid-template-columns:1fr;gap:36px;}
+.sm-filosofia-grid .porque-visual{max-width:340px;margin:0 auto;}
+.sm-logo-icon{
+    width:120px;
+    height:120px;
+    object-fit:contain;
+    filter:drop-shadow(0 10px 30px rgba(91,141,255,.4));
+}
+@media (min-width:768px){
+    .sm-filosofia-grid{grid-template-columns:1.15fr 0.85fr;gap:56px;align-items:center;}
+}
 
 /* =====================================================================
    3. FORMACIÓN & STACK
