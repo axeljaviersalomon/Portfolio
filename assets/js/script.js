@@ -1,3 +1,22 @@
+/* ---------- Fix: header/layout "corridos" hacia arriba al entrar directo (iOS) ---------- */
+/* Mismo bug conocido de Safari/Chrome en iOS que se corrigió en
+   portfolio-animado.js: al abrir la URL directo (no por link interno), a
+   veces el header "position:fixed" se dibuja contra el viewport ampliado
+   que aún contempla la barra de direcciones sin colapsar, y todo el layout
+   se ve corrido hacia arriba hasta el primer scroll (que lo "acomoda"
+   solo). Se simula ese primer scroll apenas carga, para que no se note. */
+if(window.matchMedia('(pointer: coarse)').matches){
+    const fixIOSLayoutOffset = () => {
+        window.scrollTo(0, 1);
+        requestAnimationFrame(() => window.scrollTo(0, 0));
+    };
+    if(document.readyState === 'complete'){
+        fixIOSLayoutOffset();
+    } else {
+        window.addEventListener('load', fixIOSLayoutOffset);
+    }
+}
+
 /* ---------- Menú móvil ---------- */
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
@@ -544,6 +563,44 @@ document.getElementById('contactForm').addEventListener('submit', function(e){
         visual.style.setProperty('--ry', ry.toFixed(2) + 'deg');
         visual.style.setProperty('--glow-x', gx.toFixed(1) + '%');
         visual.style.setProperty('--glow-y', gy.toFixed(1) + '%');
+        raf = isVisible ? requestAnimationFrame(loop) : null;
+    }
+})();
+
+/* =====================================================================
+   MISMA TARJETA, EN MOBILE — sin mouse no hay hacia dónde "mirar", así que
+   en touch replica el vaivén 3D idle (seno suave) que ya usan las tarjetas
+   de portfolio-animado.js: mismo SWAY, mismas custom properties
+   (--rx/--ry/--glow-x/--glow-y) que ya lee el CSS de esta tarjeta, así que
+   no hace falta tocar estilos para nada de esto.
+   ===================================================================== */
+(function(){
+    const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!isCoarsePointer || prefersReducedMotion) return;
+
+    const visual = document.querySelector('.porque-visual');
+    if(!visual) return;
+
+    const SWAY = 6;
+    let isVisible = false;
+    let raf = null;
+    let t = 0;
+
+    const observer = new IntersectionObserver((entries) => {
+        isVisible = entries[0].isIntersecting;
+        if(isVisible && !raf) raf = requestAnimationFrame(loop);
+    });
+    observer.observe(visual);
+
+    function loop(){
+        t += 0.02;
+        const rx = Math.sin(t) * SWAY * 0.5;
+        const ry = Math.sin(t * 0.7) * SWAY;
+        visual.style.setProperty('--rx', rx.toFixed(2) + 'deg');
+        visual.style.setProperty('--ry', ry.toFixed(2) + 'deg');
+        visual.style.setProperty('--glow-x', (50 + ry * 1.3).toFixed(1) + '%');
+        visual.style.setProperty('--glow-y', (50 + rx * 1.3).toFixed(1) + '%');
         raf = isVisible ? requestAnimationFrame(loop) : null;
     }
 })();

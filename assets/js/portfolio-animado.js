@@ -6,6 +6,26 @@
    scroll, luz de cursor) más la lógica propia de paneles.
    ===================================================================== */
 
+/* ---------- Fix: header/paneles "corridos" hacia arriba al entrar directo (iOS) ---------- */
+/* Bug conocido de Safari/Chrome en iOS: al abrir la URL directo (no por link
+   interno), a veces el navegador dibuja los elementos "position:fixed" (el
+   header) contra el viewport ampliado que todavía contempla la barra de
+   direcciones sin colapsar, dejando todo el layout visualmente corrido hacia
+   arriba hasta el primer scroll — que fuerza a recalcular y "acomoda" solo.
+   Se simula ese primer scroll (1px y de vuelta a 0) apenas carga la página,
+   así el usuario nunca ve el estado corrido. */
+if(window.matchMedia('(pointer: coarse)').matches){
+    const fixIOSLayoutOffset = () => {
+        window.scrollTo(0, 1);
+        requestAnimationFrame(() => window.scrollTo(0, 0));
+    };
+    if(document.readyState === 'complete'){
+        fixIOSLayoutOffset();
+    } else {
+        window.addEventListener('load', fixIOSLayoutOffset);
+    }
+}
+
 /* ---------- Menú móvil (igual que en index.html) ---------- */
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
