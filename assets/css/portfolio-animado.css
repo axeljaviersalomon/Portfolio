@@ -490,6 +490,19 @@ html[data-pa-scroll]{
     border-radius:50px;
     padding:8px 10px 8px 14px;
     backdrop-filter:blur(10px);
+    /* Oculto en el intro (index 0, ver setActive() en portfolio-animado.js):
+       ahí abajo ya está el .pa-scroll-cue del hero, y mostrar los dos juntos
+       hace que se pisen — el paginador solo tiene sentido una vez que hay
+       un proyecto activo para contar. */
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transition:opacity .25s ease, visibility .25s;
+}
+.pa-counter.show{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
 }
 .pa-counter strong{color:var(--white);font-weight:700;}
 .pa-counter-nums{display:flex;align-items:center;gap:6px;}
@@ -568,22 +581,27 @@ html[data-pa-scroll]{
 .pa-scroll-cue{
     position:absolute;
     left:50%;
-    bottom:36px;
+    /* Un poco más arriba que antes: en mobile este indicador vivía en la
+       misma franja que el paginador (.pa-counter) y quedaba tapado por él.
+       El paginador ahora arranca oculto en el intro (ver setActive() en
+       portfolio-animado.js), pero se sube igual para que el indicador
+       tenga aire propio sin depender de eso. */
+    bottom:52px;
     transform:translateX(-50%);
     display:flex;
     flex-direction:column;
     align-items:center;
-    gap:9px;
+    gap:10px;
     color:var(--gray-mid);
     font-family:var(--font-mono);
-    font-size:.82rem;
+    font-size:.9rem;
     font-weight:600;
     letter-spacing:2px;
     text-transform:uppercase;
     z-index:2;
 }
 .pa-scroll-cue svg{
-    width:19px;height:19px;
+    width:22px;height:22px;
     animation:paScrollBounce 1.8s ease-in-out infinite;
 }
 @keyframes paScrollBounce{

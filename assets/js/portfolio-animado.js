@@ -233,6 +233,7 @@ document.querySelectorAll('.pa-media-frame').forEach(frame => {
     const prevBtn = document.getElementById('paPrevBtn');
     const nextBtn = document.getElementById('paNextBtn');
     const toTopBtn = document.getElementById('paToTop');
+    const counterWrap = document.getElementById('paCounter');
     const filterBar = document.getElementById('paFilters');
     const filterBtns = filterBar ? Array.from(filterBar.querySelectorAll('.filter-btn')) : [];
 
@@ -322,6 +323,11 @@ document.querySelectorAll('.pa-media-frame').forEach(frame => {
         // oculta, ver applyFilter), así que "index === 0" identifica el
         // intro sin importar qué filtro esté activo.
         if(toTopBtn) toTopBtn.classList.toggle('show', index > 0);
+        // El paginador arranca oculto en el intro (index 0): ahí abajo ya
+        // está el indicador de "scroll" propio del hero, y mostrar los dos
+        // juntos los hace pisarse visualmente (más notorio en mobile, donde
+        // ambos quedan centrados en la misma franja inferior).
+        if(counterWrap) counterWrap.classList.toggle('show', index > 0);
 
         history.replaceState(null, '', activePanel.id ? `#${activePanel.id}` : location.pathname);
     }
