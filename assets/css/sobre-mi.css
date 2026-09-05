@@ -31,6 +31,7 @@
    sitio: es lo primero que se lee de la página, se lo pidió más
    presente que un párrafo de sección cualquiera. */
 .sm-lead{font-size:1.05rem;line-height:1.7;}
+.sm-lead + .sm-lead{margin-top:16px;}
 
 /* El combo ".eyebrow" (inline-flex) + "h2" (inline-block) de styles.css
    solo queda apilado "por accidente" cuando el texto del h2 es lo
@@ -227,10 +228,10 @@
 .sm-softskills{font-size:.9rem;max-width:70ch;}
 .sm-softskills + .sm-softskills{margin-top:10px;}
 .sm-softskills strong{color:var(--white);}
-/* Deja aire debajo del contenido para que el fondo de ondas (mismo
-   recurso que el Hero, ver #waveCanvasTech en el HTML) tenga su propio
-   espacio en vez de superponerse directo a los chips/parrafos. */
-.sm-tech{padding-bottom:calc(var(--section-pad) + 220px);}
+/* Deja un poco de aire debajo del contenido para que el fondo de ondas
+   (mismo recurso que el Hero, ver #waveCanvasTech en el HTML) tenga su
+   propio espacio en vez de superponerse directo a los chips/parrafos. */
+.sm-tech{padding-bottom:calc(var(--section-pad) + 40px);}
 
 /* =====================================================================
    4. TIRA DE LOGOS (alcance / marcas reales)
