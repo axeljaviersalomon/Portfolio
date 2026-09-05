@@ -6,36 +6,6 @@
    scroll, luz de cursor) más la lógica propia de paneles.
    ===================================================================== */
 
-/* ---------- Fix: header/paneles "corridos" hacia arriba al entrar directo (iOS) ---------- */
-/* Bug conocido de Safari/Chrome en iOS: al abrir la URL directo (no por link
-   interno), a veces el navegador dibuja los elementos "position:fixed" (el
-   header) contra el viewport ampliado que todavía contempla la barra de
-   direcciones sin colapsar, dejando todo el layout visualmente corrido hacia
-   arriba hasta el primer scroll — que fuerza a recalcular y "acomoda" solo.
-   Un scroll simulado (1px y de vuelta a 0) resultó insuficiente en la
-   práctica: el scroll programático no siempre dispara el mismo recálculo
-   que un gesto real del usuario. Se combina con un "forzado de reflow"
-   directo sobre el header (display:none → reflow → display original), que
-   obliga al navegador a repintarlo desde cero en la posición correcta. */
-if(window.matchMedia('(pointer: coarse)').matches){
-    const fixIOSLayoutOffset = () => {
-        const header = document.querySelector('header');
-        if(header){
-            const previousDisplay = header.style.display;
-            header.style.display = 'none';
-            void header.offsetHeight; // fuerza el reflow
-            header.style.display = previousDisplay;
-        }
-        window.scrollTo(0, 1);
-        requestAnimationFrame(() => window.scrollTo(0, 0));
-    };
-    if(document.readyState === 'complete'){
-        fixIOSLayoutOffset();
-    } else {
-        window.addEventListener('load', fixIOSLayoutOffset);
-    }
-}
-
 /* ---------- Menú móvil (igual que en index.html) ---------- */
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');

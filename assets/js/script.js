@@ -1,32 +1,3 @@
-/* ---------- Fix: header/layout "corridos" hacia arriba al entrar directo (iOS) ---------- */
-/* Mismo bug conocido de Safari/Chrome en iOS que se corrigió en
-   portfolio-animado.js: al abrir la URL directo (no por link interno), a
-   veces el header "position:fixed" se dibuja contra el viewport ampliado
-   que aún contempla la barra de direcciones sin colapsar, y todo el layout
-   se ve corrido hacia arriba hasta el primer scroll (que lo "acomoda"
-   solo). Un scroll simulado solo resultó insuficiente en la práctica, así
-   que se combina con un "forzado de reflow" directo sobre el header
-   (display:none → reflow → display original), que obliga a repintarlo
-   desde cero en la posición correcta. */
-if(window.matchMedia('(pointer: coarse)').matches){
-    const fixIOSLayoutOffset = () => {
-        const header = document.querySelector('header');
-        if(header){
-            const previousDisplay = header.style.display;
-            header.style.display = 'none';
-            void header.offsetHeight; // fuerza el reflow
-            header.style.display = previousDisplay;
-        }
-        window.scrollTo(0, 1);
-        requestAnimationFrame(() => window.scrollTo(0, 0));
-    };
-    if(document.readyState === 'complete'){
-        fixIOSLayoutOffset();
-    } else {
-        window.addEventListener('load', fixIOSLayoutOffset);
-    }
-}
-
 /* ---------- Menú móvil ---------- */
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
