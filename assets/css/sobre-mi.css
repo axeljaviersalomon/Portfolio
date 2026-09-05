@@ -1,85 +1,67 @@
 /* =====================================================================
-   SOBRE MÍ — página dedicada, mismo scroll-snap por paneles que
-   Portfolio Animado (ver portfolio-animado.css, del que hereda track,
-   paneles, dots, contador, tarjeta 3D y fondo de malla). Acá solo lo
-   que es específico de esta página: el placeholder de foto, los
-   paneles centrados de puro texto y los grupos de stack/logos.
+   SOBRE MÍ — página con scroll normal, mismo lenguaje visual que
+   index.html (header fijo, .section-pad, .container, .reveal, blobs,
+   .porque-grid para el layout de dos columnas). Acá solo lo específico
+   de esta página: el placeholder de foto, el bloque de texto de
+   filosofía, los grupos de stack y la tira de logos de marcas reales.
 
    ÍNDICE
-   1. Placeholder de foto (hero)
-   2. Paneles centrados de texto (filosofía / confianza)
+   1. Presentación (placeholder de foto + intro)
+   2. Bloque de texto (filosofía)
    3. Formación & stack
-   4. Logos de marcas reales (confianza)
+   4. Tira de logos (alcance / marcas reales)
+   5. CTA final
    ===================================================================== */
 
 /* =====================================================================
-   1. PLACEHOLDER DE FOTO (HERO)
+   1. PRESENTACIÓN
    ===================================================================== */
-/* Sin foto todavía: se dibuja una silueta genérica en vez de simular una
-   foto real, y se lo deja explícito con el aviso de abajo para que sea
-   obvio que ese es un lugar reservado, no un error. */
-.sm-avatar-wrap{
-    flex-direction:column;
-    gap:14px;
-}
-.sm-avatar{color:var(--gray-mid);}
-.sm-avatar svg{width:40%;height:40%;}
-.sm-avatar-note{
-    font-family:var(--font-mono);
-    font-size:.7rem;
-    letter-spacing:.5px;
-    color:var(--gray-mid);
-    text-align:center;
-}
+/* Primera sección de la página: sin header fijo propio (usa el header
+   fijo global), así que necesita el mismo padding-top que .hero para
+   no quedar tapada. */
+.sm-intro{padding-top:calc(68px + 56px);}
+.sm-title{font-size:clamp(2.1rem,6.5vw,3.4rem);margin-bottom:8px;}
 .sm-role{
     font-family:var(--font-mono);
-    font-size:.85rem;
+    font-size:.9rem;
     color:var(--accent-hot);
-    margin-bottom:14px;
+    margin-bottom:16px;
+}
+/* Placeholder de foto: sin foto todavía, se deja una silueta genérica
+   más un aviso explícito en vez de simular una imagen real. */
+.sm-avatar-frame{
+    width:100%;
+    max-width:280px;
+    aspect-ratio:1/1;
+    margin:0 auto;
+    border-radius:var(--radius-lg);
+    background:linear-gradient(160deg,#1a1a20 0%,#0c0c0f 100%);
+    border:1px solid var(--border-soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--gray-mid);
+}
+.sm-avatar-frame svg{width:34%;height:34%;}
+.sm-avatar-note{
+    margin-top:14px;
+    text-align:center;
+    font-family:var(--font-mono);
+    font-size:.72rem;
+    letter-spacing:.5px;
+    color:var(--gray-mid);
 }
 
 /* =====================================================================
-   2. PANELES CENTRADOS DE TEXTO (filosofía / confianza)
-   Mismo lenguaje de entrada (fade + desplazamiento corto) que el resto
-   de paneles de Portfolio Animado, en una versión sin grid de dos
-   columnas porque acá no hay imagen al lado.
+   2. BLOQUE DE TEXTO (filosofía)
    ===================================================================== */
-.sm-text{
-    text-align:center;
-    justify-content:center;
-}
-.sm-text-inner{
-    max-width:640px;
-    margin:0 auto;
-    padding:0 var(--container-pad);
-    position:relative;
-    z-index:2;
-}
-.sm-text-inner--wide{max-width:760px;}
-.sm-text-inner h2{font-size:clamp(1.7rem,5.4vw,2.5rem);margin-bottom:18px;}
-.sm-text-inner p{margin-bottom:16px;}
-.sm-text-inner .btn{width:auto;}
-.sm-text-inner > *{
-    opacity:0;
-    transform:translateY(28px);
-    transition:opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1);
-}
-.sm-text-inner > *:nth-child(1){transition-delay:.05s;}
-.sm-text-inner > *:nth-child(2){transition-delay:.12s;}
-.sm-text-inner > *:nth-child(3){transition-delay:.19s;}
-.sm-text-inner > *:nth-child(4){transition-delay:.26s;}
-.sm-text-inner > *:nth-child(5){transition-delay:.33s;}
-.pa-panel.is-active .sm-text-inner > *{opacity:1;transform:none;}
+.sm-text-block{max-width:65ch;}
+.sm-text-block p{margin-bottom:16px;}
+.sm-text-block p:last-child{margin-bottom:0;}
 
 /* =====================================================================
    3. FORMACIÓN & STACK
    ===================================================================== */
-.sm-stack-inner{position:relative;z-index:2;}
-/* El combo ".eyebrow" (inline-flex) + "h2" (inline-block) de styles.css
-   solo se ve apilado "por accidente" cuando el texto del h2 es largo y no
-   entra al lado del eyebrow en la misma línea (fuerza el salto). Acá el
-   título es corto y sí entra, así que hay que forzar el apilado a mano. */
-.sm-stack-inner .section-header .eyebrow{display:flex;}
 .sm-stack-grid{
     display:grid;
     grid-template-columns:1fr;
@@ -96,40 +78,47 @@
     color:var(--accent-hot);
     margin-bottom:10px;
 }
-.sm-stack-group .pa-tags{margin-bottom:0;}
+.sm-stack-group .pf-tags{margin-bottom:0;}
 .sm-softskills{font-size:.9rem;max-width:70ch;}
 .sm-softskills strong{color:var(--white);}
 
 /* =====================================================================
-   4. LOGOS DE MARCAS REALES (confianza)
-   Mismas tarjetas 3D (".pa-media-frame") que usan los proyectos en
-   Portfolio Animado, pero más chicas y en fila, como link directo al
-   sitio en vivo en vez de ser solo decorativas.
+   4. TIRA DE LOGOS (alcance / marcas reales)
    ===================================================================== */
-.sm-trust-logos{
+.sm-logo-strip{
     display:flex;
-    justify-content:center;
-    align-items:center;
     flex-wrap:wrap;
-    gap:20px;
+    align-items:center;
+    gap:18px;
     margin:28px 0 30px;
 }
-.sm-trust-logo{
+.sm-logo-strip a{
+    width:84px;
+    height:84px;
     flex:0 0 auto;
-    /* Padding fijo, no porcentual: ".pa-media-frame" usa padding en % (ver
-       portfolio-animado.css), que se calcula sobre el ancho del CONTENEDOR
-       padre, no el propio — acá eso inflaba la tarjeta muy por encima de
-       los 120px del "width" de abajo en vez de quedar chica. */
-    width:120px;
-    max-width:120px;
-    padding:22px;
-    cursor:pointer;
+    padding:14px;
+    border-radius:var(--radius-md);
+    background:var(--bg-card);
+    border:1px solid var(--border-soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:border-color .25s ease, transform .25s ease;
 }
-.sm-trust-logo:hover{--rx:0deg;--ry:0deg;}
+.sm-logo-strip a:hover{border-color:var(--accent);transform:translateY(-3px);}
+.sm-logo-strip img{width:100%;height:100%;object-fit:contain;}
 
-@media (min-width:680px){
-    .sm-stack-grid{grid-template-columns:1fr 1fr;}
+/* =====================================================================
+   5. CTA FINAL
+   ===================================================================== */
+.sm-cta{
+    background:linear-gradient(180deg,var(--bg-black) 0%, #060a16 100%);
+    overflow:hidden;
+    position:relative;
 }
+.sm-cta h2{font-size:clamp(1.8rem,5.6vw,2.6rem);margin-bottom:14px;}
+
 @media (min-width:768px){
-    .sm-trust-logo{width:140px;max-width:140px;padding:26px;}
+    .sm-intro{padding-top:calc(68px + 70px);}
+    .sm-logo-strip a{width:100px;height:100px;}
 }
