@@ -39,7 +39,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="assets/css/styles.css?v=31">
-<link rel="stylesheet" href="assets/css/sobre-mi.css?v=4">
+<link rel="stylesheet" href="assets/css/sobre-mi.css?v=5">
 </head>
 <body>
 
@@ -58,10 +58,9 @@
         <nav class="nav-links" id="navLinks">
             <a href="index.html#inicio">Inicio</a>
             <a href="index.html#servicios">Servicios</a>
-            <a href="index.html#portfolio">Portfolio</a>
             <a href="sobre-mi.html" class="active">Sobre mí</a>
             <a href="index.html#contacto" class="btn btn-primary btn-sm">Pedir presupuesto</a>
-            <a href="portfolio-animado.html" class="nav-link-shine"><span>Portfolio Animado</span></a>
+            <a href="portfolio-animado.html" class="btn btn-outline btn-shine-border btn-sm"><span class="shine-text">Portfolio Animado</span></a>
         </nav>
         <div class="hamburger" id="hamburger" aria-label="Abrir menú"><span></span><span></span><span></span></div>
     </div>
@@ -75,10 +74,9 @@
 
     <div class="container porque-grid">
         <div class="reveal">
-            <div class="sm-avatar-frame">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <div class="sm-avatar-frame sm-avatar-frame--photo">
+                <img src="assets/img/axel-foto.png" alt="Axel Salomon" loading="eager">
             </div>
-            <div class="sm-avatar-note">Foto próximamente</div>
         </div>
         <div class="reveal">
             <div class="eyebrow">Sobre mí</div>
@@ -113,7 +111,9 @@
 <!-- =====================================================================
      FORMACIÓN & STACK
      ===================================================================== -->
-<section class="section-pad" id="formacion" style="background:var(--bg-black-2);">
+<section class="section-pad sm-tech" id="formacion">
+    <div class="blob blob-blue blob-dance-a" style="width:340px;height:340px;top:-80px;right:-100px;"></div>
+    <div class="blob blob-teal blob-dance-b" style="width:280px;height:280px;bottom:0px;left:-90px;"></div>
     <div class="container">
         <div class="section-header reveal">
             <div class="eyebrow">Stack</div>
@@ -152,10 +152,20 @@
                     <span class="pf-tag">Scrum</span><span class="pf-tag">Git / GitHub</span><span class="pf-tag">Linux</span>
                 </div>
             </div>
+            <div class="sm-stack-group reveal" style="--group-color:#fbbf24;">
+                <span class="sm-stack-label">IA</span>
+                <div class="pf-tags">
+                    <span class="pf-tag">Claude</span><span class="pf-tag">Gemini</span><span class="pf-tag">ChatGPT</span>
+                </div>
+            </div>
         </div>
         <p class="sm-softskills reveal"><strong>Formación:</strong> Full Stack Developer en Plataforma 5 (Coding Bootcamp), enero–julio 2022 — +800 horas teórico-prácticas con metodología Scrum, pair programming y en equipos de 5 personas.</p>
         <p class="sm-softskills reveal"><strong>Skills blandas:</strong> rapidez de aprendizaje, resolución de problemas, comunicación, marketing, trabajo en equipo, profesionalismo e inglés.</p>
     </div>
+
+    <!-- Fondo animado de partículas en ondas: mismo recurso que el Hero
+         de index.html (ver #waveCanvas), reutilizado tal cual acá. -->
+    <div class="particle-bg"><canvas id="waveCanvasTech"></canvas></div>
 </section>
 
 <!-- =====================================================================
@@ -262,7 +272,7 @@
     </a>
 </div>
 
-<script src="assets/js/sobre-mi.js?v=2" defer></script>
+<script src="assets/js/sobre-mi.js?v=3" defer></script>
 
 </body>
 </html>

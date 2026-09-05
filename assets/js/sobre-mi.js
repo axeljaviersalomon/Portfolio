@@ -78,3 +78,82 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
         waFloat.classList.add('wa-visible');
     }, 3000);
 })();
+
+/* =====================================================================
+   CANVAS — Fondo animado de partículas en ondas (sección "Tecnologías")
+   Copia exacta del mismo efecto que el Hero de index.html (#waveCanvas
+   en script.js): mismo grid adaptativo, mismo movimiento y colores.
+   ===================================================================== */
+(function(){
+    const canvas = document.getElementById('waveCanvasTech');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+
+    function getGridSize(){
+        if(window.innerWidth < 480) return {cols:26, rows:9};
+        if(window.innerWidth < 768) return {cols:36, rows:11};
+        return {cols:60, rows:14};
+    }
+
+    function resize(){
+        width = canvas.parentElement.offsetWidth;
+        height = canvas.parentElement.offsetHeight;
+        canvas.width = width * window.devicePixelRatio;
+        canvas.height = height * window.devicePixelRatio;
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        ctx.setTransform(1,0,0,1,0,0);
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+        buildGrid();
+    }
+
+    function buildGrid(){
+        particles = [];
+        const {cols, rows} = getGridSize();
+        const spacingX = width / cols;
+        const spacingY = height / rows;
+        for(let y = 0; y < rows; y++){
+            for(let x = 0; x < cols; x++){
+                particles.push({
+                    baseX: x * spacingX,
+                    baseY: y * spacingY,
+                    x: x * spacingX,
+                    y: y * spacingY,
+                    depth: y / rows
+                });
+            }
+        }
+    }
+
+    let t = 0;
+    function animate(){
+        t += 0.015;
+        ctx.clearRect(0,0,width,height);
+
+        particles.forEach(p => {
+            const wave = Math.sin(t + p.baseX * 0.02 + p.depth * 4) * (5 + p.depth * 12);
+            p.y = p.baseY + wave;
+
+            const size = 1 + p.depth * 2;
+            const opacity = 0.15 + p.depth * 0.5;
+
+            const hueMix = p.baseX / width;
+            const color = hueMix < 0.5
+                ? `rgba(31, 201, 195, ${opacity})`
+                : `rgba(47, 111, 237, ${opacity})`;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, size, 0, Math.PI*2);
+            ctx.fillStyle = color;
+            ctx.fill();
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    animate();
+})();

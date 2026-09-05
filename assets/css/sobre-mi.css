@@ -38,8 +38,6 @@
    línea — con títulos cortos como los de esta página (a ciertos anchos)
    los dos quedan pegados en una sola línea. Se fuerza el apilado acá. */
 .section-header .eyebrow{display:flex;}
-/* Placeholder de foto: sin foto todavía, se deja una silueta genérica
-   más un aviso explícito en vez de simular una imagen real. */
 .sm-avatar-frame{
     width:100%;
     max-width:280px;
@@ -52,15 +50,17 @@
     align-items:center;
     justify-content:center;
     color:var(--gray-mid);
+    box-shadow:0 30px 60px -24px rgba(0,0,0,.55), 0 0 0 1px var(--border-soft);
 }
 .sm-avatar-frame svg{width:34%;height:34%;}
-.sm-avatar-note{
-    margin-top:14px;
-    text-align:center;
-    font-family:var(--font-mono);
-    font-size:.72rem;
-    letter-spacing:.5px;
-    color:var(--gray-mid);
+/* Foto real: la card pasa a ser un marco recortado (overflow hidden) con
+   la imagen cubriendo todo el cuadro, en vez del placeholder centrado. */
+.sm-avatar-frame--photo{overflow:hidden;padding:0;}
+.sm-avatar-frame--photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:top center;
 }
 
 /* =====================================================================
@@ -122,6 +122,10 @@
 .sm-softskills{font-size:.9rem;max-width:70ch;}
 .sm-softskills + .sm-softskills{margin-top:10px;}
 .sm-softskills strong{color:var(--white);}
+/* Deja aire debajo del contenido para que el fondo de ondas (mismo
+   recurso que el Hero, ver #waveCanvasTech en el HTML) tenga su propio
+   espacio en vez de superponerse directo a los chips/parrafos. */
+.sm-tech{padding-bottom:calc(var(--section-pad) + 220px);}
 
 /* =====================================================================
    4. TIRA DE LOGOS (alcance / marcas reales)
