@@ -451,6 +451,53 @@ header::before{
     .nav-link-shine span::after{animation:none;}
 }
 
+/* Botón "Ver portfolio" del hero: mismo lenguaje visual que el link
+   "Portfolio Animado" del navbar (arriba) — brillo animado en el texto
+   (@keyframes navShine) y un barrido de gradiente en el borde
+   (@keyframes porqueLineSweep, el mismo del subrayado del navbar y del
+   acento de "por qué elegirme"), para que este CTA llame más la atención
+   sin introducir un efecto nuevo. El borde animado se logra con un
+   pseudo-elemento con "mask" (técnica de "gradient border" animado): el
+   gradiente se pinta como fondo completo y el mask recorta todo menos un
+   anillo del grosor del padding, dejando ver solo el borde. */
+.btn-shine-border{position:relative;}
+.btn-shine-border::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    padding:1px;
+    background-image:linear-gradient(90deg,
+        var(--accent) 0%, var(--accent) 32%,
+        var(--wave-teal) 46%, #eafffb 50%, var(--wave-teal) 54%,
+        var(--accent) 68%, var(--accent) 100%);
+    background-size:300% 100%;
+    animation:porqueLineSweep 4.2s cubic-bezier(.83,0,.17,1) infinite;
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+    pointer-events:none;
+}
+.shine-text{position:relative;display:inline-block;}
+@supports ((background-clip:text) or (-webkit-background-clip:text)){
+    .shine-text{
+        background-image:linear-gradient(100deg,
+            var(--gray-soft) 0%, var(--gray-soft) 40%,
+            #fff 48%, var(--accent-hot) 52%, #fff 56%,
+            var(--gray-soft) 64%, var(--gray-soft) 100%);
+        background-size:220% 100%;
+        background-position:200% 0;
+        -webkit-background-clip:text;
+        background-clip:text;
+        color:transparent;
+        animation:navShine 6s ease-in-out infinite;
+    }
+}
+@media (prefers-reduced-motion: reduce){
+    .btn-shine-border::before{animation:none;}
+    .shine-text{animation:none;}
+}
+
 /* =====================================================================
    6. HERO
    ===================================================================== */
