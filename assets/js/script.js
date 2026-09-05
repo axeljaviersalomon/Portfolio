@@ -4,9 +4,19 @@
    veces el header "position:fixed" se dibuja contra el viewport ampliado
    que aún contempla la barra de direcciones sin colapsar, y todo el layout
    se ve corrido hacia arriba hasta el primer scroll (que lo "acomoda"
-   solo). Se simula ese primer scroll apenas carga, para que no se note. */
+   solo). Un scroll simulado solo resultó insuficiente en la práctica, así
+   que se combina con un "forzado de reflow" directo sobre el header
+   (display:none → reflow → display original), que obliga a repintarlo
+   desde cero en la posición correcta. */
 if(window.matchMedia('(pointer: coarse)').matches){
     const fixIOSLayoutOffset = () => {
+        const header = document.querySelector('header');
+        if(header){
+            const previousDisplay = header.style.display;
+            header.style.display = 'none';
+            void header.offsetHeight; // fuerza el reflow
+            header.style.display = previousDisplay;
+        }
         window.scrollTo(0, 1);
         requestAnimationFrame(() => window.scrollTo(0, 0));
     };

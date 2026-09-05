@@ -294,6 +294,12 @@ header{
     z-index:1300;
     border-bottom:1px solid var(--border-soft);
     transition:border-color .3s ease, box-shadow .3s ease;
+    /* Fuerza su propia capa de composición (GPU): mitiga un bug conocido
+       de Safari/Chrome en iOS donde un elemento "position:fixed" se
+       pinta en el lugar equivocado en la carga en frío de la página,
+       hasta el primer scroll. Ver también el "forzado de reflow" en
+       script.js/portfolio-animado.js, que ataca el mismo bug desde JS. */
+    transform:translateZ(0);
 }
 /* Al bajar el scroll, el header suma sombra y refuerza el borde: distingue
    visualmente "flotando sobre el contenido" de su estado inicial en el hero */
