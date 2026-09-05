@@ -53,7 +53,11 @@ const revealObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 /* ---------- Contador animado de estadísticas ---------- */
-/* Basado en tiempo (no en pasos fijos) para que el efecto de conteo se note
+/* El HTML trae el número final de entrada (ej. "11+"), así que sin JS o si
+   el observer nunca dispara, el visitante igual ve el valor real y nunca
+   un "0" pegado. Cuando el observer sí dispara, recién ahí se resetea a 0
+   para animar la cuenta hacia arriba.
+   Basado en tiempo (no en pasos fijos) para que el efecto de conteo se note
    siempre, incluso con números chicos como "3+" que antes terminaban en 2-3
    frames y pasaban desapercibidos. */
 function animateCounters(){
@@ -83,17 +87,6 @@ function animateCounters(){
         }, {threshold:0.15});
         obs.observe(stat);
     });
-
-    // Red de seguridad: si por lo que sea (scroll muy rápido saltando de
-    // sección con el nav, viewport raro) el observer nunca disparó, se fuerza
-    // el valor final a los pocos segundos para que nunca quede visible un "0".
-    setTimeout(() => {
-        document.querySelectorAll('.stat-number').forEach(stat => {
-            if(!stat.textContent.includes('+')){
-                stat.textContent = stat.dataset.count + '+';
-            }
-        });
-    }, 4000);
 }
 animateCounters();
 
@@ -221,165 +214,6 @@ document.getElementById('contactForm').addEventListener('submit', function(e){
     setTimeout(() => {
         waFloat.classList.add('wa-visible');
     }, 3000);
-})();
-
-/* =====================================================================
-   ASISTENTE VIRTUAL CON IA (Gemini) — esquina inferior izquierda
-   =====================================================================
-   IMPORTANTE — CÓMO FUNCIONA LA SEGURIDAD ACÁ:
-
-   Este sitio es 100% estático (GitHub Pages), sin servidor propio. Por
-   eso, la clave de la API de Gemini NUNCA vive en este archivo ni en
-   ningún archivo que se suba a GitHub. En su lugar, este script le
-   habla a un proxy propio (un Cloudflare Worker gratuito) que vos
-   desplegás por separado, y ES ESE PROXY el que guarda la clave de
-   forma segura y la usa para hablarle a Gemini.
-
-   Antes de que esto funcione, tenés que:
-   1. Desplegar el Worker (código y guía completa en el README del proyecto).
-   2. Reemplazar PROXY_URL de acá abajo por la URL real de tu Worker.
-
-   Mientras PROXY_URL no esté configurada, el chat va a avisar que el
-   asistente todavía no está conectado, en vez de fallar en silencio.
-   ===================================================================== */
-(function(){
-    // Asistente reservado por pedido del cliente (no se usa por ahora).
-    // El código queda intacto: para reactivarlo, poner esto en true.
-    const AI_ASSISTANT_ENABLED = false;
-    if(!AI_ASSISTANT_ENABLED){
-        const el = document.getElementById('aiAssistant');
-        if(el) el.style.display = 'none';
-        return;
-    }
-
-    // ---- CONFIGURACIÓN: reemplazar por tu URL real del Worker ----
-    const PROXY_URL = 'https://TU-WORKER.workers.dev'; // <-- cambiar esto
-
-    const assistant = document.getElementById('aiAssistant');
-    const toggleBtn = document.getElementById('aiToggleBtn');
-    const chatPanel = document.getElementById('aiChatPanel');
-    const closeBtn = document.getElementById('aiChatClose');
-    const messagesEl = document.getElementById('aiChatMessages');
-    const input = document.getElementById('aiChatInput');
-    const sendBtn = document.getElementById('aiChatSend');
-
-    // Entrada animada a los 9 segundos
-    setTimeout(() => {
-        assistant.classList.add('ai-visible');
-    }, 9000);
-
-    // Abrir / cerrar el panel de chat
-    function toggleChat(){
-        assistant.classList.toggle('ai-open');
-        if(assistant.classList.contains('ai-open')){
-            setTimeout(() => input.focus(), 300);
-        }
-    }
-    toggleBtn.addEventListener('click', toggleChat);
-    closeBtn.addEventListener('click', toggleChat);
-
-    // Escapar HTML antes de insertar cualquier texto en el DOM (anti-XSS)
-    function escapeHTML(str){
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-    }
-
-    function addMessage(text, type){
-        const msg = document.createElement('div');
-        msg.className = `ai-msg ai-msg-${type}`;
-        msg.innerHTML = escapeHTML(text);
-        messagesEl.appendChild(msg);
-        messagesEl.scrollTop = messagesEl.scrollHeight;
-        return msg;
-    }
-
-    function showTyping(){
-        const typing = document.createElement('div');
-        typing.className = 'ai-typing';
-        typing.id = 'aiTyping';
-        typing.innerHTML = '<span></span><span></span><span></span>';
-        messagesEl.appendChild(typing);
-        messagesEl.scrollTop = messagesEl.scrollHeight;
-    }
-    function hideTyping(){
-        const typing = document.getElementById('aiTyping');
-        if(typing) typing.remove();
-    }
-
-    // ---- Límite de uso del lado del cliente ----
-    // Protección liviana contra el uso excesivo accidental (no contra un
-    // atacante decidido, eso lo maneja el proxy). Tope razonable por sesión
-    // de navegación para no agotar la cuota gratuita de golpe.
-    const MAX_MESSAGES_PER_SESSION = 20;
-    let messageCount = parseInt(sessionStorage.getItem('aiMsgCount') || '0', 10);
-
-    // Historial corto de la conversación, para dar contexto a Gemini
-    // sin mandar demasiados tokens de más
-    let conversationHistory = [];
-    const MAX_HISTORY_TURNS = 6;
-
-    async function sendMessage(){
-        const text = input.value.trim();
-        if(!text) return;
-
-        if(PROXY_URL.includes('TU-WORKER')){
-            addMessage('El asistente todavía no está conectado. Revisá la configuración del proxy en el README.', 'error');
-            return;
-        }
-
-        if(messageCount >= MAX_MESSAGES_PER_SESSION){
-            addMessage('Llegaste al límite de mensajes de esta sesión. Escribime directo por WhatsApp si querés seguir la charla 👇', 'error');
-            return;
-        }
-
-        addMessage(text, 'user');
-        input.value = '';
-        sendBtn.disabled = true;
-        showTyping();
-
-        conversationHistory.push({ role: 'user', text });
-        if(conversationHistory.length > MAX_HISTORY_TURNS * 2){
-            conversationHistory = conversationHistory.slice(-MAX_HISTORY_TURNS * 2);
-        }
-
-        try{
-            const response = await fetch(PROXY_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ history: conversationHistory })
-            });
-
-            hideTyping();
-
-            if(!response.ok){
-                throw new Error('Respuesta no OK del proxy');
-            }
-
-            const data = await response.json();
-            const reply = data.reply || 'No pude generar una respuesta. Probá de nuevo en un momento.';
-
-            addMessage(reply, 'bot');
-            conversationHistory.push({ role: 'model', text: reply });
-
-            messageCount++;
-            sessionStorage.setItem('aiMsgCount', String(messageCount));
-
-        } catch(err){
-            hideTyping();
-            addMessage('Hubo un problema para conectar con el asistente. Probá de nuevo en un momento, o escribime directo por WhatsApp.', 'error');
-        } finally {
-            sendBtn.disabled = false;
-        }
-    }
-
-    sendBtn.addEventListener('click', sendMessage);
-    input.addEventListener('keydown', (e) => {
-        if(e.key === 'Enter'){
-            e.preventDefault();
-            sendMessage();
-        }
-    });
 })();
 
 /* =====================================================================

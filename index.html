@@ -40,7 +40,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="assets/css/styles.css?v=32">
+<link rel="stylesheet" href="assets/css/styles.css?v=33">
 
 <!-- Datos estructurados (Schema.org): identifican a Axel como profesional
      freelance y este sitio como su web, para rich results en buscadores -->
@@ -129,9 +129,9 @@
 
     <div class="hero-stats">
         <!-- TODO: ajustá estos 3 números a tus datos reales -->
-        <div class="stat"><div class="stat-number" data-count="11">0</div><div class="stat-label">Proyectos entregados</div></div>
-        <div class="stat"><div class="stat-number" data-count="9">0</div><div class="stat-label">Clientes felices</div></div>
-        <div class="stat"><div class="stat-number" data-count="3">0</div><div class="stat-label">Años de experiencia</div></div>
+        <div class="stat"><div class="stat-number" data-count="11">11+</div><div class="stat-label">Proyectos entregados</div></div>
+        <div class="stat"><div class="stat-number" data-count="9">9+</div><div class="stat-label">Clientes felices</div></div>
+        <div class="stat"><div class="stat-number" data-count="3">3+</div><div class="stat-label">Años de experiencia</div></div>
     </div>
 
     <!-- Fondo animado de partículas en ondas -->
@@ -629,56 +629,16 @@
 </div>
 
 <!-- =====================================================================
-     BOTÓN VOLVER ARRIBA — esquina inferior izquierda, sobre el asistente IA
+     BOTÓN VOLVER ARRIBA — esquina inferior izquierda
      ===================================================================== -->
 <button class="back-to-top" id="backToTop" aria-label="Volver al inicio">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
 </button>
 
 <!-- =====================================================================
-     ASISTENTE VIRTUAL CON IA (Gemini) — esquina inferior izquierda
-     El widget solo maneja UI y llama a un proxy propio (Cloudflare Worker)
-     que guarda la API key de forma segura. La key NUNCA vive en este
-     archivo. Ver assets/js/script.js y el README para la config del proxy.
-     ===================================================================== -->
-<div class="ai-assistant" id="aiAssistant">
-    <div class="ai-chat-panel" id="aiChatPanel">
-        <div class="ai-chat-header">
-            <div class="ai-chat-header-info">
-                <img src="assets/img/logo-icon.png" alt="" class="ai-chat-avatar">
-                <div>
-                    <h4>Asistente de Axel</h4>
-                    <span class="ai-chat-status"><span class="ai-status-dot"></span> En línea</span>
-                </div>
-            </div>
-            <button class="ai-chat-close" id="aiChatClose" aria-label="Cerrar chat">✕</button>
-        </div>
-        <div class="ai-chat-messages" id="aiChatMessages">
-            <div class="ai-msg ai-msg-bot">
-                ¡Hola! 👋 Soy el asistente virtual de Axel. Puedo contarte sobre sus servicios, el proceso de trabajo o los proyectos del portfolio. ¿En qué te puedo ayudar?
-            </div>
-        </div>
-        <div class="ai-chat-input-row">
-            <input type="text" id="aiChatInput" placeholder="Escribí tu pregunta..." maxlength="300" autocomplete="off">
-            <button id="aiChatSend" aria-label="Enviar mensaje">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            </button>
-        </div>
-    </div>
-
-    <div class="ai-toggle-wrap">
-        <button class="ai-toggle-btn" id="aiToggleBtn" aria-label="Abrir asistente virtual">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="ai-icon-chat"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="ai-icon-close"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-        <div class="ai-label-bubble" id="aiLabelBubble">✨ Asistente IA</div>
-    </div>
-</div>
-
-<!-- =====================================================================
      JAVASCRIPT
      ===================================================================== -->
-<script src="assets/js/script.js?v=19" defer></script>
+<script src="assets/js/script.js?v=20" defer></script>
 
 </body>
 </html>
