@@ -72,13 +72,16 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 /* =====================================================================
    TARJETA 3D DEL LOGO (sección "Filosofía") — mismo comportamiento que
-   ".porque-visual" en script.js (home): en desktop con mouse, tiltea
-   hacia el cursor y mueve el brillo especular; en touch, hace un vaivén
-   idle. Se duplica acá (en vez de compartir script.js) porque esta
-   página no carga ese archivo — ver nota al inicio de este archivo.
+   ".pa-media-frame" en portfolio-animado.js: en desktop con mouse,
+   tiltea hacia el cursor y mueve el brillo especular; en touch, hace un
+   vaivén idle. Acá no hay sistema de paneles/scroll-jack, así que en vez
+   de gatillar con el evento "panel activo" se usa un IntersectionObserver
+   para saber si la tarjeta está a la vista. Se duplica en vez de
+   compartir portfolio-animado.js porque esta página no lo carga — ver
+   nota al inicio de este archivo.
    ===================================================================== */
 (function(){
-    const visual = document.querySelector('.porque-visual');
+    const visual = document.querySelector('.pa-media-frame');
     if(!visual) return;
 
     const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;

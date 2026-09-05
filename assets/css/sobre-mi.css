@@ -69,19 +69,109 @@
 .sm-text-block{max-width:65ch;}
 .sm-text-block p{margin-bottom:16px;}
 .sm-text-block p:last-child{margin-bottom:0;}
-/* Tarjeta 3D con el logo, misma pieza que ".porque-visual" de styles.css
-   (perspective + tilt vía JS). En mobile queda debajo del texto, en
-   desktop pasa a la derecha con el texto ocupando más ancho. */
+/* Layout de dos columnas: texto + tarjeta del logo (".pa-media-frame",
+   ver más abajo). En mobile la tarjeta queda debajo del texto, en
+   desktop pasa a la derecha. */
 .sm-filosofia-grid{display:grid;grid-template-columns:1fr;gap:36px;}
-.sm-filosofia-grid .porque-visual{max-width:340px;margin:0 auto;}
-.sm-logo-icon{
-    width:120px;
-    height:120px;
-    object-fit:contain;
-    filter:drop-shadow(0 10px 30px rgba(91,141,255,.4));
-}
 @media (min-width:768px){
     .sm-filosofia-grid{grid-template-columns:1.15fr 0.85fr;gap:56px;align-items:center;}
+}
+
+/* Tarjeta 3D del logo — copia exacta de ".pa-media"/".pa-media-frame" de
+   portfolio-animado.css (mismo halo pulsante, brillo especular y tilt
+   vía custom properties que mueve sobre-mi.js). Se duplica acá en vez de
+   enlazar portfolio-animado.css entero para no arrastrar sus estilos de
+   paneles/scroll-jack, que esta página no usa. */
+.pa-media{display:flex;align-items:center;justify-content:center;}
+.pa-media-frame{
+    --rx:0deg;
+    --ry:0deg;
+    --glow-x:50%;
+    --glow-y:50%;
+    --card-glow: var(--accent-glow);
+    --card-glow-soft:color-mix(in srgb, var(--card-glow) 45%, transparent);
+    --glow-blur-a:26px;
+    --glow-spread-a:-14px;
+    --glow-blur-b:60px;
+    --glow-spread-b:-30px;
+    position:relative;
+    width:100%;
+    max-width:230px;
+    aspect-ratio:1/1;
+    border-radius:var(--radius-lg);
+    background:linear-gradient(160deg,#1a1a20 0%,#0c0c0f 100%);
+    border:1px solid var(--border-soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:16%;
+    box-shadow:
+        0 40px 80px -30px rgba(0,0,0,.55),
+        0 0 var(--glow-blur-a) var(--glow-spread-a) var(--card-glow-soft),
+        0 0 var(--glow-blur-b) var(--glow-spread-b) var(--card-glow-soft);
+    transform-style:preserve-3d;
+    transform:perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));
+    will-change:transform;
+    animation:cardGlowPulse 5s ease-in-out infinite;
+}
+@keyframes cardGlowPulse{
+    0%,100%{
+        box-shadow:
+            0 40px 80px -30px rgba(0,0,0,.55),
+            0 0 var(--glow-blur-a) var(--glow-spread-a) var(--card-glow-soft),
+            0 0 var(--glow-blur-b) var(--glow-spread-b) var(--card-glow-soft);
+    }
+    50%{
+        box-shadow:
+            0 40px 80px -30px rgba(0,0,0,.55),
+            0 0 calc(var(--glow-blur-a) + 8px) calc(var(--glow-spread-a) + 3px) var(--card-glow-soft),
+            0 0 calc(var(--glow-blur-b) + 16px) calc(var(--glow-spread-b) + 4px) var(--card-glow-soft);
+    }
+}
+.pa-media-frame::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    background:linear-gradient(160deg, rgba(47,111,237,.4), rgba(31,201,195,.3));
+    transform:translateZ(-22px);
+}
+.pa-media-frame::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    background:radial-gradient(circle at var(--glow-x) var(--glow-y), rgba(255,255,255,.18), transparent 55%);
+    mix-blend-mode:screen;
+    pointer-events:none;
+}
+.pa-media-frame > img{
+    position:relative;
+    transform:translateZ(34px);
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    filter:drop-shadow(0 8px 22px rgba(0,0,0,.4));
+}
+.pa-media-frame.pa-media-own img{filter:drop-shadow(0 0 20px rgba(47,111,237,.45));}
+@media (prefers-reduced-motion: reduce){
+    .pa-media-frame{transform:none;animation:none;}
+}
+@media (max-width:679px){
+    .pa-media-frame{
+        max-width:206px;
+        padding:12%;
+        --glow-blur-a:12px;
+        --glow-spread-a:-8px;
+        --glow-blur-b:24px;
+        --glow-spread-b:-15px;
+    }
+}
+@media (min-width:680px){
+    .pa-media-frame{max-width:320px;}
+}
+@media (min-width:768px){
+    .pa-media-frame{max-width:280px;}
 }
 
 /* =====================================================================
