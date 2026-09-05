@@ -27,6 +27,17 @@
     color:var(--accent-hot);
     margin-bottom:16px;
 }
+/* Texto de presentación un poco más grande que el cuerpo normal del
+   sitio: es lo primero que se lee de la página, se lo pidió más
+   presente que un párrafo de sección cualquiera. */
+.sm-lead{font-size:1.05rem;line-height:1.7;}
+
+/* El combo ".eyebrow" (inline-flex) + "h2" (inline-block) de styles.css
+   solo queda apilado "por accidente" cuando el texto del h2 es lo
+   bastante largo como para no entrar al lado del eyebrow en la misma
+   línea — con títulos cortos como los de esta página (a ciertos anchos)
+   los dos quedan pegados en una sola línea. Se fuerza el apilado acá. */
+.section-header .eyebrow{display:flex;}
 /* Placeholder de foto: sin foto todavía, se deja una silueta genérica
    más un aviso explícito en vez de simular una imagen real. */
 .sm-avatar-frame{
@@ -65,9 +76,10 @@
 .sm-stack-grid{
     display:grid;
     grid-template-columns:1fr;
-    gap:24px;
-    margin-bottom:26px;
+    gap:28px;
+    margin-bottom:28px;
 }
+.sm-stack-group{--group-color:var(--accent-hot);}
 .sm-stack-label{
     display:block;
     font-family:var(--font-mono);
@@ -75,11 +87,40 @@
     font-weight:600;
     text-transform:uppercase;
     letter-spacing:1px;
-    color:var(--accent-hot);
-    margin-bottom:10px;
+    color:var(--group-color);
+    margin-bottom:12px;
 }
 .sm-stack-group .pf-tags{margin-bottom:0;}
+/* Chips con color por categoría (--group-color, ver inline style en el
+   HTML de cada grupo) en vez del gris parejo de ".pf-tag" genérico: un
+   punto luminoso + borde/fondo tintados y un pequeño lift al hover, para
+   que la sección no se sienta una lista plana de texto. */
+.sm-stack-group .pf-tag{
+    position:relative;
+    background:linear-gradient(135deg, color-mix(in srgb, var(--group-color) 20%, transparent), rgba(255,255,255,.05));
+    border:1px solid color-mix(in srgb, var(--group-color) 42%, transparent);
+    padding-left:21px;
+    transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.sm-stack-group .pf-tag::before{
+    content:'';
+    position:absolute;
+    left:9px;
+    top:50%;
+    transform:translateY(-50%);
+    width:5px;height:5px;
+    border-radius:50%;
+    background:var(--group-color);
+    box-shadow:0 0 6px var(--group-color);
+}
+.sm-stack-group .pf-tag:hover{
+    transform:translateY(-2px);
+    border-color:var(--group-color);
+    background:linear-gradient(135deg, color-mix(in srgb, var(--group-color) 32%, transparent), rgba(255,255,255,.06));
+    box-shadow:0 8px 18px -8px color-mix(in srgb, var(--group-color) 65%, transparent);
+}
 .sm-softskills{font-size:.9rem;max-width:70ch;}
+.sm-softskills + .sm-softskills{margin-top:10px;}
 .sm-softskills strong{color:var(--white);}
 
 /* =====================================================================
@@ -121,4 +162,5 @@
 @media (min-width:768px){
     .sm-intro{padding-top:calc(68px + 70px);}
     .sm-logo-strip a{width:100px;height:100px;}
+    .sm-stack-grid{grid-template-columns:1fr 1fr;}
 }
