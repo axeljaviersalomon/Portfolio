@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es" data-pa-scroll>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Sobre mí | Axel Salomon</title>
+<meta name="description" content="Conocé a Axel Salomon: formación, stack tecnológico y la filosofía detrás de cada proyecto de desarrollo web que entrega, freelance desde 2023.">
+<meta name="author" content="Axel Salomon">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://axeljaviersalomon.github.io/Portfolio/sobre-mi.html">
+
+<!-- Open Graph / Facebook, LinkedIn, WhatsApp -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://axeljaviersalomon.github.io/Portfolio/sobre-mi.html">
+<meta property="og:site_name" content="Axel Salomon | Desarrollo Web Freelance">
+<meta property="og:title" content="Sobre mí | Axel Salomon">
+<meta property="og:description" content="Formación, stack tecnológico y la filosofía detrás de cada proyecto de desarrollo web que entrega Axel Salomon, freelance desde 2023.">
+<meta property="og:image" content="https://axeljaviersalomon.github.io/Portfolio/assets/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="es_AR">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sobre mí | Axel Salomon">
+<meta name="twitter:description" content="Formación, stack tecnológico y la filosofía detrás de cada proyecto de desarrollo web que entrega Axel Salomon, freelance desde 2023.">
+<meta name="twitter:image" content="https://axeljaviersalomon.github.io/Portfolio/assets/img/og-image.png">
+
+<meta name="theme-color" content="#0a0a0f">
+
+<!-- Favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicon-180.png">
+<link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon-512.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/styles.css?v=31">
+<link rel="stylesheet" href="assets/css/portfolio-animado.css?v=23">
+<link rel="stylesheet" href="assets/css/sobre-mi.css?v=2">
+</head>
+<body>
+
+<div class="global-bg"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="grain-overlay" aria-hidden="true"></div>
+
+<!-- =====================================================================
+     NAVEGACIÓN — igual que portfolio-animado.html, pero acá "Sobre mí"
+     es la página activa
+     ===================================================================== -->
+<header>
+    <div class="container nav-wrap">
+        <a href="index.html#inicio" class="logo">
+            <img src="assets/img/logo-icon.png" alt="Axel Salomon" class="logo-icon">
+        </a>
+        <nav class="nav-links" id="navLinks">
+            <a href="index.html#inicio">Inicio</a>
+            <a href="index.html#servicios">Servicios</a>
+            <a href="index.html#portfolio">Portfolio</a>
+            <a href="sobre-mi.html" class="active">Sobre mí</a>
+            <a href="index.html#contacto" class="btn btn-primary btn-sm">Pedir presupuesto</a>
+            <a href="portfolio-animado.html" class="nav-link-shine"><span>Portfolio Animado</span></a>
+        </nav>
+        <div class="hamburger" id="hamburger" aria-label="Abrir menú"><span></span><span></span><span></span></div>
+    </div>
+</header>
+
+<!-- =====================================================================
+     TRACK DE PANELES — mismo scroll-snap "manejado" que Portfolio Animado,
+     pero con muy pocas paradas: hero, filosofía, formación/stack,
+     confianza y cierre. Nada de filtros ni tarjetas de proyecto acá.
+     ===================================================================== -->
+<main class="pa-track" id="paTrack">
+
+    <!-- Panel 1: Hero — foto (placeholder, ver nota abajo) + presentación -->
+    <section class="pa-panel" id="sm-hero" data-label="Sobre mí">
+        <canvas class="pa-grid-canvas" data-pa-grid aria-hidden="true"></canvas>
+        <div class="container pa-panel-inner">
+            <div class="pa-media sm-avatar-wrap">
+                <!-- Sin foto todavía: placeholder claro (silueta + aviso)
+                     en vez de simular una que no existe. Reemplazar el
+                     contenido de este div por un <img> cuando haya una. -->
+                <div class="pa-media-frame sm-avatar" style="--card-glow:#2f6fed;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div class="sm-avatar-note">Foto próximamente</div>
+            </div>
+            <div class="pa-content">
+                <div class="eyebrow"><span></span> Sobre mí</div>
+                <h1>Axel Salomon</h1>
+                <p class="sm-role">Desarrollador Full Stack independiente</p>
+                <p>Freelance desde 2023, diseñando y desarrollando sitios y aplicaciones para marcas y negocios que necesitan un trabajo bien hecho.</p>
+                <div class="pa-actions">
+                    <a href="index.html#contacto" class="btn btn-primary btn-sm">Pedir presupuesto</a>
+                    <a href="index.html#portfolio" class="btn btn-outline btn-sm">Ver portfolio</a>
+                </div>
+            </div>
+        </div>
+        <div class="pa-scroll-cue">
+            Scroll
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+    </section>
+
+    <!-- Panel 2: Filosofía -->
+    <section class="pa-panel sm-text" id="sm-filosofia" data-panel="1" data-label="Filosofía">
+        <div class="sm-text-inner">
+            <div class="eyebrow" style="justify-content:center;"><span></span> Filosofía</div>
+            <h2>Por qué hago lo que hago</h2>
+            <p>Para mí, el desarrollo web es una forma de arte: la infraestructura escalable que sostiene cualquier arquitectura, y el diseño visual que termina viendo el usuario, son en el fondo el mismo oficio.</p>
+            <p>Tantas marcas, negocios y empresas necesitan justamente eso — un trabajo bien hecho. Ahí es donde más brillo: con la dedicación y la pasión que le pongo a cada proyecto, dos valores que no se compran ni se consiguen fácil.</p>
+        </div>
+    </section>
+
+    <!-- Panel 3: Formación & stack -->
+    <section class="pa-panel" id="sm-stack" data-panel="2" data-label="Formación & stack">
+        <canvas class="pa-grid-canvas" data-pa-grid aria-hidden="true"></canvas>
+        <div class="container sm-stack-inner">
+            <div class="section-header" style="margin-bottom:28px;">
+                <div class="eyebrow"><span></span> Formación & stack</div>
+                <h2>Cómo llegué hasta acá</h2>
+                <p>Full Stack Developer en Plataforma 5 (Coding Bootcamp), enero–julio 2022: +800 horas teórico-prácticas con metodología Scrum, pair programming y en equipos de 5 personas — la misma dinámica de trabajo en equipo que uso hoy con clientes.</p>
+            </div>
+            <div class="sm-stack-grid">
+                <div class="sm-stack-group">
+                    <span class="sm-stack-label">Frontend</span>
+                    <div class="pa-tags">
+                        <span class="pf-tag">WordPress</span><span class="pf-tag">Elementor</span><span class="pf-tag">WooCommerce</span><span class="pf-tag">JavaScript</span><span class="pf-tag">React</span><span class="pf-tag">Redux Toolkit</span><span class="pf-tag">HTML</span><span class="pf-tag">CSS</span><span class="pf-tag">SASS</span><span class="pf-tag">Bootstrap</span><span class="pf-tag">Bulma</span><span class="pf-tag">Material UI</span>
+                    </div>
+                </div>
+                <div class="sm-stack-group">
+                    <span class="sm-stack-label">Backend</span>
+                    <div class="pa-tags">
+                        <span class="pf-tag">Node.js</span><span class="pf-tag">PostgreSQL</span><span class="pf-tag">MySQL</span><span class="pf-tag">Sequelize</span><span class="pf-tag">Express</span>
+                    </div>
+                </div>
+                <div class="sm-stack-group">
+                    <span class="sm-stack-label">Testing</span>
+                    <div class="pa-tags">
+                        <span class="pf-tag">Jest</span><span class="pf-tag">Mocha</span>
+                    </div>
+                </div>
+                <div class="sm-stack-group">
+                    <span class="sm-stack-label">Mobile</span>
+                    <div class="pa-tags">
+                        <span class="pf-tag">React Native</span>
+                    </div>
+                </div>
+                <div class="sm-stack-group">
+                    <span class="sm-stack-label">Otros</span>
+                    <div class="pa-tags">
+                        <span class="pf-tag">Scrum</span><span class="pf-tag">Git / GitHub</span><span class="pf-tag">Linux</span>
+                    </div>
+                </div>
+            </div>
+            <p class="sm-softskills"><strong>Skills blandas:</strong> rapidez de aprendizaje, resolución de problemas, comunicación, marketing, trabajo en equipo, profesionalismo e inglés.</p>
+        </div>
+    </section>
+
+    <!-- Panel 4: Confianza — marcas reales con dominio propio (no demos) -->
+    <section class="pa-panel sm-text" id="sm-confianza" data-panel="3" data-label="Con quién trabajé">
+        <div class="sm-text-inner sm-text-inner--wide">
+            <div class="eyebrow" style="justify-content:center;"><span></span> Con quién trabajé</div>
+            <h2>Marcas que ya confiaron en este trabajo</h2>
+            <p>Estos sitios están en producción ahora mismo, con dominio propio — no son mockups de portfolio.</p>
+            <div class="sm-trust-logos">
+                <a href="https://chironplanet.com/" target="_blank" rel="noopener noreferrer" class="pa-media-frame pf-logo-white sm-trust-logo" style="--card-glow:#9b8cf5;">
+                    <img src="https://chironplanet.com/wp-content/uploads/2025/08/Diseno-sin-titulo-1.png" alt="Chiron Planet Enterprise" loading="lazy">
+                </a>
+                <a href="https://laestrelladecastillejo.es/" target="_blank" rel="noopener noreferrer" class="pa-media-frame sm-trust-logo" style="--card-glow:#d4af37;">
+                    <img src="https://laestrelladecastillejo.es/wp-content/uploads/2021/11/cropped-LOGO-270x270.png" alt="Hotel La Estrella de Castillejo" loading="lazy">
+                </a>
+                <a href="https://hotelrestaurantesetos.es/" target="_blank" rel="noopener noreferrer" class="pa-media-frame sm-trust-logo" style="--card-glow:#ef4444;">
+                    <img src="https://hotelrestaurantesetos.es/wp-content/uploads/2026/03/cropped-LOGO-SIN-FONDO1.png" alt="Hotel Restaurante Setos" loading="lazy">
+                </a>
+            </div>
+            <a href="index.html#portfolio" class="btn btn-outline btn-sm">Ver portfolio completo</a>
+        </div>
+    </section>
+
+    <!-- Panel 5: Cierre / CTA -->
+    <section class="pa-panel pa-outro" id="sm-outro" data-label="Fin del recorrido">
+        <div class="blob blob-blue blob-dance-a" style="width:340px;height:340px;top:-60px;left:calc(50% - 170px);"></div>
+        <div class="pa-outro-inner">
+            <div class="eyebrow" style="justify-content:center;"><span></span> ¿Y ahora?</div>
+            <h2>Hablemos de <span class="text-accent">tu próximo proyecto</span></h2>
+            <p>Si esto te dio una mejor idea de cómo trabajo, escribime y vemos cómo puedo ayudarte.</p>
+            <div class="pa-outro-actions">
+                <a href="index.html#contacto" class="btn btn-primary">Pedir presupuesto</a>
+                <a href="portfolio-animado.html" class="btn btn-outline">Ver portfolio animado</a>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- Volver al inicio del recorrido -->
+<button class="pa-to-top" id="paToTop" type="button" aria-label="Volver al inicio">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
+<!-- Navegación lateral (dots) + contador — generados por JS en base a los paneles -->
+<div class="pa-dots" id="paDots" aria-hidden="true"></div>
+<div class="pa-counter" id="paCounter">
+    <button class="pa-counter-arrow" id="paPrevBtn" type="button" aria-label="Sección anterior">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <span class="pa-counter-nums">
+        <span id="paCounterCurrent">—</span>
+        <span style="opacity:.4;">/</span>
+        <span id="paCounterTotal">3</span>
+    </span>
+    <button class="pa-counter-arrow" id="paNextBtn" type="button" aria-label="Sección siguiente">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+    </button>
+</div>
+
+<script src="assets/js/sobre-mi.js?v=1" defer></script>
+
+</body>
+</html>

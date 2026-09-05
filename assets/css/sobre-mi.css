@@ -1,0 +1,135 @@
+/* =====================================================================
+   SOBRE MÍ — página dedicada, mismo scroll-snap por paneles que
+   Portfolio Animado (ver portfolio-animado.css, del que hereda track,
+   paneles, dots, contador, tarjeta 3D y fondo de malla). Acá solo lo
+   que es específico de esta página: el placeholder de foto, los
+   paneles centrados de puro texto y los grupos de stack/logos.
+
+   ÍNDICE
+   1. Placeholder de foto (hero)
+   2. Paneles centrados de texto (filosofía / confianza)
+   3. Formación & stack
+   4. Logos de marcas reales (confianza)
+   ===================================================================== */
+
+/* =====================================================================
+   1. PLACEHOLDER DE FOTO (HERO)
+   ===================================================================== */
+/* Sin foto todavía: se dibuja una silueta genérica en vez de simular una
+   foto real, y se lo deja explícito con el aviso de abajo para que sea
+   obvio que ese es un lugar reservado, no un error. */
+.sm-avatar-wrap{
+    flex-direction:column;
+    gap:14px;
+}
+.sm-avatar{color:var(--gray-mid);}
+.sm-avatar svg{width:40%;height:40%;}
+.sm-avatar-note{
+    font-family:var(--font-mono);
+    font-size:.7rem;
+    letter-spacing:.5px;
+    color:var(--gray-mid);
+    text-align:center;
+}
+.sm-role{
+    font-family:var(--font-mono);
+    font-size:.85rem;
+    color:var(--accent-hot);
+    margin-bottom:14px;
+}
+
+/* =====================================================================
+   2. PANELES CENTRADOS DE TEXTO (filosofía / confianza)
+   Mismo lenguaje de entrada (fade + desplazamiento corto) que el resto
+   de paneles de Portfolio Animado, en una versión sin grid de dos
+   columnas porque acá no hay imagen al lado.
+   ===================================================================== */
+.sm-text{
+    text-align:center;
+    justify-content:center;
+}
+.sm-text-inner{
+    max-width:640px;
+    margin:0 auto;
+    padding:0 var(--container-pad);
+    position:relative;
+    z-index:2;
+}
+.sm-text-inner--wide{max-width:760px;}
+.sm-text-inner h2{font-size:clamp(1.7rem,5.4vw,2.5rem);margin-bottom:18px;}
+.sm-text-inner p{margin-bottom:16px;}
+.sm-text-inner .btn{width:auto;}
+.sm-text-inner > *{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1);
+}
+.sm-text-inner > *:nth-child(1){transition-delay:.05s;}
+.sm-text-inner > *:nth-child(2){transition-delay:.12s;}
+.sm-text-inner > *:nth-child(3){transition-delay:.19s;}
+.sm-text-inner > *:nth-child(4){transition-delay:.26s;}
+.sm-text-inner > *:nth-child(5){transition-delay:.33s;}
+.pa-panel.is-active .sm-text-inner > *{opacity:1;transform:none;}
+
+/* =====================================================================
+   3. FORMACIÓN & STACK
+   ===================================================================== */
+.sm-stack-inner{position:relative;z-index:2;}
+/* El combo ".eyebrow" (inline-flex) + "h2" (inline-block) de styles.css
+   solo se ve apilado "por accidente" cuando el texto del h2 es largo y no
+   entra al lado del eyebrow en la misma línea (fuerza el salto). Acá el
+   título es corto y sí entra, así que hay que forzar el apilado a mano. */
+.sm-stack-inner .section-header .eyebrow{display:flex;}
+.sm-stack-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:24px;
+    margin-bottom:26px;
+}
+.sm-stack-label{
+    display:block;
+    font-family:var(--font-mono);
+    font-size:.72rem;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    color:var(--accent-hot);
+    margin-bottom:10px;
+}
+.sm-stack-group .pa-tags{margin-bottom:0;}
+.sm-softskills{font-size:.9rem;max-width:70ch;}
+.sm-softskills strong{color:var(--white);}
+
+/* =====================================================================
+   4. LOGOS DE MARCAS REALES (confianza)
+   Mismas tarjetas 3D (".pa-media-frame") que usan los proyectos en
+   Portfolio Animado, pero más chicas y en fila, como link directo al
+   sitio en vivo en vez de ser solo decorativas.
+   ===================================================================== */
+.sm-trust-logos{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:20px;
+    margin:28px 0 30px;
+}
+.sm-trust-logo{
+    flex:0 0 auto;
+    /* Padding fijo, no porcentual: ".pa-media-frame" usa padding en % (ver
+       portfolio-animado.css), que se calcula sobre el ancho del CONTENEDOR
+       padre, no el propio — acá eso inflaba la tarjeta muy por encima de
+       los 120px del "width" de abajo en vez de quedar chica. */
+    width:120px;
+    max-width:120px;
+    padding:22px;
+    cursor:pointer;
+}
+.sm-trust-logo:hover{--rx:0deg;--ry:0deg;}
+
+@media (min-width:680px){
+    .sm-stack-grid{grid-template-columns:1fr 1fr;}
+}
+@media (min-width:768px){
+    .sm-trust-logo{width:140px;max-width:140px;padding:26px;}
+}

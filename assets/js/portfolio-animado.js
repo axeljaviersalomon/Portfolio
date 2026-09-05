@@ -594,6 +594,9 @@ function initMouseGrid(canvas){
     }
 
     function drawStatic(){
+        // drawImage sobre un canvas fuente de 0x0 (sección aún sin layout)
+        // tira InvalidStateError — se evita el frame en vez de arriesgarse.
+        if(staticCanvas.width === 0 || staticCanvas.height === 0) return;
         ctx.clearRect(0, 0, width, height);
         ctx.drawImage(staticCanvas, 0, 0);
     }
